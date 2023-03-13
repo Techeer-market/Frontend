@@ -54,6 +54,7 @@ const Etc = styled.div`
 `;
 const Checkbox = styled.input``;
 const CheckLogin = styled.h3`
+/* 폰트 */
   /* font-family: LineSeedKRBd; */
 `;
 const FindAccount = styled.h3``;
