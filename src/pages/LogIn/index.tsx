@@ -8,16 +8,17 @@ const LogIn = () => {
   return (
     <Login>
       <Logo />
-
-      <Inputs>
-        <Email />
-        <Password />
-        <Etc>
-          <Checkbox />
-          <CheckLogin />
-          <FindAccount />
-        </Etc>
-      </Inputs>
+      <Form>
+        <Inputs>
+          <Email placeholder="Email" />
+          <Password placeholder="Password" />
+          <Etc>
+            <Checkbox type="checkbox" />
+            <CheckLogin>로그인 상태 유지</CheckLogin>
+            <FindAccount>아이디/비밀번호 찾기</FindAccount>
+          </Etc>
+        </Inputs>
+      </Form>
 
       <Buttons>
         <LogInButton />
@@ -28,13 +29,33 @@ const LogIn = () => {
   );
 };
 
-const Login = styled.div``;
-const Inputs = styled.div``;
+const Login = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 1080px) {
+    justify-content: center;
+  }
+`;
+const Form = styled.div``;
+const Inputs = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+`;
 const Email = styled.input``;
 const Password = styled.input``;
-const Etc = styled.div``;
-const Checkbox = styled.div``;
-const CheckLogin = styled.h3``;
+const Etc = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const Checkbox = styled.input``;
+const CheckLogin = styled.h3`
+  /* font-family: LineSeedKRBd; */
+`;
 const FindAccount = styled.h3``;
 const Buttons = styled.div``;
 const LogInButton = styled.button``;

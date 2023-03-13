@@ -20,6 +20,7 @@ const LogoBackground = styled.div`
   justify-content: center;
   width: 100%;
   margin-top: 12rem;
+  margin-bottom: 8rem;
 `;
 
 export default Logo;
