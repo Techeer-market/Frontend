@@ -28,7 +28,7 @@ const LogIn = () => {
         </KakaoButton>
         <GoogleButton>
           <FcGoogle size={'3.2rem'} />
-          &nbsp;&nbsp;구글 계정으로 로그인
+          &nbsp;&nbsp;&nbsp;&nbsp;구글 계정으로 로그인
         </GoogleButton>
       </Buttons>
     </Login>
