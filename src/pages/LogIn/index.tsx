@@ -15,8 +15,10 @@ const LogIn = () => {
         <Input placeholder="비밀번호" type="password" />
       </Form>
       <Etc>
-        <Checkbox type="checkbox" />
-        <CheckLogin>로그인 상태 유지</CheckLogin>
+        <Check>
+          <Checkbox type="checkbox" />
+          <CheckLogin>로그인 상태 유지</CheckLogin>
+        </Check>
         <FindAccount>아이디/비밀번호 찾기</FindAccount>
       </Etc>
 
@@ -60,17 +62,36 @@ const Input = styled.input`
 `;
 
 const Etc = styled.div`
+  width: 33rem;
   display: flex;
+  font-size: 14px;
+  align-items: center;
   justify-content: space-between;
+  margin-top: -2rem;
+  margin-bottom: 6rem;
 `;
-const Checkbox = styled.input``;
-const CheckLogin = styled.h3``;
-const FindAccount = styled.h3``;
+const Check = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+const Checkbox = styled.input`
+  width: 1.5rem;
+  height: 1.5rem;
+`;
+const CheckLogin = styled.button`
+  background: none;
+  border: 0;
+`;
+const FindAccount = styled.button`
+  background: none;
+  border: 0;
+  text-decoration: underline;
+`;
 const Buttons = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: center;
-  align-items: flex-start; */
 `;
 const LogInButton = styled.button`
   width: 33rem;
