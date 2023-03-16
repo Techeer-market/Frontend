@@ -52,7 +52,7 @@ const Form = styled.div`
 `;
 
 const Input = styled.input`
-  width: 33rem;
+  width: 36rem;
   height: 4.5rem;
   border-radius: 10px;
   background: #ffffff;
@@ -62,7 +62,7 @@ const Input = styled.input`
 `;
 
 const Etc = styled.div`
-  width: 33rem;
+  width: 36rem;
   display: flex;
   font-size: 14px;
   align-items: center;
@@ -83,18 +83,20 @@ const Checkbox = styled.input`
 const CheckLogin = styled.button`
   background: none;
   border: 0;
+  font-size: 1.4rem;
 `;
 const FindAccount = styled.button`
   background: none;
   border: 0;
   text-decoration: underline;
+  font-size: 1.4rem;
 `;
 const Buttons = styled.div`
   display: flex;
   flex-direction: column;
 `;
 const LogInButton = styled.button`
-  width: 33rem;
+  width: 36rem;
   height: 5.5rem;
   border-radius: 10px;
   background: #000;
@@ -103,7 +105,7 @@ const LogInButton = styled.button`
   margin-bottom: 12px;
 `;
 const KakaoButton = styled.button`
-  width: 33rem;
+  width: 36rem;
   height: 5.5rem;
   border-radius: 10px;
   background: #ffdb20;
@@ -114,7 +116,7 @@ const KakaoButton = styled.button`
   justify-content: center;
 `;
 const GoogleButton = styled.button`
-  width: 33rem;
+  width: 36rem;
   height: 5.5rem;
   border-radius: 10px;
   border: 2px solid #dfdfdf;
