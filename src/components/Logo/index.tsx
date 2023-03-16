@@ -17,11 +17,15 @@ const LogoBackground = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 20vw;
-  height: 8vh;
+  width: 20rem;
+  height: 8rem;
+  /* width: 20vw;
+  height: 8vh; */
   margin-top: 12rem;
   margin-bottom: 8rem;
   @media screen and (max-width: 1080px) {
+    width: 10rem;
+    height: 10rem;
   }
 `;
 

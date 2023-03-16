@@ -57,7 +57,7 @@ const Input = styled.input`
   border-radius: 10px;
   background: #ffffff;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom: 50px;
+  margin-bottom: 4.5rem;
   padding-left: 17px;
 `;
 
