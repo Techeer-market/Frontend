@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Logo = () => {
   const navigate = useNavigate();
   return (
+    //로고 컴포넌트
     <LogoBackground role="button">
       <img
         id="main"
