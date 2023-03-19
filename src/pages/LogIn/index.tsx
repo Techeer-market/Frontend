@@ -3,10 +3,29 @@ import styled from 'styled-components';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
+import GoogleLogin from 'react-google-login';
 
 //로고 컴포넌트로 빼놓기
 
 const LogIn = () => {
+  // //클라이언트 ID (환경변수)
+  // let googleClientId: string = process.env.REACT_APP_CLIENT_ID || '';
+
+  // //사용자 정보를 담아둘 userObj
+  // const [userObj, setUserObj] = React.useState({
+  //   name: '',
+  //   email: '',
+  // });
+
+  // //로그인 성공시
+  // const onLoginSuccess =(res:any)=>{
+  //   setUserObj({...userObj,
+  //   name:res.data ,
+  //   email:res.data
+  // })
+  // }
+
+
   return (
     <Login>
       <Logo />
