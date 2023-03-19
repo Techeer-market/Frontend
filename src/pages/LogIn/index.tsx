@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
-import GoogleLogin from 'react-google-login';
+import { SiNaver } from 'react-icons/Si';
 
 //로고 컴포넌트로 빼놓기
 
@@ -25,7 +25,6 @@ const LogIn = () => {
   // })
   // }
 
-
   return (
     <Login>
       <Logo />
@@ -44,11 +43,15 @@ const LogIn = () => {
       <Buttons>
         <LogInButton>로그인</LogInButton>
         <KakaoButton>
-          <RiKakaoTalkFill size={'3.2rem'} />
+          <RiKakaoTalkFill size={'3.3rem'} />
           &nbsp;&nbsp;카카오 계정으로 로그인
         </KakaoButton>
+        <NaverButton>
+          <SiNaver size={'2.2rem'} />
+          &nbsp;&nbsp;&nbsp;네이버 계정으로 로그인
+        </NaverButton>
         <GoogleButton>
-          <FcGoogle size={'3.2rem'} />
+          <FcGoogle size={'3.3rem'} />
           &nbsp;&nbsp;&nbsp;&nbsp;구글 계정으로 로그인
         </GoogleButton>
       </Buttons>
@@ -128,6 +131,19 @@ const KakaoButton = styled.button`
   height: 5.5rem;
   border-radius: 10px;
   background: #ffdb20;
+  border: none;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const NaverButton = styled.button`
+  width: 36rem;
+  height: 5.5rem;
+  border-radius: 10px;
+  background: #00bf18;
+  color: white;
   border: none;
   margin-bottom: 12px;
   display: flex;
