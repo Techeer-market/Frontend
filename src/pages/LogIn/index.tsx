@@ -1,30 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FcGoogle } from 'react-icons/fc';
 import { SiNaver } from 'react-icons/Si';
 
-//로고 컴포넌트로 빼놓기
-
 const LogIn = () => {
-  // //클라이언트 ID (환경변수)
-  // let googleClientId: string = process.env.REACT_APP_CLIENT_ID || '';
-
-  // //사용자 정보를 담아둘 userObj
-  // const [userObj, setUserObj] = React.useState({
-  //   name: '',
-  //   email: '',
-  // });
-
-  // //로그인 성공시
-  // const onLoginSuccess =(res:any)=>{
-  //   setUserObj({...userObj,
-  //   name:res.data ,
-  //   email:res.data
-  // })
-  // }
-
   return (
     <Login>
       <Logo />
@@ -42,7 +24,7 @@ const LogIn = () => {
 
       <Buttons>
         <LogInButton>로그인</LogInButton>
-        <KakaoButton>
+        <KakaoButton as="a" href={KAKAO_AUTH_URL}>
           <RiKakaoTalkFill size={'3.3rem'} />
           &nbsp;&nbsp;카카오 계정으로 로그인
         </KakaoButton>
