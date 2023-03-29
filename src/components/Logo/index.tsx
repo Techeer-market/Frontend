@@ -6,8 +6,14 @@ import { useNavigate } from 'react-router-dom';
 const Logo = () => {
   const navigate = useNavigate();
   return (
-    <LogoBackground role="button" onClick={() => navigate('/')}>
-      <img id="main" src={logo} alt="홈페이지 메인으로 이동"></img>
+    //로고 컴포넌트
+    <LogoBackground role="button">
+      <img
+        id="main"
+        src={logo}
+        alt="홈페이지 메인으로 이동"
+        onClick={() => navigate('/')}
+      ></img>
     </LogoBackground>
   );
 };
@@ -21,6 +27,13 @@ const LogoBackground = styled.div`
   height: 100%;
   margin-top: 12rem;
   margin-bottom: 8rem;
+  /* & img {
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    left: 65.4rem;
+    top: 1rem;
+  } */
 `;
 
 export default Logo;
