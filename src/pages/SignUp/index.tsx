@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from '@/components/Logo';
-import CProfile from '@/pages/CProfile/cProfile';
+import CProfile from '@/pages/CProfile/CProfile';
 import profile from '../../assets/profile.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -133,7 +133,7 @@ const ConDiv = styled.div`
 
 const FirstForm = styled.div`
   display: flex;
-  margin-top: -6.5rem;
+  margin-top: -1rem;
   flex-direction: column;
 `;
 
