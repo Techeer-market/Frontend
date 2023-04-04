@@ -70,7 +70,7 @@ const ChangeName = styled.img`
   align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
-  margin-top: -7rem;
+  margin-top: -6.5rem;
   background-color: rgba(255, 255, 255, 0);
   color: black;
   &:hover {

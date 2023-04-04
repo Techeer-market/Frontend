@@ -57,7 +57,7 @@ const SignUp = () => {
     <ConDiv>
       <Logo />
       <CProfile getThumb={getThumb} />
-      <FirstForm></FirstForm>
+      <FirstForm />
       <TextForm>
         <Input
           placeholder="이름"
@@ -133,7 +133,7 @@ const ConDiv = styled.div`
 
 const FirstForm = styled.div`
   display: flex;
-  margin-top: -1rem;
+  margin-top: -0.8rem;
   flex-direction: column;
 `;
 
@@ -210,8 +210,9 @@ const ValidCheck = styled.h4`
   margin: 0rem;
   padding: 0rem;
   margin-top: -1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.1rem;
   align-items: center;
+  font-size: 0.8rem;
   // display: none;
 `;
 
