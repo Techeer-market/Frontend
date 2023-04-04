@@ -42,7 +42,7 @@ const SignUp = () => {
       .then(function (res) {
         console.log(res);
         alert('회원가입 성공');
-        navigate('/signin');
+        navigate('/login');
       })
       .catch(function (res) {
         if (res.response.data.email) {
