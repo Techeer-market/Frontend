@@ -5,8 +5,6 @@ import CProfile from '@/pages/CProfile/CProfile';
 import profile from '../../assets/profile.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -32,7 +30,7 @@ const SignUp = () => {
   function onClick(e: any) {
     e.preventDefault();
     axios
-      .post('http://[localhost:8080/api/signup', {
+      .post('http://localhost:8080/api/signup', {
         email: email,
         password: pw,
         name: name,
@@ -44,11 +42,21 @@ const SignUp = () => {
         alert('회원가입 성공');
         navigate('/login');
       })
-      .catch(function (res) {
-        if (res.response.data.email) {
-          setEValid(false);
-        } else if (res.response.data.nickname) {
-          setNValid(false);
+      // .catch(function (res) {
+      //   if (res.response.data.email) {
+      //     setEValid(false);
+      //   } else if (res.response.data.nickname) {
+      //     setNValid(false);
+      //   }
+      // });
+      .catch((res) => {
+        if (res && res.response && res.response.data) {
+          if (res.response.data.email) {
+            setEValid(false);
+          } else if (res.response.data.nickname) {
+            setEValid(false);
+          }
+        } else {
         }
       });
   }
