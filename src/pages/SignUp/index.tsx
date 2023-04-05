@@ -14,7 +14,6 @@ const SignUp = () => {
   const [thumb, setThumb] = useState(profile);
 
   const [nValid, setNValid] = useState(true);
-  // const [pValid, setPValid] = useState(false);
   const [pwConfirm, setPwConfirm] = useState('');
   const [eValid, setEValid] = useState(true);
 
@@ -68,11 +67,9 @@ const SignUp = () => {
             setName(e.target.value);
           }}
         />
-        {/* <CheckBtn>중복확인</CheckBtn> */}
         <ValidCheck style={{ display: nValid ? 'none' : 'block' }}>
           다른 name을 입력해주세요.
         </ValidCheck>
-        {/* <ValidCheck> {validText} </ValidCheck> */}
         <Input
           placeholder="이메일"
           type="text"
@@ -80,7 +77,6 @@ const SignUp = () => {
             setEmail(e.target.value);
           }}
         />
-        {/* <CheckBtn>중복확인</CheckBtn> */}
         <ValidCheck style={{ display: eValid ? 'none' : 'block' }}>
           다른 email을 입력해주세요.
         </ValidCheck>
