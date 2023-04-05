@@ -42,13 +42,6 @@ const SignUp = () => {
         alert('회원가입 성공');
         navigate('/login');
       })
-      // .catch(function (res) {
-      //   if (res.response.data.email) {
-      //     setEValid(false);
-      //   } else if (res.response.data.nickname) {
-      //     setNValid(false);
-      //   }
-      // });
       .catch((res) => {
         if (res && res.response && res.response.data) {
           if (res.response.data.email) {
@@ -75,7 +68,7 @@ const SignUp = () => {
             setName(e.target.value);
           }}
         />
-        <CheckBtn>중복확인</CheckBtn>
+        {/* <CheckBtn>중복확인</CheckBtn> */}
         <ValidCheck style={{ display: nValid ? 'none' : 'block' }}>
           다른 name을 입력해주세요.
         </ValidCheck>
@@ -87,7 +80,7 @@ const SignUp = () => {
             setEmail(e.target.value);
           }}
         />
-        <CheckBtn>중복확인</CheckBtn>
+        {/* <CheckBtn>중복확인</CheckBtn> */}
         <ValidCheck style={{ display: eValid ? 'none' : 'block' }}>
           다른 email을 입력해주세요.
         </ValidCheck>
@@ -145,32 +138,6 @@ const FirstForm = styled.div`
   flex-direction: column;
 `;
 
-// const Profile = styled.button`
-//   display: flex;
-//   width: 14.3rem;
-//   height: 14.3rem;
-//   border-radius: 50%;
-//   border: none;
-//   background-color: white;
-//   align-items: center;
-//   justify-content: center;
-//   margin-bottom: 2rem;
-//   &:hover {
-//     cursor: pointer;
-//     box-shadow: 0px 1px 10px 1px rgba(124, 161, 255, 0.769);
-//   }
-// `;
-
-// const Profile = styled.button`
-//   width: 15rem;
-//   height: 15rem;
-//   border-radius: 50%;
-//   border: 4px solid white;
-//   background-color: white;
-//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-//   margin-bottom: 2rem;
-// `;
-
 const TextForm = styled.div`
   width: 30rem;
   height: 30rem
@@ -200,7 +167,8 @@ const CheckBtn = styled.button`
 `;
 
 const Input = styled.input`
-  width: 19rem;
+  // width: 19rem;
+  width: 30rem;
   height: 3rem;
   border-radius: 1rem;
   border: none;
