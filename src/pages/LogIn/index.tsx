@@ -61,7 +61,7 @@ const Input = styled.input`
   border-radius: 10px;
   background: #ffffff;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom: 4.5rem;
+  margin-bottom: 2rem;
   padding-left: 17px;
 `;
 
@@ -71,7 +71,7 @@ const Etc = styled.div`
   font-size: 14px;
   align-items: center;
   justify-content: space-between;
-  margin-top: -2rem;
+  margin-top: -1rem;
   margin-bottom: 6rem;
 `;
 const Check = styled.div`
