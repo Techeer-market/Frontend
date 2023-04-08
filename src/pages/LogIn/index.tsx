@@ -68,7 +68,6 @@ const Input = styled.input`
 const Etc = styled.div`
   width: 36rem;
   display: flex;
-  font-size: 14px;
   align-items: center;
   justify-content: space-between;
   margin-top: -1rem;
@@ -118,6 +117,9 @@ const KakaoButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
 `;
 
 const NaverButton = styled.button`
