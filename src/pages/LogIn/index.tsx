@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
-import { FcGoogle } from 'react-icons/fc';
 import { SiNaver } from 'react-icons/Si';
 
-const LogIn = () => {
+function Login() {
+  const navigate = useNavigate();
+
+  const goToSign = () => {
+    navigate('/signup');
+  };
   return (
-    <Login>
+    <LoginForm>
       <Logo />
       <Form>
         <Input placeholder="이메일" type="email" />
@@ -32,13 +37,12 @@ const LogIn = () => {
           <SiNaver size={'2.2rem'} />
           &nbsp;&nbsp;&nbsp;네이버 계정으로 로그인
         </NaverButton>
-        <SignUpeButton>회원가입</SignUpeButton>
+        <SignUpeButton onClick={goToSign}>회원가입</SignUpeButton>
       </Buttons>
-    </Login>
+    </LoginForm>
   );
-};
-
-const Login = styled.div`
+}
+const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,4 +147,4 @@ const SignUpeButton = styled.button`
   justify-content: center;
 `;
 
-export default LogIn;
+export default Login;
