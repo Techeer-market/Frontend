@@ -32,10 +32,7 @@ const LogIn = () => {
           <SiNaver size={'2.2rem'} />
           &nbsp;&nbsp;&nbsp;네이버 계정으로 로그인
         </NaverButton>
-        <GoogleButton>
-          <FcGoogle size={'3.3rem'} />
-          &nbsp;&nbsp;&nbsp;&nbsp;구글 계정으로 로그인
-        </GoogleButton>
+        <SignUpeButton>회원가입</SignUpeButton>
       </Buttons>
     </Login>
   );
@@ -134,7 +131,7 @@ const NaverButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
-const GoogleButton = styled.button`
+const SignUpeButton = styled.button`
   width: 36rem;
   height: 5.5rem;
   border-radius: 10px;
