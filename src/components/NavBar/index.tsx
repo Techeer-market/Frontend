@@ -37,7 +37,6 @@ export default NavBar;
 const Navbar = styled.div`
     margin: 2rem;
     display: flex;
-    width: 100%;
     height: 6.384rem;
     justify-content: space-between;
 
@@ -56,11 +55,17 @@ const LogoBackground = styled.div`
 `;
 
 const Category = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 1.5rem;
 `;
 
 const User = styled.div`
-    margin-left: 31rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 24rem;
     margin-top: 1.5rem;
 `;
 
