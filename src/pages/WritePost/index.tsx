@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import NavBar from '@/components/NavBar';
 
 const WritePost = () => {
     return (
         <Writepost>
+            <NavBar />
             <Title></Title>
 
             <Form>
