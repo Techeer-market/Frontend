@@ -5,18 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function KakaoLogin() {
   const location = useLocation();
   const navigate = useNavigate();
-  // useEffect(() => {
   const params = new URL(document.location.toString()).searchParams;
   const code = params.get('code');
   const grant_type = 'authorization_code';
   const client_id = `${import.meta.env.VITE_APP_KAKAO_REST_API_KEY}`;
   const KAKAO_REDIRECT_URI = `${import.meta.env.VITE_APP_KAKAO_REDIRECT_URI}`;
-  const KAKAO_REST_API_KEY = `${import.meta.env.VITE_APP_KAKAO_REST_API_KEY}`;
 
-  // console.log(
-  //   'url : ',
-  //   `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${client_id}`,
-  // );
   axios
     .post(
       `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${client_id}&redirect_url=${KAKAO_REDIRECT_URI}&code=${code}`,
@@ -33,7 +27,6 @@ function KakaoLogin() {
       const { access_token } = data;
       if (access_token) {
         console.log(`Bearer ${access_token}`);
-        localStorage.setItem('token', access_token);
       } else {
         navigate('/');
       }
@@ -50,7 +43,6 @@ function KakaoLogin() {
     if (!location.search) return;
     KakaoLogin();
   }, []);
-  // }, []);
   return <></>;
 }
 
