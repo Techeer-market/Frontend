@@ -6,7 +6,7 @@ export const kakaoLogin = async (code: string) => {
   const navigate = useNavigate();
   return axios({
     method: 'GET',
-    url: `http://localhost:8080/api/users/?code=${code}`,
+    url: `http://localhost:8080/api/users/auth/kakao?code=${code}`,
   })
     .then((res) => {
       console.log(res); //토큰 넘어오는 곳

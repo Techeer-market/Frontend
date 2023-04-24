@@ -36,7 +36,7 @@ function KakaoLogin() {
       console.log(res);
     })
     .catch((error) => {
-      alert('로그인 실패');
+      // alert('로그인 실패');
     });
 
   useEffect(() => {
