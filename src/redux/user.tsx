@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+//수정
 export const kakaoLogin = async (code: string) => {
   const navigate = useNavigate();
   return axios({
