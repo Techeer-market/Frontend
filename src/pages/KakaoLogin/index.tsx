@@ -13,11 +13,11 @@ function KakaoLogin() {
 
   axios
     .post(
-      `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${client_id}&redirect_url=${KAKAO_REDIRECT_URI}&code=${code}`,
+      `https://kauth.kakao.com/oauth/token?grant_type=${grant_type}&client_id=${client_id}&redirect_uri=${KAKAO_REDIRECT_URI}&code=${code}`,
       {},
       {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+          'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
         },
       },
     )
@@ -27,23 +27,24 @@ function KakaoLogin() {
       const { access_token } = data;
       if (access_token) {
         console.log(`Bearer ${access_token}`);
+        localStorage.setItem('token', access_token);
       } else {
         navigate('/');
       }
     })
-    .then((res) => {
-      console.log('데이터 성공: ');
-      console.log(res);
-    })
+    // .then((res) => {
+    //   // console.log('데이터 성공: ');
+    //   // console.log(res);
+    // })
     .catch((error) => {
       // alert('로그인 실패');
     });
 
-  useEffect(() => {
-    if (!location.search) return;
-    KakaoLogin();
-  }, []);
-  return <></>;
+  // useEffect(() => {
+  //   if (!location.search) return;
+  //   KakaoLogin();
+  // }, []);
+  // }, []);
+  return <div>ㅎㅇ어쓰카카오</div>;
 }
-
 export default KakaoLogin;
