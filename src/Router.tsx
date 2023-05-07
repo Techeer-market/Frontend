@@ -11,9 +11,9 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Welcome />}></Route>
+        {/* <Route path="/" element={<Welcome />}></Route> */}
         <Route path="/login" element={<Login />}></Route>
-        <Route path="/kakaoLogin" element={<KakaoLogin />}></Route>
+        <Route path="/auth/kakao" element={<KakaoLogin />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/write" element={<WritePost />}></Route>
       </Routes>
