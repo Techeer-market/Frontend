@@ -7,7 +7,7 @@ function KakaoLogin() {
     let code = params.get('code');
     const Login = async () => {
       await axios
-        .get(`localhost:8080/api/users/auth/kakao?code=${code}`)
+        .get(`http://localhost:8080/api/users/auth/kakao?code=${code}`)
         .then((res) => {
           localStorage.setItem('token', res.headers.authorization);
           window.location.href = '/';
