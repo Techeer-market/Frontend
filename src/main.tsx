@@ -10,10 +10,10 @@ import { Theme } from './theme';
 // }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ThemeProvider theme={Theme}>
-      <GlobalStyle />
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ThemeProvider theme={Theme}>
+    <GlobalStyle />
+    <App />
+  </ThemeProvider>,
+  // </React.StrictMode>,
 );
