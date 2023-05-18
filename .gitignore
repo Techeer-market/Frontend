@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+/node_modules
 node_modules
 dist
 dist-ssr
@@ -23,6 +24,10 @@ dist-ssr
 *.sln
 *.sw?
 .DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Api Keys
 .env
