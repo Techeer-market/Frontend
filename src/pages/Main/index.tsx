@@ -6,10 +6,16 @@ import { useInView } from 'react-intersection-observer';
 import axios, { AxiosResponse } from 'axios';
 
 const index = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Product[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [ref, inView] = useInView();
+
+  // 상품 타입 정의
+  interface Product {
+    name: string;
+    price: string;
+  }
 
   // 서버에서 아이템을 가지고 오는 함수
   const getItems = useCallback(async () => {
@@ -18,7 +24,10 @@ const index = () => {
       .get(`http://localhost:8080/api/products?page=${page}`)
       .then((res) => {
         console.log(res);
-        // setItems((prevState) => [...prevState, res.data]);
+        setItems((prevState) => [...prevState, res.data]);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     setLoading(false);
   }, [page]);
@@ -44,6 +53,16 @@ const index = () => {
           <TextLine />
         </TextDiv>
         <ProductDiv className="list-item" ref={ref}>
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
+          <ProductList />
           <ProductList />
         </ProductDiv>
       </MainContainer>
