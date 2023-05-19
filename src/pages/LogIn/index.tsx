@@ -48,7 +48,6 @@ function Login() {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-
     const userInfo: LoginInfo = {
       email: data.get('email'),
       password: data.get('password'),
@@ -56,7 +55,7 @@ function Login() {
 
     (async () => {
       await axios
-        .post(`localhost:8080/api/login`, userInfo)
+        .post(`http://localhost:8080/api/users/login`, userInfo)
         .then((res) => {
           setToken(res.data.access, res.data.refresh);
           const uuid = decodeAccessToken(getToken().access || '');
@@ -64,7 +63,8 @@ function Login() {
           navigate('/');
         })
         .catch((err) => {
-          alert('잘못된 정보입니다.');
+          // alert('잘못된 정보입니다.');
+          console.log(err);
         });
     })();
   };
@@ -73,9 +73,9 @@ function Login() {
   };
 
   return (
-    <LoginForm>
+    <LoginForm onSubmit={handleLogin}>
       <Logo />
-      <Form onSubmit={handleLogin}>
+      <Form>
         <Input
           name="email"
           placeholder="이메일"
@@ -112,7 +112,7 @@ function Login() {
     </LoginForm>
   );
 }
-const LoginForm = styled.div`
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,7 +121,7 @@ const LoginForm = styled.div`
     justify-content: center;
   }
 `;
-const Form = styled.form`
+const Form = styled.div`
   display: flex;
   flex-direction: column;
 `;

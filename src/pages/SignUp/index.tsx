@@ -173,7 +173,7 @@ const FirstForm = styled.div`
 
 const TextForm = styled.div`
   width: 30rem;
-  height: 30rem
+  height: 30rem;
   display: flex;
   flex-direction: column;
   margin-top: 1.3rem;
