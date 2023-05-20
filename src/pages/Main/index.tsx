@@ -1,26 +1,58 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from '@/components/NavBar';
 import ProductList from '@/components/ProductList';
 import styled from 'styled-components';
+import { useInView } from 'react-intersection-observer';
+import axios, { AxiosResponse } from 'axios';
 
 const index = () => {
+  const [items, setItems] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [ref, inView] = useInView();
+
+  // 상품 타입 정의
+  interface Product {
+    name: string;
+    price: string;
+  }
+
+  // 서버에서 아이템을 가지고 오는 함수
+  const getItems = useCallback(async () => {
+    setLoading(true);
+    await axios
+      .get(`http://localhost:8080/api/products?page=${page}`)
+      .then((res) => {
+        console.log(res);
+        setItems((prevState) => [...prevState, res.data]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setLoading(false);
+  }, [page]);
+
+  // getItems가 바뀔때마다 함수 실행
+  useEffect(() => {
+    getItems();
+  }, [getItems()]);
+
+  // 사용자가 마지막 요소를 보고 있고 , 로딩중이 아니라면
+  useEffect(() => {
+    if (inView && !loading) {
+      setPage((prevState) => prevState + 1);
+    }
+  }, [inView, loading]);
+
   return (
     <MainDiv>
       <NavBar />
-      <MainContainer>
+      <MainContainer className="list">
         <TextDiv>
           <KorText>방금 올라온 상품이에요 !</KorText>
           <TextLine />
         </TextDiv>
-        <ProductDiv>
-          <ProductList />
-          <ProductList />
-          <ProductList />
-          <ProductList />
-          <ProductList />
-          <ProductList />
-          <ProductList />
-          <ProductList />
+        <ProductDiv className="list-item" ref={ref}>
           <ProductList />
           <ProductList />
           <ProductList />
