@@ -7,6 +7,26 @@ import { FiSearch } from 'react-icons/fi';
 const NavBar = () => {
     const navigate = useNavigate();
 
+    const [showSearchModule, setShowSearchModule] = useState(false);
+    const [showMyPageModule, setShowMyPageModule] = useState(false);
+
+    const handleMyPageClick = () => {
+        setShowMyPageModule(!showMyPageModule);
+    };
+    const handleSearchClick = () => {
+        setShowSearchModule(!showSearchModule);
+    };
+
+    const handleCloseModule = () => {
+        setShowSearchModule(false);        
+        setShowMyPageModule(false);
+    }
+
+    const handleSearch = (event) => {
+        event.preventDefault();
+        // 검색 기능 구현
+    }
+
     return (
         <Navbar>
             <LogoBackground role="button" onClick={() => navigate('/')}>
@@ -22,12 +42,33 @@ const NavBar = () => {
             </Category>
             
             <User>
-                <StyledLink><FiSearch/></StyledLink>
+                <StyledLink onClick={handleSearchClick}><FiSearch/></StyledLink>
                 <StyledLink to="/sell">판매하기</StyledLink>
                 <StyledLink to="/login">로그인</StyledLink>
                 <StyledLink to="/chat">채팅</StyledLink>
-                <StyledLink>마이페이지</StyledLink>
+                <StyledLink onClick={handleMyPageClick}>마이페이지</StyledLink>
             </User>
+
+            {showSearchModule && (
+                <ModuleWindow1 showModule={showSearchModule}>
+                    <Form onSubmit={handleSearch}>
+                        <SearchInput type="text" placeholder="검색어를 입력하세요." />
+                        <SearchButton type="submit"><FiSearch /></SearchButton>
+                    </Form>
+                </ModuleWindow1>
+            )}
+            {showMyPageModule && (
+                <ModuleWindow2 showModule={showMyPageModule}>
+                    <Textbox>
+                        <div>마이페이지</div>
+                        <ModuleLink to="/wishlist">위시리스트</ModuleLink>
+                        <ModuleLink to="/selling">판매중인 상품</ModuleLink>
+                        <ModuleLink to="/purchase">구매내역</ModuleLink>
+                    </Textbox>
+                </ModuleWindow2>
+            )}
+
+            <ModuleBackdrop showModule={showSearchModule || showMyPageModule} onClick={handleCloseModule} />
         </Navbar>
     );
 };
@@ -69,8 +110,110 @@ const User = styled.div`
     margin-top: 1.5rem;
 `;
 
-const StyledLink = styled.div`
+const StyledLink = styled(Link)`
     margin-right: 3rem;
     text-decoration: none;
     color: black;
+`;
+
+const ModuleWindow1 = styled.div`
+    position: fixed; 
+    left: 0;
+    top: ${({ showModule }) => (showModule ? "0" : "-37rem")};
+    width: 100%;
+    height: 37rem;
+    background-color: #fff;
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+`;
+const Form = styled.form`
+    position: relative;
+`;
+const SearchInput = styled.input`
+    width: 50%;
+    padding: 1rem;
+    position: absolute;
+    top: 20%; 
+    left: 50%;
+    transform: translate(-50%, 0%);
+    font-size: 1.6rem;
+    margin: 2rem auto 0;
+    
+    ::after {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0.2rem;
+        background-color: #000000;
+    }
+`;
+
+const SearchButton = styled.button`
+    position: absolute;
+    top: 50%;
+    right: 22.5%;
+    height: 8.5rem;
+    background-color: transparent;
+    color: black;
+    border: none;
+    font-size: 2.6rem;
+    cursor: pointer;
+`;
+
+const ModuleWindow2 = styled.div`
+    position: fixed;
+    top: 0;
+    right: ${({ showModule }) => (showModule ? "0" : "-37rem")};
+    width: 37rem;
+    height: 100%;
+    background-color: #fff;
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+`;
+
+const Textbox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 40rem;
+    padding: 5%;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 3.4rem;
+    line-height: 4.1rem;
+
+    div {
+        padding-bottom: 2rem;
+        border-bottom: 0.7px solid #000000;
+        width: 92%;
+    }
+`
+
+const ModuleLink = styled(Link)`
+        text-decoration: none;
+        width: 92%;
+        color: black;
+        background: #F7F7F7;
+        border-radius: 1.5rem;
+        margin-bottom: 1.3;
+        margin-top: 1.3rem;
+        padding-left: 1rem;
+`
+
+const ModuleBackdrop = styled.div`
+    position: fixed;
+    top: 0;
+    left: ${({ showModule }) => (showModule ? "0" : "100vw")};
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); // 검은색 배경에 30%의 투명도 적용
+    opacity: ${({ showModule }) => (showModule ? 1 : 0)};
+    z-index: 0;
+    transition: opacity 0.3s ease-in-out;
 `;
