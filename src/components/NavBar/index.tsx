@@ -10,6 +10,12 @@ const NavBar = () => {
     const [showSearchModule, setShowSearchModule] = useState(false);
     const [showMyPageModule, setShowMyPageModule] = useState(false);
 
+    // 검색 이력 상태 추가
+    const [searchHistory, setSearchHistory] = useState([]);
+
+    const [posts, setPosts] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+
     const handleMyPageClick = () => {
         setShowMyPageModule(!showMyPageModule);
     };
@@ -24,7 +30,23 @@ const NavBar = () => {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        // 검색 기능 구현
+        const query = event.target.elements.search.value;
+        const results = posts.filter(post =>
+            post.title.includes(query) ||
+            post.description.includes(query)
+        );
+        setSearchResults(results);
+
+        // 검색 이력 업데이트
+        setSearchHistory(prevHistory => {
+            const newHistory = [query, ...prevHistory];
+            if(newHistory.length > 3) {
+                newHistory.pop();
+            }
+            return newHistory;
+        });
+
+        setShowSearchModule(false);
     }
 
     return (
@@ -52,11 +74,15 @@ const NavBar = () => {
             {showSearchModule && (
                 <ModuleWindow1 showModule={showSearchModule}>
                     <Form onSubmit={handleSearch}>
-                        <SearchInput type="text" placeholder="검색어를 입력하세요." />
+                        <SearchInput name="search" type="text" placeholder="검색어를 입력하세요." />
                         <SearchButton type="submit"><FiSearch /></SearchButton>
                     </Form>
                 </ModuleWindow1>
             )}
+
+            {searchResults.length > 0 && <SearchResults results={searchResults} />}
+
+            
             {showMyPageModule && (
                 <ModuleWindow2 showModule={showMyPageModule}>
                     <Textbox>
@@ -162,6 +188,27 @@ const SearchButton = styled.button`
     border: none;
     font-size: 2.6rem;
     cursor: pointer;
+`;
+
+const StyledSearchResults = styled.div`
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    z-index: 1;
+    
+    // Styles for individual search result items
+    .result-item {
+        margin-bottom: 1em;
+        padding-bottom: 1em;
+        border-bottom: 1px solid #eee;
+    }
 `;
 
 const ModuleWindow2 = styled.div`
