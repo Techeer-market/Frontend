@@ -1,9 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import NavBar from '@/components/NavBar';
 import uploadimage from '../../assets/uploadimage.svg';
+import axios from 'axios';
 
 const WritePost = () => {
+    const [uploadedImages, setUploadedImages] = useState([]);
+    const [title, setTitle] = useState("");
+    const [categoryUuid, setCategoryUuid] = useState("");
+    const [type, setType] = useState("normal");
+    const [price, setPrice] = useState("");
+    const [description, setDescription] = useState("");
+  
+    const handleFileInputChange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      if (uploadedImages.length >= 4) {
+        alert("사진은 최대 4장까지 업로드 가능합니다.");
+        return;
+      }
+
+      reader.onloadend = () => {
+        setUploadedImages(prevState => [...prevState, reader.result]);
+      };
+  
+      reader.readAsDataURL(file);
+    };
+  
+    const handleSubmit = () => {
+        // 유효성 검사
+        if (!title || !categoryUuid || !type || !price || !description || !uploadedImages) {
+          alert("모든 항목을 입력해주세요.");
+          return;
+        }
+
+      const data = {
+        title: title,
+        categoryUuid: categoryUuid,
+        type: type,
+        price: price,
+        description: description,
+        images: uploadedImages,
+        productState: "SALE"
+      };
+  
+      axios.post('http://localhost:8080/api/products', data)
+        .then((response) => {
+          console.log(response);
+          alert('게시물이 등록되었습니다.');
+        })
+        .catch((error) => {
+          console.error(error);
+          alert('게시물 등록에 실패했습니다.');
+        }); 
+    };
+
     return (
         <Writepost>
             <NavBar />
@@ -11,36 +63,62 @@ const WritePost = () => {
             <Form>
                 <Row>
                     <Label>제목:</Label>
-                    <Input/>
+                    <Input name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
                 </Row> 
                 <Row>
                     <Label>카테고리:</Label>
-                    <Select>
-                        <Option>카테고리 선택</Option>
-                        <Option>Electronic</Option>
-                        <Option>Living</Option>
-                        <Option>Book/Magazine</Option>
-                        <Option>Food</Option>
-                        <Option>Fashion</Option>
+                    <Select name="categoryUuid" value={categoryUuid} onChange={(e) => setCategoryUuid(e.target.value)}>
+                        <Option value="">카테고리 선택</Option>
+                        <Option value="electronic">Electronic</Option>
+                        <Option value="living">Living</Option>
+                        <Option value="book_magazine">Book/Magazine</Option>
+                        <Option value="food">Food</Option>
+                        <Option value="fashion">Fashion</Option>
                     </Select>
                 </Row>
                 <Row>
                     <Label>옵션 선택:</Label>
-                    <OptionButton>일반거래</OptionButton>
-                    <OptionButton>쿨거래</OptionButton>
+                    <OptionButton type="normal" checked={type === "normal"} onClick={() => setType("normal")}>일반거래</OptionButton>
+                    <OptionButton type="cool" checked={type === "cool"} onClick={() => setType("cool")}>쿨거래</OptionButton>
                 </Row>
                 <Row>
                     <Label>금액:</Label>
-                    <Input/>
+                    <Input name="price" value={price} onChange={(e) => setPrice(e.target.value)} />
                 </Row>
             </Form>
             <Img>
-            <img src={uploadimage} alt="Upload Image" style={{ cursor: "pointer" }} />
+            <input id="file-upload" type="file" accept="image/*" onChange={handleFileInputChange}
+                style={{ display: "none" }}
+            />
+            <label htmlFor="file-upload">
+                <img src={uploadimage} alt="Upload Image" style={{ cursor: "pointer" }} />
+            </label>
+            {uploadedImages.map((imageUrl) => (
+            <div style={{ position: "relative" }}>
+                <DeleteButton onClick={() => setUploadedImages(prevState => prevState.filter(img => img !== imageUrl))}>
+                X
+                </DeleteButton>
+                <UploadedImg key={imageUrl} src={imageUrl} alt="Uploaded Image"/>
+            </div>
+            ))}
             </Img>
-            <TextArea />
+            <TextArea name="description" value={description} onChange={(e) => setDescription(e.target.value)}
+                placeholder=
+                "
+   
+    상품에 대한 설명해주세요
+        
+        
+    -구매 시기
+    -브랜드/모델명
+    -제품의 상태(사용감, 하자 유무 등)
+    -서로가 믿고 거래할 수 있도록, 자세한 정보와 다양한 각도의 상품 사진을 올려주세요
+                
+        
+    안전하고 건전한 거래 환경을 위해 테커마켓이 함께합니다."/>
             <Buttons>
-                <UploadButton>게시글 등록</UploadButton>
-                <ReturnButton>돌아가기</ReturnButton>
+            <UploadButton type="submit" onClick={handleSubmit}>게시글 등록</UploadButton>
+                <ReturnButton onClick={() => (window.location.href = "/")}>돌아가기</ReturnButton>
             </Buttons>
         </Writepost>
     );
@@ -104,18 +182,20 @@ const Input = styled.input`
     width: 70%;
     height: 2.4rem;
     background: #EFEFEF;
-    border-radius: 1.05rem;
+    border-radius: 10px;
     border: none;
     font-size: 1.5rem;
+    padding-left: 1rem;
 `;
 const Select = styled.select`
     display: flex;
     width: 70%;
     height: 2.4rem;
     background: #EFEFEF;
-    border-radius: 1.05rem;
+    border-radius: 10px;
     border: none;
     font-size: 1.5rem;
+    padding-left: 0.5rem;
 
   &:focus {
     outline: none;
@@ -127,8 +207,8 @@ const Option = styled.option`
     font-size: 1.5rem;
 `;
 const OptionButton = styled.button`
-    background-color:#EFEFEF;
-    color: #000000;
+    background-color: ${({ checked }) => (checked ? "#000000" : "#EFEFEF")};
+    color: ${({ checked }) => (checked ? "#FFFFFF" : "#000000")};
     border-radius: 1.05rem;
     border: none;
     cursor: pointer;
@@ -136,6 +216,7 @@ const OptionButton = styled.button`
     height: 2.4rem;
     font-size: 1.5rem;
 `;
+
 const Img = styled.div`
     display: flex;
     flex-direction: row;
@@ -145,23 +226,47 @@ const Img = styled.div`
     width: 92.68rem;
     gap: 2rem;
 `;
+const UploadedImg = styled.img`
+  width: 166px;
+  height: 166px;
+  border-radius: 10.5px;
+`;
+const DeleteButton = styled.button`
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  border: none;
+  background: #000000;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const TextArea = styled.textarea`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 92.4rem;
-    height: 84.3rem;
+    height: 60rem;
     left: 29.3rem;
     top: 73.7rem;
     background: #FFFFFF;
     box-shadow: 0px 0.2rem 0.4rem rgba(0, 0, 0, 0.25), inset 0px 2.8px 4.9px rgba(0, 0, 0, 0.25);
-    border-radius: 2.1rem;
+    border-radius: 10px;
     margin-bottom: 1.7rem;
     border: none;
-
+    
     font-size: 1.5rem;
+    padding: 1.4rem 0 0 1.4rem;
 `;
+
 const Buttons = styled.div`
     margin-bottom: 20rem;
 `;
@@ -171,17 +276,17 @@ const UploadButton = styled.button`
     justify-content: center;
     align-items: center;
     width: 92.47rem;
-    height: 5.6rem;
+    height: 4.2rem;
     left: 29.27rem;
     top: 160rem;
     color: #FFFFFF;
     background: #000000;
-    border-radius: 1.05rem;
+    border-radius: 10px;
     margin-bottom: 1.25rem;
     border: none;
     cursor: pointer;
 
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     line-height: 4.1rem;
 `;
 const ReturnButton = styled.button`
@@ -190,14 +295,14 @@ const ReturnButton = styled.button`
     justify-content: center;
     align-items: center;
     width: 92.47rem;
-    height: 5.6rem;
+    height: 4.2rem;
     left: 29.27rem;
     top: 167.6rem;
     background: #EFEFEF;
-    border-radius: 1.05rem;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
 
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     line-height: 4.1rem;
 `;
