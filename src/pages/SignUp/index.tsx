@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from '@/components/Logo';
-import CProfile from '@/pages/CProfile/CProfile';
 import profile from '../../assets/profile.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -11,20 +10,20 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [birth, setBirth] = useState('');
-  const [thumb, setThumb] = useState(profile);
+  // const [thumb, setThumb] = useState(profile);
 
   const [nValid, setNValid] = useState(true);
   const [pwConfirm, setPwConfirm] = useState('');
   const [eValid, setEValid] = useState(true);
 
   const navigate = useNavigate();
-  const getThumb = (data: any) => {
-    setThumb(data);
-  };
+  // const getThumb = (data: any) => {
+  //   setThumb(data);
+  // };
 
-  useEffect(() => {
-    console.log(thumb + '부모');
-  }, [thumb]);
+  // useEffect(() => {
+  //   console.log(thumb + '부모');
+  // }, [thumb]);
 
   function onClick(e: any) {
     e.preventDefault();
@@ -34,7 +33,6 @@ const SignUp = () => {
         password: pw,
         name: name,
         birthDay: birth,
-        thumbnailImage: thumb,
       })
       .then(function (res) {
         console.log(res);
@@ -56,31 +54,29 @@ const SignUp = () => {
   return (
     <ConDiv>
       <Logo />
-      <CProfile getThumb={getThumb} />
+      {/* <CProfile getThumb={getThumb} /> */}
       <FirstForm />
-      <TextForm>
-        <Input
-          placeholder="이름"
-          type="text"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        />
-        <ValidCheck style={{ display: nValid ? 'none' : 'block' }}>
-          다른 name을 입력해주세요.
-        </ValidCheck>
-        <Input
-          placeholder="이메일"
-          type="text"
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        <ValidCheck style={{ display: eValid ? 'none' : 'block' }}>
-          다른 email을 입력해주세요.
-        </ValidCheck>
-      </TextForm>
+      <Input
+        placeholder="이름"
+        type="text"
+        value={name}
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
+      />
+      <ValidCheck style={{ display: nValid ? 'none' : 'block' }}>
+        다른 name을 입력해주세요.
+      </ValidCheck>
+      <Input
+        placeholder="이메일"
+        type="text"
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+      />
+      <ValidCheck style={{ display: eValid ? 'none' : 'block' }}>
+        다른 email을 입력해주세요.
+      </ValidCheck>
       <TextForm>
         <PwInput
           placeholder="비밀번호"
@@ -136,31 +132,31 @@ const FirstForm = styled.div`
 
 const TextForm = styled.div`
   width: 30rem;
-  height: 30rem
+  height: 30rem;
   display: flex;
   flex-direction: column;
   margin-top: 1.3rem;
 `;
 
-const CheckBtn = styled.button`
-  width: 10rem;
-  height: 3rem;
-  display: flex;
-  border-radius: 0.8rem;
-  float: right;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  font-size: 1.4rem;
-  background-color: white;
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(246, 246, 246);
-  }
-  &:active {
-    background-color: rgb(200, 200, 200);
-  }
-`;
+// const CheckBtn = styled.button`
+//   width: 10rem;
+//   height: 3rem;
+//   display: flex;
+//   border-radius: 0.8rem;
+//   float: right;
+//   align-items: center;
+//   justify-content: center;
+//   color: black;
+//   font-size: 1.4rem;
+//   background-color: white;
+//   &:hover {
+//     cursor: pointer;
+//     background-color: rgb(246, 246, 246);
+//   }
+//   &:active {
+//     background-color: rgb(200, 200, 200);
+//   }
+// `;
 
 const Input = styled.input`
   // width: 19rem;
