@@ -32,17 +32,25 @@ const index = () => {
     setLoading(false);
   }, [page]);
 
-  // getItems가 바뀔때마다 함수 실행
+  //  ⚠️ getItems가 바뀔때마다 함수 실행
+  // useEffect(() => {
+  //   getItems();
+  // }, [getItems()]);
   useEffect(() => {
     getItems();
-  }, [getItems()]);
+  }, []);
 
-  // 사용자가 마지막 요소를 보고 있고 , 로딩중이 아니라면
+  // ⚠️ 사용자가 마지막 요소를 보고 있고 , 로딩중이 아니라면
   useEffect(() => {
     if (inView && !loading) {
       setPage((prevState) => prevState + 1);
     }
   }, [inView, loading]);
+  // useEffect(() => {
+  //   if (inView && !loading) {
+  //     setPage((prevState) => prevState + 1);
+  //   }
+  // }, []);
 
   return (
     <MainDiv>
