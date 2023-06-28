@@ -1,18 +1,88 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setToken, decodeAccessToken, getToken } from '@/utils/tokenManager';
 import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
-import { FcGoogle } from 'react-icons/fc';
 import { SiNaver } from 'react-icons/Si';
+import axios from 'axios';
+import { setUUID } from '@/redux/userID';
 
-const LogIn = () => {
+interface LoginInfo {
+  email: string;
+  password: string;
+}
+
+function Login() {
+  const [email, setEmail] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [isEmail, setIsEmail] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onChangeEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const emailRegex =
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      const emailCurrent = e.target.value;
+      setEmail(emailCurrent);
+
+      if (!emailRegex.test(emailCurrent)) {
+        setEmailMessage('이메일 형식이 아닙니다.');
+        setIsEmail(false);
+      } else {
+        setEmailMessage('');
+        setIsEmail(true);
+      }
+    },
+    [],
+  );
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const userInfo: LoginInfo = {
+      email,
+      password: '',
+    };
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/users/login`,
+        userInfo,
+      );
+      // setToken(res.data.access, res.data.refresh);
+      // const uuid = decodeAccessToken(getToken().access || '');
+      // dispatch(setUUID(uuid));
+      navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const goToSign = () => {
+    navigate('/signup');
+  };
+
   return (
-    <Login>
+    <LoginForm onSubmit={handleLogin}>
       <Logo />
       <Form>
-        <Input placeholder="이메일" type="email" />
-        <Input placeholder="비밀번호" type="password" />
+        <Input
+          name="email"
+          placeholder="이메일"
+          type="email"
+          value={email}
+          onChange={onChangeEmail}
+        />
+        {email.length > 0 && (
+          <Message className={`message ${isEmail ? 'true' : 'false'}`}>
+            {emailMessage}
+          </Message>
+        )}
+        <Input name="password" placeholder="비밀번호" type="password" />
       </Form>
       <Etc>
         <Check>
@@ -23,7 +93,7 @@ const LogIn = () => {
       </Etc>
 
       <Buttons>
-        <LogInButton>로그인</LogInButton>
+        <LogInButton type="submit">로그인</LogInButton>
         <KakaoButton as="a" href={KAKAO_AUTH_URL}>
           <RiKakaoTalkFill size={'3.3rem'} />
           &nbsp;&nbsp;카카오 계정으로 로그인
@@ -32,16 +102,12 @@ const LogIn = () => {
           <SiNaver size={'2.2rem'} />
           &nbsp;&nbsp;&nbsp;네이버 계정으로 로그인
         </NaverButton>
-        <GoogleButton>
-          <FcGoogle size={'3.3rem'} />
-          &nbsp;&nbsp;&nbsp;&nbsp;구글 계정으로 로그인
-        </GoogleButton>
+        <SignUpeButton onClick={goToSign}>회원가입</SignUpeButton>
       </Buttons>
-    </Login>
+    </LoginForm>
   );
-};
-
-const Login = styled.div`
+}
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,17 +127,16 @@ const Input = styled.input`
   border-radius: 10px;
   background: #ffffff;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom: 4.5rem;
+  margin-bottom: 2.8rem;
   padding-left: 17px;
 `;
 
 const Etc = styled.div`
   width: 36rem;
   display: flex;
-  font-size: 14px;
   align-items: center;
   justify-content: space-between;
-  margin-top: -2rem;
+  margin-top: -1rem;
   margin-bottom: 6rem;
 `;
 const Check = styled.div`
@@ -118,6 +183,9 @@ const KakaoButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
 `;
 
 const NaverButton = styled.button`
@@ -132,7 +200,7 @@ const NaverButton = styled.button`
   align-items: center;
   justify-content: center;
 `;
-const GoogleButton = styled.button`
+const SignUpeButton = styled.button`
   width: 36rem;
   height: 5.5rem;
   border-radius: 10px;
@@ -144,4 +212,12 @@ const GoogleButton = styled.button`
   justify-content: center;
 `;
 
-export default LogIn;
+const Message = styled.span`
+  font-size: 0.8rem;
+  color: red;
+  display: flex;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
+`;
+
+export default Login;
