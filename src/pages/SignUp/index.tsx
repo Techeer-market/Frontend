@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from '@/components/Logo';
-import profile from '../../assets/profile.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,7 +27,7 @@ const SignUp = () => {
   function onClick(e: any) {
     e.preventDefault();
     axios
-      .post('http://localhost:8080/api/signup', {
+      .post('http://localhost:8080/api/users/signup', {
         email: email,
         password: pw,
         name: name,
@@ -39,14 +38,13 @@ const SignUp = () => {
         alert('회원가입 성공');
         navigate('/login');
       })
-      .catch((res) => {
-        if (res && res.response && res.response.data) {
-          if (res.response.data.email) {
-            setEValid(false);
-          } else if (res.response.data.nickname) {
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          if (error.response.data.email) {
             setEValid(false);
           }
         } else {
+          console.log(error);
         }
       });
   }
