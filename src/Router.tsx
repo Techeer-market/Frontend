@@ -6,6 +6,10 @@ const Login = lazy(() => import('./pages/LogIn'));
 const KakaoLogin = lazy(() => import('./pages/KakaoLogin'));
 const SignUp = lazy(() => import('./pages/SignUp'));
 const WritePost = lazy(() => import('./pages/WritePost'));
+const Post = lazy(() => import('./pages/Post'));
+const EditPost = lazy(() => import('./pages/EditPost'));
+const ProductCategory = lazy(() => import('./pages/ProductCategory'));
+const PurchaseList = lazy(() => import('./pages/PurchaseList'));
 
 const Router = () => {
   return (
@@ -16,6 +20,10 @@ const Router = () => {
         <Route path="/auth/kakao" element={<KakaoLogin />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/write" element={<WritePost />} />
+        <Route path="/post" element={<Post />} />
+        <Route path="/edit" element={<EditPost />} />
+        <Route path="/category/:categoryName" element={<ProductCategory />} />
+        <Route path="/purchaselist" element={<PurchaseList />} />
       </Routes>
     </BrowserRouter>
   );
