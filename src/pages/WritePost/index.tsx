@@ -12,6 +12,11 @@ const WritePost = () => {
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
   
+    const handleTypeButtonClick = (event, newType) => {
+        event.preventDefault();
+        setType(newType);
+    };
+
     const handleFileInputChange = (e) => {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -30,7 +35,7 @@ const WritePost = () => {
   
     const handleSubmit = () => {
         // 유효성 검사
-        if (!title || !categoryUuid || !type || !price || !description || !uploadedImages) {
+        if (!title || !categoryUuid || !type || !price || !description || uploadedImages.length === 0) {
           alert("모든 항목을 입력해주세요.");
           return;
         }
@@ -45,9 +50,20 @@ const WritePost = () => {
         productState: "SALE"
       };
   
-      axios.post('http://localhost:8080/api/products', data)
+      axios.post('http://localhost:8080/api/products', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then((response) => {
           console.log(response);
+          const { title, description, price, tradeType } = response.data;
+          
+          console.log(title);
+          console.log(description);
+          console.log(price);
+          console.log(tradeType);
+
           alert('게시물이 등록되었습니다.');
         })
         .catch((error) => {
@@ -78,8 +94,8 @@ const WritePost = () => {
                 </Row>
                 <Row>
                     <Label>옵션 선택:</Label>
-                    <OptionButton type="normal" checked={type === "normal"} onClick={() => setType("normal")}>일반거래</OptionButton>
-                    <OptionButton type="cool" checked={type === "cool"} onClick={() => setType("cool")}>쿨거래</OptionButton>
+                    <OptionButton type="normal" checked={type === "normal"} onClick={(e) => handleTypeButtonClick(e, "normal")}>일반거래</OptionButton>
+                    <OptionButton type="cool" checked={type === "cool"} onClick={(e) => handleTypeButtonClick(e, "cool")}>쿨거래</OptionButton>
                 </Row>
                 <Row>
                     <Label>금액:</Label>
@@ -146,8 +162,9 @@ const Title = styled.h1`
     border-bottom: 0.07rem solid #000000;
     width: 92.68rem;
 
-    font-size: 3.36rem;
+    font-size: 3rem;
     line-height: 4.1rem;
+    font-weight: bold;
     /* identical to box height */
     color: #000000;
 `;
