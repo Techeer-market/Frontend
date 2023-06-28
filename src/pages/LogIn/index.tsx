@@ -53,9 +53,9 @@ function Login() {
         `http://localhost:8080/api/users/login`,
         userInfo,
       );
-      setToken(res.data.access, res.data.refresh);
-      const uuid = decodeAccessToken(getToken().access || '');
-      dispatch(setUUID(uuid));
+      // setToken(res.data.access, res.data.refresh);
+      // const uuid = decodeAccessToken(getToken().access || '');
+      // dispatch(setUUID(uuid));
       navigate('/');
     } catch (err) {
       console.log(err);
