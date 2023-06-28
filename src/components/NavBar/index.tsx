@@ -56,11 +56,11 @@ const NavBar = () => {
             </LogoBackground>
 
             <Category>
-                <StyledLink to="/electronic">Electronic</StyledLink>
-                <StyledLink to="/living">Living</StyledLink>
-                <StyledLink to="/book">Book/Magazine</StyledLink>
-                <StyledLink to="/food">Food</StyledLink>
-                <StyledLink to="/fashion">Fashion</StyledLink>
+                <StyledLink to="/category/Electronic Products">Electronic</StyledLink>
+                <StyledLink to="/category/Living Products">Living</StyledLink>
+                <StyledLink to="/category/Book_Magazine Products">Book/Magazine</StyledLink>
+                <StyledLink to="/category/Food Products">Food</StyledLink>
+                <StyledLink to="/category/Fashion Products">Fashion</StyledLink>
             </Category>
             
             <User>
