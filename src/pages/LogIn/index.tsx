@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getToken, setToken, decodeAccessToken } from '@/utils/tokenManager';
+import { setToken, decodeAccessToken, getToken } from '@/utils/tokenManager';
 import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
@@ -11,22 +11,18 @@ import axios from 'axios';
 import { setUUID } from '@/redux/userID';
 
 interface LoginInfo {
-  email: FormDataEntryValue | null;
-  password: FormDataEntryValue | null;
+  email: string;
+  password: string;
 }
 
 function Login() {
-  const [email, setEmail] = useState<string>('');
-  // const [password, setPassword] = useState<string>('');
-  const [emailMessage, setEmailMessage] = useState<string>('');
-  // const [passwordMessage, setPasswordMessage] = useState<string>('');
-  const [isEmail, setIsEmail] = useState<boolean>(false);
-  // const [isPassword, setIsPassword] = useState<boolean>(false);
+  const [email, setEmail] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [isEmail, setIsEmail] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //email
   const onChangeEmail = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const emailRegex =
@@ -45,29 +41,27 @@ function Login() {
     [],
   );
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
     const userInfo: LoginInfo = {
-      email: data.get('email'),
-      password: data.get('password'),
+      email,
+      password: '',
     };
 
-    (async () => {
-      await axios
-        .post(`http://localhost:8080/api/users/login`, userInfo)
-        .then((res) => {
-          setToken(res.data.access, res.data.refresh);
-          const uuid = decodeAccessToken(getToken().access || '');
-          dispatch(setUUID(uuid));
-          navigate('/');
-        })
-        .catch((err) => {
-          // alert('잘못된 정보입니다.');
-          console.log(err);
-        });
-    })();
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/users/login`,
+        userInfo,
+      );
+      setToken(res.data.access, res.data.refresh);
+      const uuid = decodeAccessToken(getToken().access || '');
+      dispatch(setUUID(uuid));
+      navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   const goToSign = () => {
     navigate('/signup');
   };
@@ -80,6 +74,7 @@ function Login() {
           name="email"
           placeholder="이메일"
           type="email"
+          value={email}
           onChange={onChangeEmail}
         />
         {email.length > 0 && (
