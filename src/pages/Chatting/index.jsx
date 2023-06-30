@@ -1,74 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
-const Index = () => {
+const index = () => {
   const [messageInput, setMessageInput] = useState('');
+  const [sender, setSender] = useState('');
+  const [receiveMessage, setReceiveMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState([]); // 채팅 메시지들을 저장하는 배열 추가
+
+  const socket = new WebSocket('ws://localhost:8080/ws/chat');
 
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:8080/ws/chat');
     socket.onopen = () => {
       console.log('WebSocket connection opened.');
-    };
 
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-
-      // 메시지 처리 로직 작성
-      switch (message.type) {
-        // case 'ENTER':
-        //   handleEnterMessage(message);
-        //   break;
-        case 'TALK':
-          handleTalkMessage(message);
-          break;
-        default:
-          console.log('Unknown message type:', message.type);
-      }
-    };
-
-    socket.onclose = (event) => {
-      console.log(
-        'WebSocket connection closed with code:',
-        event.code,
-        'reason:',
-        event.reason,
-      );
-    };
-
-    return () => {
-      // 컴포넌트가 언마운트되면 WebSocket 연결 종료
-      socket.close();
-    };
-  }, []);
-
-  // 대화 메시지 처리 함수
-  const handleTalkMessage = (message) => {
-    console.log('Talk message received:', message);
-
-    // 메세지 받는거 message.message && message.sender 해서 ui에 띄워주기
-  };
-
-  const handleSendMessage = () => {
-    if (messageInput.trim() === '') {
-      return; // 빈 메시지는 전송하지 않음
-    }
-
-    // 메시지 전송 로직
-    const socket = new WebSocket('ws://localhost:8080/ws/chat');
-    const message = {
-      productUuid: 'c409c6f7-699e-40f9-bb2a-ccc93e63d927',
-      type: 'TALK',
-      roomId: '1',
-      sender: '',
-      time: '',
-      message: messageInput,
-    };
-    socket.onopen = () => {
-      socket.send(JSON.stringify(message));
-      console.log('Message sent:', message);
-
-      // API 요청
       const email = 'dayon@gmail.com';
       const productUuid = 'c409c6f7-699e-40f9-bb2a-ccc93e63d927';
 
@@ -78,30 +23,65 @@ const Index = () => {
         )
         .then((response) => {
           console.log('API response:', response.data);
-          // API 응답 처리 로직 작성
+
+          var enterMessage = {
+            productUuid: 'c409c6f7-699e-40f9-bb2a-ccc93e63d927',
+            type: 'ENTER',
+            roomId: '1',
+            sender: '',
+            time: '',
+            message: '입장 완료',
+          };
+          socket.send(JSON.stringify(enterMessage));
         })
         .catch((error) => {
           console.error('API request error:', error);
         });
     };
+  }, []);
 
-    // 메시지 입력창 초기화
-    setMessageInput('');
+  socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    setSender(message.sender);
+    setReceiveMessage(message.message);
+    setChatMessages((prevMessages) => [...prevMessages, message]); // 받은 메시지를 채팅 메시지 배열에 추가
+    console.log('message : ', message);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // 엔터키의 기본 동작 방지
-      handleSendMessage(); // 메시지 전송 함수 호출
-    }
+  socket.onclose = (event) => {
+    console.log(
+      'WebSocket connection closed with code:',
+      event.code,
+      'reason:',
+      event.reason,
+    );
+  };
+
+  const handleSendMessage = () => {
+    var message = {
+      productUuid: 'c409c6f7-699e-40f9-bb2a-ccc93e63d927',
+      type: 'TALK',
+      roomId: '1',
+      sender: '임성한',
+      time: '',
+      message: messageInput,
+    };
+    socket.send(JSON.stringify(message));
+    // setSender(message.sender);
+    // setReceiveMessage(message.message);
+    // setChatMessages((prevMessages) => [...prevMessages, message]); // 보낸 메시지를 채팅 메시지 배열에 추가
+    setMessageInput('');
   };
 
   return (
     <ChatContainer>
       <ChatMessages>
-        <MessageBubble>안녕하세요!</MessageBubble>
-        <MessageBubble>반갑습니다.</MessageBubble>
-        {/* 채팅 메시지들을 동적으로 렌더링 */}
+        {chatMessages.map((message, index) => (
+          <MessageBubble key={index}>
+            <SenderName>{message.sender}</SenderName>
+            {message.message}
+          </MessageBubble>
+        ))}
       </ChatMessages>
       <ChatInputContainer>
         <ChatInput
@@ -109,7 +89,6 @@ const Index = () => {
           placeholder="메시지를 입력하세요"
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
-          onKeyDown={handleKeyDown} // 엔터 키 이벤트 핸들러 추가
         />
         <SendButton onClick={handleSendMessage}>전송</SendButton>
       </ChatInputContainer>
@@ -119,7 +98,7 @@ const Index = () => {
 
 const ChatContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 `;
@@ -127,6 +106,7 @@ const ChatContainer = styled.div`
 const ChatMessages = styled.div`
   flex: 1;
   overflow-y: auto;
+  padding: 20px;
 `;
 
 const MessageBubble = styled.div`
@@ -134,6 +114,11 @@ const MessageBubble = styled.div`
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 8px;
+`;
+
+const SenderName = styled.span`
+  font-weight: bold;
+  margin-right: 5px;
 `;
 
 const ChatInputContainer = styled.div`
@@ -160,4 +145,4 @@ const SendButton = styled.button`
   cursor: pointer;
 `;
 
-export default Index;
+export default index;

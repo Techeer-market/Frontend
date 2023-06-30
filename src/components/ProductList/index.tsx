@@ -1,37 +1,87 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
-const index = () => {
+interface Product {
+  image_url_1: string;
+  title: string;
+  price: string;
+}
+
+const Index = () => {
+  const [items, setItems] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const getItems = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        'http://localhost:8080/api/products/list',
+      );
+      const { data } = response;
+      setItems((prevState) => [...prevState, ...data]);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getItems();
+  }, [getItems]);
+
   return (
-    <ProductDiv>
-      <ImageDiv></ImageDiv>
-      <TextDiv>
-        <TitleDiv>자바프로그래밍</TitleDiv>
-        <PriceDiv>500만원</PriceDiv>
-      </TextDiv>
-    </ProductDiv>
+    <MainDiv>
+      <ProductList>
+        {items.map((item, index) => (
+          <ProductItem key={index}>
+            <ImageDiv style={{ backgroundImage: `url(${item.image_url_1})` }} />
+            <TextDiv>
+              <TitleDiv>{item.title}</TitleDiv>
+              <PriceDiv>{item.price}원</PriceDiv>
+            </TextDiv>
+          </ProductItem>
+        ))}
+      </ProductList>
+    </MainDiv>
   );
 };
 
-const ProductDiv = styled.div`
+const MainDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ProductList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  gap: 10px;
+  max-width: 1080px;
+  margin: 0 auto;
+`;
+
+const ProductItem = styled.div`
   margin-right: 10px;
   margin-bottom: 15px;
 `;
+
 const ImageDiv = styled.div`
-  width: 25rem;
+  width: 100%;
   height: 26.5rem;
-  background-color: #000;
-  & {
-    cursor: pointer;
-  }
+  background-size: cover;
+  cursor: pointer;
 `;
-const TextDiv = styled.h3`
+
+const TextDiv = styled.div`
   font-style: normal;
   font-weight: 700;
   font-size: 2.4rem;
   line-height: 29px;
 `;
-const TitleDiv = styled.span``;
-const PriceDiv = styled.span``;
-export default index;
+
+const TitleDiv = styled.div``;
+const PriceDiv = styled.div``;
+
+export default Index;
