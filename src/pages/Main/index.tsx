@@ -21,21 +21,21 @@ const index = () => {
   const getItems = useCallback(async () => {
     setLoading(true);
     await axios
-      .get(`http://localhost:8080/api/products?page=${page}`)
+      .get(`http://localhost:8080/api/products/list}`)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         setItems((prevState) => [...prevState, res.data]);
       })
       .catch((err) => {
         console.log(err);
       });
     setLoading(false);
-  }, [page]);
+  }, []);
 
   // getItems가 바뀔때마다 함수 실행
   useEffect(() => {
     getItems();
-  }, [getItems()]);
+  }, []);
 
   // 사용자가 마지막 요소를 보고 있고 , 로딩중이 아니라면
   useEffect(() => {

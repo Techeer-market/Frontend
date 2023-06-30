@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -31,6 +32,6 @@ const TextDiv = styled.h3`
   font-size: 2.4rem;
   line-height: 29px;
 `;
-const TitleDiv = styled.h3``;
-const PriceDiv = styled.h3``;
+const TitleDiv = styled.span``;
+const PriceDiv = styled.span``;
 export default index;
