@@ -1,14 +1,14 @@
+import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+// import { setUser } from '@/redux/userID';
 import { setToken, decodeAccessToken, getToken } from '@/utils/tokenManager';
 import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { SiNaver } from 'react-icons/Si';
-import axios from 'axios';
-import { setUUID } from '@/redux/userID';
 
 interface LoginInfo {
   email: string;
@@ -54,8 +54,22 @@ function Login() {
         userInfo,
       );
       // setToken(res.data.access, res.data.refresh);
-      // const uuid = decodeAccessToken(getToken().access || '');
-      // dispatch(setUUID(uuid));
+      // const uuid: any = decodeAccessToken(getToken().access || '');
+
+      // 리덕스 스토어에 사용자 정보 저장
+      // dispatch(
+      //   setUser({
+      //     name: res.data.name,
+      //     email: res.data.email,
+      //     uuid: uuid,
+      //   }),
+      // );
+
+      // 로컬 스토리지에 사용자 정보 저장
+      // localStorage.setItem('name', res.data.name);
+      // localStorage.setItem('email', res.data.email);
+      // localStorage.setItem('uuid', uuid);
+
       navigate('/');
     } catch (err) {
       console.log(err);
