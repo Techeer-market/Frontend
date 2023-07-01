@@ -17,6 +17,7 @@ interface LoginInfo {
 
 function Login() {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
   const [isEmail, setIsEmail] = useState(false);
 
@@ -41,11 +42,20 @@ function Login() {
     [],
   );
 
+
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordCurrent = e.target.value;
+      setPassword(passwordCurrent);
+    },
+    [],
+  );
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userInfo: LoginInfo = {
       email,
-      password: '',
+      password,
     };
 
     try {
@@ -64,11 +74,12 @@ function Login() {
       //     uuid: uuid,
       //   }),
       // );
-
+      console.log(res);
       // 로컬 스토리지에 사용자 정보 저장
-      // localStorage.setItem('name', res.data.name);
-      // localStorage.setItem('email', res.data.email);
-      // localStorage.setItem('uuid', uuid);
+      localStorage.setItem('name', res.data.name);
+      localStorage.setItem('email', res.data.email);
+      localStorage.setItem('uuid', res.data.userUuid);
+      console.log(localStorage)
 
       navigate('/');
     } catch (err) {
@@ -96,7 +107,7 @@ function Login() {
             {emailMessage}
           </Message>
         )}
-        <Input name="password" placeholder="비밀번호" type="password" />
+        <Input name="password" placeholder="비밀번호" type="password" value = {password} onChange={onChangePassword}/>
       </Form>
       <Etc>
         <Check>

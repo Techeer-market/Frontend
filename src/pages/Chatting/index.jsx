@@ -165,9 +165,12 @@ const index = () => {
   useEffect(() => {
     socket.onopen = () => {
       console.log('WebSocket connection opened.');
-      const userData = JSON.parse(localStorage.getItem('userData' || '{}'));
-      const { email } = userData;
+      const email = localStorage.getItem('email');
+      const name = localStorage.getItem('name');
       const productUuid = 'c409c6f7-699e-40f9-bb2a-ccc93e63d927';
+
+      console.log({email})
+      console.log({name})
 
       axios
         .post(
@@ -180,7 +183,7 @@ const index = () => {
             productUuid: 'c409c6f7-699e-40f9-bb2a-ccc93e63d927',
             type: 'ENTER',
             roomId: '1',
-            sender: userData.name,
+            sender: name,
             time: '',
             message: '입장 완료',
           };
@@ -210,8 +213,7 @@ const index = () => {
   };
 
   const handleSendMessage = () => {
-    const userData = JSON.parse(localStorage.getItem('userData' || '{}'));
-    const { name } = userData;
+    const name = localStorage.getItem('name');
     var message = {
       productUuid: 'c409c6f7-699e-40f9-bb2a-ccc93e63d927',
       type: 'TALK',
