@@ -1,77 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import NavBar from '@/components/NavBar';
 import uploadimage from '../../assets/uploadimage.svg';
 import axios from 'axios';
-
+interface PostData {
+    userUuid: string;
+    title: string;
+    categoryUuid: string;
+    tradeType: string;
+    price: number;
+    description: string;
+}
 const WritePost = () => {
-    const [uploadedImages, setUploadedImages] = useState([]);
+    const [uploadedImages, setUploadedImages] = useState<File[]>([]);
     const [title, setTitle] = useState("");
     const [categoryUuid, setCategoryUuid] = useState("");
-    const [type, setType] = useState("normal");
+    const [type, setType] = useState("GeneralDeal");
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
-  
-    const handleTypeButtonClick = (event, newType) => {
+    const [userUuid, setUserUuid] = useState("");
+    useEffect(() => {
+        const uuid = localStorage.getItem('uuid');
+        console.log({uuid})
+        if(uuid){ 
+            setUserUuid(uuid);
+        }else{
+            console.log("uuid 가 없습니다.")
+        }
+    }, []);
+    const handleTypeButtonClick = (event: React.MouseEvent, newType: "GeneralDeal" | "CoolDeal") => {
         event.preventDefault();
         setType(newType);
     };
-
-    const handleFileInputChange = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      if (uploadedImages.length >= 4) {
-        alert("사진은 최대 4장까지 업로드 가능합니다.");
-        return;
-      }
-
-      reader.onloadend = () => {
-        setUploadedImages(prevState => [...prevState, reader.result]);
-      };
-  
-      reader.readAsDataURL(file);
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            if (uploadedImages.length >= 4) {
+                alert("사진은 최대 4장까지 업로드 가능합니다.");
+                return;
+            }
+            //업로드 된 이미지를 읽고, 그 결과를 상태에 저장하여, 추후 유저에게 렌더링
+            reader.onloadend = () => {
+                const result = reader.result;
+                if (result === null) {
+                    alert("File loading failed");
+                } else if (file) {
+                    const convertedFile = new File([result], file.name, { type: file.type });
+                    setUploadedImages((prevState) => [...prevState, convertedFile]);
+                } else {
+                    alert("Invalid file format");
+                }
+            };
+            reader.readAsDataURL(file);
+        }
     };
-  
     const handleSubmit = () => {
         // 유효성 검사
         if (!title || !categoryUuid || !type || !price || !description || uploadedImages.length === 0) {
-          alert("모든 항목을 입력해주세요.");
-          return;
+            alert("모든 항목을 입력해주세요.");
+            return;
+        }
+        // 필요한 데이터 생성
+        // const data: PostData = {
+        //     userUuid: userUuid,
+        //     title: title,
+        //     categoryUuid: categoryUuid,
+        //     tradeType: type,
+        //     price: Number(price),
+        //     image_1: uploadedImages[0] || null,
+        //     image_2: uploadedImages[1] || null,
+        //     image_3: uploadedImages[2] || null,
+        //     image_4: uploadedImages[3] || null,
+        //     description: description,
+        // };
+
+        const formData = new FormData();
+        formData.append('userUuid', userUuid);
+        formData.append('title', title);
+        formData.append('categoryUuid', categoryUuid);
+        formData.append('tradeType', 'GeneralDeal');
+        formData.append('price', price);
+        formData.append('description', description);
+
+        if (uploadedImages[0] instanceof File) {
+            formData.append('image_1', uploadedImages[0]);
+        }
+        if (uploadedImages[1] instanceof File) {
+            formData.append('image_2', uploadedImages[1]);
+        }
+        if (uploadedImages[2] instanceof File) {
+            formData.append('image_3', uploadedImages[2]);
+        }
+        if (uploadedImages[3] instanceof File) {
+            formData.append('image_4', uploadedImages[3]);
         }
 
-      const data = {
-        title: title,
-        categoryUuid: categoryUuid,
-        type: type,
-        price: price,
-        description: description,
-        images: uploadedImages,
-        productState: "SALE"
-      };
-  
-      axios.post('http://localhost:8080/api/products', data, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          const { title, description, price, tradeType } = response.data;
-          
-          console.log(title);
-          console.log(description);
-          console.log(price);
-          console.log(tradeType);
 
-          alert('게시물이 등록되었습니다.');
-        })
-        .catch((error) => {
-          console.error(error);
-          alert('게시물 등록에 실패했습니다.');
-        }); 
+        console.log({ formData })
+        axios
+            .post('http://localhost:8080/api/products', formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then((response) => {
+                console.log(response);
+                alert('게시물이 등록되었습니다.');
+            })
+            .catch((error) => {
+                console.error(error);
+                alert('게시물 등록에 실패했습니다.');
+            });
     };
-
     return (
         <Writepost>
             <NavBar />
@@ -80,22 +122,22 @@ const WritePost = () => {
                 <Row>
                     <Label>제목:</Label>
                     <Input name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
-                </Row> 
+                </Row>
                 <Row>
                     <Label>카테고리:</Label>
                     <Select name="categoryUuid" value={categoryUuid} onChange={(e) => setCategoryUuid(e.target.value)}>
                         <Option value="">카테고리 선택</Option>
-                        <Option value="electronic">Electronic</Option>
-                        <Option value="living">Living</Option>
-                        <Option value="book_magazine">Book/Magazine</Option>
-                        <Option value="food">Food</Option>
-                        <Option value="fashion">Fashion</Option>
+                        <Option value="c3314dca-327b-4187-b0ab-6f67def9fa51">Fashion</Option>
+                        <Option value="339884f8-50de-429a-9f3b-543342609b21">Electronic</Option>
+                        <Option value="7d2d94b9-c79f-4ce9-9904-28cc7e78df5a">Living</Option>
+                        <Option value="d0daf4dc-89c8-41bf-8ec1-339d6e037b26">Book/Magazine</Option>
+                        <Option value="5e342c92-75fa-41fd-af0f-867e5c83b831">Food</Option>
                     </Select>
                 </Row>
                 <Row>
                     <Label>옵션 선택:</Label>
-                    <OptionButton type="normal" checked={type === "normal"} onClick={(e) => handleTypeButtonClick(e, "normal")}>일반거래</OptionButton>
-                    <OptionButton type="cool" checked={type === "cool"} onClick={(e) => handleTypeButtonClick(e, "cool")}>쿨거래</OptionButton>
+                    <OptionButton buttonType="normal" isSelected={type === "normal"} onClick={(e) => handleTypeButtonClick(e, "GeneralDeal")}>일반거래</OptionButton>
+                    <OptionButton buttonType="cool" isSelected={type === "cool"} onClick={(e) => handleTypeButtonClick(e, "CoolDeal")}>쿨거래</OptionButton>
                 </Row>
                 <Row>
                     <Label>금액:</Label>
@@ -103,51 +145,44 @@ const WritePost = () => {
                 </Row>
             </Form>
             <Img>
-            <input id="file-upload" type="file" accept="image/*" onChange={handleFileInputChange}
-                style={{ display: "none" }}
-            />
-            <label htmlFor="file-upload">
-                <img src={uploadimage} alt="Upload Image" style={{ cursor: "pointer" }} />
-            </label>
-            {uploadedImages.map((imageUrl) => (
-            <div style={{ position: "relative" }}>
-                <DeleteButton onClick={() => setUploadedImages(prevState => prevState.filter(img => img !== imageUrl))}>
-                X
-                </DeleteButton>
-                <UploadedImg key={imageUrl} src={imageUrl} alt="Uploaded Image"/>
-            </div>
-            ))}
+                <input id="file-upload" type="file" accept="image/*" onChange={handleFileInputChange}
+                    style={{ display: "none" }}
+                />
+                <label htmlFor="file-upload">
+                    <img src={uploadimage} alt="Upload Image" style={{ cursor: "pointer" }} />
+                </label>
+                {uploadedImages.map((imageFile, index) => (
+                    <div key={index} style={{ position: "relative" }}>
+                        <DeleteButton onClick={() => setUploadedImages(prevState => prevState.filter(file => file !== imageFile))}>
+                            X
+                        </DeleteButton>
+                        <UploadedImg key={index} src={URL.createObjectURL(imageFile)} alt="Uploaded Image" />
+                    </div>
+                ))}
             </Img>
             <TextArea name="description" value={description} onChange={(e) => setDescription(e.target.value)}
-                placeholder=
-                "
-   
-    상품에 대한 설명해주세요
-        
-        
-    -구매 시기
-    -브랜드/모델명
-    -제품의 상태(사용감, 하자 유무 등)
-    -서로가 믿고 거래할 수 있도록, 자세한 정보와 다양한 각도의 상품 사진을 올려주세요
-                
-        
-    안전하고 건전한 거래 환경을 위해 테커마켓이 함께합니다."/>
+                placeholder={`
+      상품에 대한 설명해주세요
+      -구매 시기
+      -브랜드/모델명
+      -제품의 상태(사용감, 하자 유무 등)
+      -서로가 믿고 거래할 수 있도록, 자세한 정보와 다양한 각도의 상품 사진을 올려주세요
+      안전하고 건전한 거래 환경을 위해 테커마켓이 함께합니다.`
+                }
+            />
             <Buttons>
-            <UploadButton type="submit" onClick={handleSubmit}>게시글 등록</UploadButton>
+                <UploadButton type="submit" onClick={handleSubmit}>게시글 등록</UploadButton>
                 <ReturnButton onClick={() => (window.location.href = "/")}>돌아가기</ReturnButton>
             </Buttons>
         </Writepost>
     );
 };
-
 export default WritePost;
-
 const Writepost = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
     font-family:"LINESeedKRBd";
     font-style: normal;
     font-weight: 700;
@@ -161,7 +196,6 @@ const Title = styled.h1`
     padding-bottom: 6rem;
     border-bottom: 0.07rem solid #000000;
     width: 92.68rem;
-
     font-size: 3rem;
     line-height: 4.1rem;
     font-weight: bold;
@@ -213,7 +247,6 @@ const Select = styled.select`
     border: none;
     font-size: 1.5rem;
     padding-left: 0.5rem;
-
   &:focus {
     outline: none;
     border: 0.1rem solid black;
@@ -223,17 +256,16 @@ const Option = styled.option`
     color: black;
     font-size: 1.5rem;
 `;
-const OptionButton = styled.button`
-    background-color: ${({ checked }) => (checked ? "#000000" : "#EFEFEF")};
-    color: ${({ checked }) => (checked ? "#FFFFFF" : "#000000")};
-    border-radius: 1.05rem;
-    border: none;
-    cursor: pointer;
-    margin-right: 1.5%;
-    height: 2.4rem;
-    font-size: 1.5rem;
+const OptionButton = styled.button<{ buttonType: string, isSelected: boolean }>`
+  background-color: ${({ isSelected }) => (isSelected ? "#000000" : "#EFEFEF")};
+  color: ${({ isSelected }) => (isSelected ? "#FFFFFF" : "#000000")};
+  border-radius: 1.05rem;
+  border: none;
+  cursor: pointer;
+  margin-right: 1.5%;
+  height: 2.4rem;
+  font-size: 1.5rem;
 `;
-
 const Img = styled.div`
     display: flex;
     flex-direction: row;
@@ -254,7 +286,7 @@ const DeleteButton = styled.button`
   right: 0rem;
   border: none;
   background: #000000;
-  color: #ffffff;
+  color: #FFFFFF;
   font-size: 1.5rem;
   cursor: pointer;
   width: 2.4rem;
@@ -264,7 +296,6 @@ const DeleteButton = styled.button`
   justify-content: center;
   align-items: center;
 `;
-
 const TextArea = styled.textarea`
     display: flex;
     flex-direction: column;
@@ -279,11 +310,9 @@ const TextArea = styled.textarea`
     border-radius: 10px;
     margin-bottom: 1.7rem;
     border: none;
-    
     font-size: 1.5rem;
     padding: 1.4rem 0 0 1.4rem;
 `;
-
 const Buttons = styled.div`
     margin-bottom: 20rem;
 `;
@@ -302,7 +331,6 @@ const UploadButton = styled.button`
     margin-bottom: 1.25rem;
     border: none;
     cursor: pointer;
-
     font-size: 2.5rem;
     line-height: 4.1rem;
 `;
@@ -319,7 +347,6 @@ const ReturnButton = styled.button`
     border-radius: 10px;
     border: none;
     cursor: pointer;
-
     font-size: 2.5rem;
     line-height: 4.1rem;
 `;
