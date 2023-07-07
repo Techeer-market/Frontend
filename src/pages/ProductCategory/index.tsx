@@ -48,6 +48,7 @@ const PerchaseHistory: React.FC = () => {
   return (
     <MainDiv>
       <NavBar />
+      <Wrap>
       <CategoryName>{displayCategoryName}</CategoryName>
       <MainContainer className="list">
         <Section1>
@@ -66,6 +67,7 @@ const PerchaseHistory: React.FC = () => {
           </ProductDiv>
         </Section1>
       </MainContainer>
+      </Wrap>
     </MainDiv>
   );
 };
@@ -75,16 +77,19 @@ export default PerchaseHistory;
 const MainDiv = styled.div`
   display: flex;
   flex-direction: column;
+`;
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
 `;
-
 const CategoryName = styled.h2`
   background-color: #FFC700;
   padding: 10px 20px;
   color: black;
   margin: 6rem 0 6rem 0;
   font-weight: 700;
-  font-size: 3rem;
+  font-size: 2.5rem;
   border-radius: 17px;
   line-height: 4.1rem;
 `;
