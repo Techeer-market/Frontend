@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import logo from '../../assets/logo.svg';
+import menuBar from '../../assets/menuBar.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
 
 const NavBar = () => {
   const navigate = useNavigate();
 
+  const [showMenuBarModule, setShowMenuBarModule] = useState(false);
   const [showSearchModule, setShowSearchModule] = useState(false);
   const [showMyPageModule, setShowMyPageModule] = useState(false);
 
@@ -16,6 +18,9 @@ const NavBar = () => {
   const [posts, setPosts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
+  const handleMenuBarClick = () => {
+    setShowMenuBarModule(!showMenuBarModule);
+  };
   const handleMyPageClick = () => {
     setShowMyPageModule(!showMyPageModule);
   };
@@ -26,6 +31,7 @@ const NavBar = () => {
   const handleCloseModule = () => {
     setShowSearchModule(false);
     setShowMyPageModule(false);
+    setShowMenuBarModule(false);
   };
 
   const handleSearch = (event) => {
@@ -64,11 +70,36 @@ const NavBar = () => {
         <StyledLink to="/category/Fashion Products">Fashion</StyledLink>
       </Category>
 
+      <Bars onClick={handleMenuBarClick} src={menuBar} alt="측면바 생성" />
+      {showMenuBarModule && (
+        <ModuleWindow0 showModule={showMenuBarModule}>
+          <Form0 onSubmit={handleSearch}>
+            <SearchInput0
+              name="search"
+              type="text"
+              placeholder="검색어를 입력하세요."
+            />
+            <SearchButton type="submit">
+              <FiSearch />
+            </SearchButton>
+          </Form0>
+          <Textbox>
+          <ModuleLink0 to="/write">팔기</ModuleLink0>
+            <ModuleLink0 to="/login">로그인</ModuleLink0>
+            <ModuleLink0 to="/chat">채팅</ModuleLink0>
+            <div>마이페이지</div>
+            <ModuleLink to="/wishlist">위시리스트</ModuleLink>
+            <ModuleLink to="/selling">판매중인 상품</ModuleLink>
+            <ModuleLink to="/purchase">구매내역</ModuleLink>
+          </Textbox>
+        </ModuleWindow0>
+      )}
+
       <User>
         <StyledLink onClick={handleSearchClick}>
           <FiSearch />
         </StyledLink>
-        <StyledLink to="/write">글쓰기</StyledLink>
+        <StyledLink to="/write">팔기</StyledLink>
         <StyledLink to="/login">로그인</StyledLink>
         <StyledLink to="/chat">채팅</StyledLink>
         <StyledLink onClick={handleMyPageClick}>마이페이지</StyledLink>
@@ -103,7 +134,7 @@ const NavBar = () => {
       )}
 
       <ModuleBackdrop
-        showModule={showSearchModule || showMyPageModule}
+        showModule={showSearchModule || showMyPageModule || showMenuBarModule}
         onClick={handleCloseModule}
       />
     </Navbar>
@@ -139,12 +170,50 @@ const Category = styled.div`
   margin-top: 1.5rem;
 `;
 
+const Bars = styled.img`
+  display: none;
+
+  @media screen and (max-width: 1200px) {
+    display: block;
+    width: 2rem;
+    margin: 0.8rem 4rem;
+    height: 6.384rem;
+    cursor: pointer;
+  }
+`;
+
+const ModuleWindow0 = styled.div`
+  position: fixed;
+  top: 0;
+  right: ${({ showModule }) => (showModule ? '0' : '-37rem')};
+  width: 37rem;
+  height: 100%;
+  background-color: #fff;
+  z-index: 1;
+  transition: all 0.3s ease-in-out;
+`;
+const Form0 = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
+const SearchInput0 = styled.input`
+  width: 80%;
+  padding: 1rem;
+  font-size: 1.6rem;
+`;
+
 const User = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 24rem;
   margin-top: 1.5rem;
+
+   @media screen and (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -162,46 +231,34 @@ const ModuleWindow1 = styled.div`
   background-color: #fff;
   z-index: 1;
   transition: all 0.3s ease-in-out;
-  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  flex-direction: column;
+  align-items: center;
 `;
-const Form = styled.form`
-  position: relative;
-`;
-const SearchInput = styled.input`
-  width: 50%;
-  padding: 1rem;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  font-size: 1.6rem;
-  margin: 2rem auto 0;
 
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0.2rem;
-    background-color: #000000;
-  }
+const Form = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
 `;
 
 const SearchButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: 22.5%;
-  height: 8.5rem;
+  height: 5rem;
   background-color: transparent;
-  color: black;
   border: none;
   font-size: 2.6rem;
   cursor: pointer;
 `;
 
-const StyledSearchResults = styled.div`
+const SearchResults = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
@@ -238,7 +295,8 @@ const Textbox = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 40rem;
-  padding: 5%;
+  padding-left: 5%;
+  padding-right: 5%;
 
   font-family: 'Inter';
   font-style: normal;
@@ -247,10 +305,16 @@ const Textbox = styled.div`
   line-height: 4.1rem;
 
   div {
-    padding-bottom: 2rem;
     border-bottom: 0.7px solid #000000;
     width: 92%;
   }
+`;
+
+const ModuleLink0 = styled(Link)`
+    text-decoration: none;
+    color: black;
+    border-bottom: 0.7px solid #000000;
+    width: 92%;
 `;
 
 const ModuleLink = styled(Link)`
@@ -262,6 +326,7 @@ const ModuleLink = styled(Link)`
   margin-bottom: 1.3;
   margin-top: 1.3rem;
   padding-left: 1rem;
+  font-size: 1.8rem;
 `;
 
 const ModuleBackdrop = styled.div`
