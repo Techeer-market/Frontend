@@ -3,14 +3,7 @@ import styled from 'styled-components';
 import NavBar from '@/components/NavBar';
 import uploadimage from '../../assets/uploadimage.svg';
 import axios from 'axios';
-interface PostData {
-    userUuid: string;
-    title: string;
-    categoryUuid: string;
-    tradeType: string;
-    price: number;
-    description: string;
-}
+
 const WritePost = () => {
     const [uploadedImages, setUploadedImages] = useState<File[]>([]);
     const [title, setTitle] = useState("");
@@ -46,7 +39,7 @@ const WritePost = () => {
                 const result = reader.result;
                 if (result === null) {
                     alert("File loading failed");
-                } else if (file) {
+                } else if (file && typeof result === "string") { // result가 string이어야 File 생성 가능
                     const convertedFile = new File([result], file.name, { type: file.type });
                     setUploadedImages((prevState) => [...prevState, convertedFile]);
                 } else {
@@ -54,33 +47,21 @@ const WritePost = () => {
                 }
             };
             reader.readAsDataURL(file);
-        }
-    };
+        };
+    }
+
     const handleSubmit = () => {
         // 유효성 검사
         if (!title || !categoryUuid || !type || !price || !description || uploadedImages.length === 0) {
             alert("모든 항목을 입력해주세요.");
             return;
         }
-        // 필요한 데이터 생성
-        // const data: PostData = {
-        //     userUuid: userUuid,
-        //     title: title,
-        //     categoryUuid: categoryUuid,
-        //     tradeType: type,
-        //     price: Number(price),
-        //     image_1: uploadedImages[0] || null,
-        //     image_2: uploadedImages[1] || null,
-        //     image_3: uploadedImages[2] || null,
-        //     image_4: uploadedImages[3] || null,
-        //     description: description,
-        // };
 
         const formData = new FormData();
         formData.append('userUuid', userUuid);
         formData.append('title', title);
         formData.append('categoryUuid', categoryUuid);
-        formData.append('tradeType', 'GeneralDeal');
+        formData.append('tradeType', type);
         formData.append('price', price);
         formData.append('description', description);
 
@@ -100,23 +81,33 @@ const WritePost = () => {
 
         console.log({ formData })
         axios
-            .post('http://localhost:8080/api/products', formData,{
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then((response) => {
-                console.log(response);
-                alert('게시물이 등록되었습니다.');
-            })
-            .catch((error) => {
-                console.error(error);
-                alert('게시물 등록에 실패했습니다.');
-            });
-    };
-    return (
+        .post('http://localhost:8080/api/products', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((response) => {
+            console.log(response);
+            alert('게시물이 등록되었습니다.');
+            window.location.href = "/"; // 메인 페이지로 리다이렉트
+        })
+        .catch((error) => {
+            console.error(error);
+            alert('게시물 등록에 실패했습니다.');
+        });
+};
+
+// 금액 입력 함수 수정
+const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 허용
+    const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 3자리마다 쉼표 추가
+    setPrice(formattedValue + "원"); // 원 추가
+};
+
+return (
         <Writepost>
             <NavBar />
+            <Wrap>
             <Title>게시물 등록</Title>
             <Form>
                 <Row>
@@ -136,12 +127,12 @@ const WritePost = () => {
                 </Row>
                 <Row>
                     <Label>옵션 선택:</Label>
-                    <OptionButton buttonType="normal" isSelected={type === "normal"} onClick={(e) => handleTypeButtonClick(e, "GeneralDeal")}>일반거래</OptionButton>
-                    <OptionButton buttonType="cool" isSelected={type === "cool"} onClick={(e) => handleTypeButtonClick(e, "CoolDeal")}>쿨거래</OptionButton>
+                    <OptionButton buttonType="GeneralDeal" isSelected={type === "GeneralDeal"} onClick={(e) => handleTypeButtonClick(e, "GeneralDeal")}>일반거래</OptionButton>
+                    <OptionButton buttonType="CoolDeal" isSelected={type === "CoolDeal"} onClick={(e) => handleTypeButtonClick(e, "CoolDeal")}>쿨거래</OptionButton>
                 </Row>
                 <Row>
                     <Label>금액:</Label>
-                    <Input name="price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                    <Input name="price" value={price} onChange={handlePriceChange} />
                 </Row>
             </Form>
             <Img>
@@ -162,6 +153,7 @@ const WritePost = () => {
             </Img>
             <TextArea name="description" value={description} onChange={(e) => setDescription(e.target.value)}
                 placeholder={`
+                
       상품에 대한 설명해주세요
       -구매 시기
       -브랜드/모델명
@@ -174,19 +166,27 @@ const WritePost = () => {
                 <UploadButton type="submit" onClick={handleSubmit}>게시글 등록</UploadButton>
                 <ReturnButton onClick={() => (window.location.href = "/")}>돌아가기</ReturnButton>
             </Buttons>
+            </Wrap>
         </Writepost>
     );
 };
+
 export default WritePost;
+
 const Writepost = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     font-family:"LINESeedKRBd";
     font-style: normal;
     font-weight: 700;
 `;
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const Title = styled.h1`
     display: flex;
     flex-direction: column;
