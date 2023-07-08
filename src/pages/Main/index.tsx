@@ -21,7 +21,7 @@ const index = () => {
   // const getItems = useCallback(async () => {
   //   setLoading(true);
   //   await axios
-  //     .get(`http://localhost:8080/api/products/list}`)
+  //     .get(`http://54.180.142.116:8080/api/products/list}`)
   //     .then((res) => {
   //       console.log(res.data);
   //       setItems((prevState) => [...prevState, res.data]);
