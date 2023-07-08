@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import NavBar from '@/components/NavBar';
 import styled from 'styled-components';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const CategoryFood: React.FC = () => {
   const [items, setItems] = useState<Product[]>([]);
@@ -44,17 +45,19 @@ const CategoryFood: React.FC = () => {
             <ProductDiv>
               {items && items.map((item) => (
                 <Div key={item.productUuid}>
-                  <Image style={{ backgroundImage: `url(${item.image_url_1})` }} />
-                  <TextDiv>
-                    <Title>{item.title}</Title>
-                    <TwoWrap>
-                      {tradeTypeMap.hasOwnProperty(item.tradeType) && (
-                        <TradeType>{tradeTypeMap[item.tradeType]}</TradeType>
-                      )}
-                      <Seller>(임성한)</Seller>
-                    </TwoWrap>
-                    <Price>{item.price}원</Price>
-                  </TextDiv>
+                  <PostLink to={`/post/${item.productUuid}`}>
+                    <Image style={{ backgroundImage: `url(${item.image_url_1})` }} />
+                    <TextDiv>
+                      <Title>{item.title}</Title>
+                      <TwoWrap>
+                        {tradeTypeMap.hasOwnProperty(item.tradeType) && (
+                          <TradeType>{tradeTypeMap[item.tradeType]}</TradeType>
+                        )}
+                        <Seller>(이름)</Seller>
+                      </TwoWrap>
+                      <Price>{item.price}원</Price>
+                    </TextDiv>
+                  </PostLink>
                 </Div>
               ))}
             </ProductDiv>
@@ -66,6 +69,11 @@ const CategoryFood: React.FC = () => {
 };
 
 export default CategoryFood;
+
+const PostLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
 
 const MainDiv = styled.div`
   display: flex;
@@ -128,7 +136,8 @@ const Image = styled.div`
   width: 15rem;
   height: 18rem;
   margin-bottom: 0.6rem;
-  background-color: #000;
+  background-size: cover; //원본 이미지가 요소(Image태그)에 맞게 확대or축소
+  background-position: center; //이미지가 요소(Image태그)의 중앙에 위치
   cursor: pointer;
 `;
 const TextDiv = styled.div`
