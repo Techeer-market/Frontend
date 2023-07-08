@@ -13,7 +13,7 @@ const CategoryFood = lazy(() => import('./pages/CategoryFood'));
 const CategoryLiving = lazy(() => import('./pages/CategoryLiving'));
 const CategoryBook_Magazine = lazy(() => import('./pages/CategoryBook_Magazine'));
 const CategoryFashion = lazy(() => import('./pages/CategoryFashion'));
-// const PurchaseList = lazy(() => import('./pages/PurchaseList'));
+const SalesList = lazy(() => import('./pages/SalesList'));
 const Chatting = lazy(() => import('./pages/Chatting'));
 
 const Router = () => {
@@ -25,14 +25,14 @@ const Router = () => {
         <Route path="/auth/kakao" element={<KakaoLogin />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/write" element={<WritePost />} />
-        <Route path="/post" element={<Post />} />
+        <Route path="/post/:productUuid" element={<Post />} />
         {/* <Route path="/edit" element={<EditPost />} /> */}
         <Route path="/category/Electronic" element={<CategoryElectronic />} />
         <Route path="/category/Food" element={<CategoryFood />} />
         <Route path="/category/Living" element={<CategoryLiving />} />
         <Route path="/category/Book_Magazine" element={<CategoryBook_Magazine />} />
         <Route path="/category/Fashion" element={<CategoryFashion />} /> 
-        {/* <Route path="/purchaselist" element={<PurchaseList />} /> */}
+        <Route path="/saleslist" element={<SalesList />} />
         <Route path="/chat" element={<Chatting />} />
       </Routes>
     </BrowserRouter>
