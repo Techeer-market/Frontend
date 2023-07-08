@@ -8,16 +8,18 @@ import { FiSearch } from 'react-icons/fi';
 const NavBar = () => {
   const navigate = useNavigate();
 
-  const [showMenuBarModule, setShowMenuBarModule] = useState(false);
-  const [showSearchModule, setShowSearchModule] = useState(false);
-  const [showMyPageModule, setShowMyPageModule] = useState(false);
-
   // 검색 이력 상태 추가
   const [searchHistory, setSearchHistory] = useState([]);
 
   const [posts, setPosts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
+  //모달창 셋
+  const [showMenuBarModule, setShowMenuBarModule] = useState(false);
+  const [showSearchModule, setShowSearchModule] = useState(false);
+  const [showMyPageModule, setShowMyPageModule] = useState(false);
+  
+  //모달창 셋 클릭하여 열고 닫고
   const handleMenuBarClick = () => {
     setShowMenuBarModule(!showMenuBarModule);
   };
@@ -27,7 +29,6 @@ const NavBar = () => {
   const handleSearchClick = () => {
     setShowSearchModule(!showSearchModule);
   };
-
   const handleCloseModule = () => {
     setShowSearchModule(false);
     setShowMyPageModule(false);
@@ -61,13 +62,13 @@ const NavBar = () => {
       </LogoBackground>
 
       <Category>
-        <StyledLink to="/category/Electronic Products">Electronic</StyledLink>
-        <StyledLink to="/category/Living Products">Living</StyledLink>
-        <StyledLink to="/category/Book_Magazine Products">
+        <StyledLink to="/category/Electronic">Electronic</StyledLink>
+        <StyledLink to="/category/Living">Living</StyledLink>
+        <StyledLink to="/category/Book_Magazine">
           Book/Magazine
         </StyledLink>
-        <StyledLink to="/category/Food Products">Food</StyledLink>
-        <StyledLink to="/category/Fashion Products">Fashion</StyledLink>
+        <StyledLink to="/category/Food">Food</StyledLink>
+        <StyledLink to="/category/Fashion">Fashion</StyledLink>
       </Category>
 
       <Bars onClick={handleMenuBarClick} src={menuBar} alt="측면바 생성" />
