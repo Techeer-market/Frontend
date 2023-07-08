@@ -7,6 +7,7 @@ import { FiSearch } from 'react-icons/fi';
 const NavBar = () => {
   const navigate = useNavigate();
 
+
   const [showSearchModule, setShowSearchModule] = useState(false);
   const [showMyPageModule, setShowMyPageModule] = useState(false);
 
@@ -15,6 +16,22 @@ const NavBar = () => {
 
   const [posts, setPosts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+
+  const handleLogout = () => {
+    fetch('http://localhost:8080/api/users/logout', {
+      method: 'POST',
+    })
+      .then(response => {
+        if (response.ok) {
+          navigate('/login');
+        } else {
+          console.log('logout failed');
+        }
+      })
+      .catch(error => {
+        console.log('Error  : ', error);
+      })
+  };
 
   const handleMyPageClick = () => {
     setShowMyPageModule(!showMyPageModule);
@@ -35,6 +52,8 @@ const NavBar = () => {
       (post) => post.title.includes(query) || post.description.includes(query),
     );
     setSearchResults(results);
+
+  
 
     // 검색 이력 업데이트
     setSearchHistory((prevHistory) => {
@@ -72,6 +91,7 @@ const NavBar = () => {
         <StyledLink to="/login">로그인</StyledLink>
         <StyledLink to="/chat">채팅</StyledLink>
         <StyledLink onClick={handleMyPageClick}>마이페이지</StyledLink>
+        <StyledLink onClick={handleLogout}>로그아웃</StyledLink>
       </User>
 
       {showSearchModule && (
