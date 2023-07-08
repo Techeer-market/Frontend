@@ -27,7 +27,7 @@ const SignUp = () => {
   function onClick(e: any) {
     e.preventDefault();
     axios
-      .post('http://localhost:8080/api/users/signup', {
+      .post('http://54.180.142.116:8080/api/users/signup', {
         email: email,
         password: pw,
         name: name,

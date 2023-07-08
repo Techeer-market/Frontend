@@ -9,9 +9,11 @@ const WritePost = () => {
     const [title, setTitle] = useState("");
     const [categoryUuid, setCategoryUuid] = useState("");
     const [type, setType] = useState("GeneralDeal");
-    const [price, setPrice] = useState("");
+    const [price, setPrice] = useState(0);  // 실제 서버에 전달될 price
+    // const [displayPrice, setDisplayPrice] = useState(""); // price 쉼표 및 "원" 기호 표기용
     const [description, setDescription] = useState("");
     const [userUuid, setUserUuid] = useState("");
+
     useEffect(() => {
         const uuid = localStorage.getItem('uuid');
         console.log({uuid})
@@ -21,6 +23,7 @@ const WritePost = () => {
             console.log("uuid 가 없습니다.")
         }
     }, []);
+
     const handleTypeButtonClick = (event: React.MouseEvent, newType: "GeneralDeal" | "CoolDeal") => {
         event.preventDefault();
         setType(newType);
@@ -28,31 +31,18 @@ const WritePost = () => {
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files && files.length > 0) {
-            const file = files[0];
-            const reader = new FileReader();
-            if (uploadedImages.length >= 4) {
-                alert("사진은 최대 4장까지 업로드 가능합니다.");
-                return;
-            }
-            //업로드 된 이미지를 읽고, 그 결과를 상태에 저장하여, 추후 유저에게 렌더링
-            reader.onloadend = () => {
-                const result = reader.result;
-                if (result === null) {
-                    alert("File loading failed");
-                } else if (file && typeof result === "string") { // result가 string이어야 File 생성 가능
-                    const convertedFile = new File([result], file.name, { type: file.type });
-                    setUploadedImages((prevState) => [...prevState, convertedFile]);
-                } else {
-                    alert("Invalid file format");
-                }
-            };
-            reader.readAsDataURL(file);
-        };
-    }
+          const file = files[0];
+          if (uploadedImages.length >= 4) {
+            alert("사진은 최대 4장까지 업로드 가능합니다.");
+            return;
+          }
+          setUploadedImages((prevState) => [...prevState, file]);
+        }
+    };
 
     const handleSubmit = () => {
         // 유효성 검사
-        if (!title || !categoryUuid || !type || !price || !description || uploadedImages.length === 0) {
+        if (!title || !categoryUuid || !type || price === 0 || !description || uploadedImages.length === 0) {
             alert("모든 항목을 입력해주세요.");
             return;
         }
@@ -62,26 +52,17 @@ const WritePost = () => {
         formData.append('title', title);
         formData.append('categoryUuid', categoryUuid);
         formData.append('tradeType', type);
-        formData.append('price', price);
+        formData.append('price', price.toString());
         formData.append('description', description);
 
-        if (uploadedImages[0] instanceof File) {
-            formData.append('image_1', uploadedImages[0]);
-        }
-        if (uploadedImages[1] instanceof File) {
-            formData.append('image_2', uploadedImages[1]);
-        }
-        if (uploadedImages[2] instanceof File) {
-            formData.append('image_3', uploadedImages[2]);
-        }
-        if (uploadedImages[3] instanceof File) {
-            formData.append('image_4', uploadedImages[3]);
-        }
-
+        uploadedImages.forEach((imageFile, index) => {
+            const fieldName = `image_${index + 1}`;
+            formData.append(fieldName, imageFile);
+          });
 
         console.log({ formData })
         axios
-        .post('http://localhost:8080/api/products', formData, {
+        .post('http://54.180.142.116:8080/api/products', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -99,9 +80,10 @@ const WritePost = () => {
 
 // 금액 입력 함수 수정
 const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 허용
-    const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 3자리마다 쉼표 추가
-    setPrice(formattedValue + "원"); // 원 추가
+    let value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 허용
+    // const formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 3자리마다 쉼표 추가
+    // setDisplayPrice(formattedValue + "원"); // 쉼표 & 원 디폴트값
+    setPrice(parseInt(value)); // 실제로 서버에 전달될 값
 };
 
 return (
@@ -164,7 +146,7 @@ return (
             />
             <Buttons>
                 <UploadButton type="submit" onClick={handleSubmit}>게시글 등록</UploadButton>
-                <ReturnButton onClick={() => (window.location.href = "/")}>돌아가기</ReturnButton>
+                <ReturnButton onClick={() => (window.location.href = "/")}>홈화면</ReturnButton>
             </Buttons>
             </Wrap>
         </Writepost>
@@ -192,7 +174,7 @@ const Title = styled.h1`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 6rem;
+    margin-top: 3.5rem;
     padding-bottom: 6rem;
     border-bottom: 0.07rem solid #000000;
     width: 92.68rem;
@@ -310,8 +292,8 @@ const TextArea = styled.textarea`
     border-radius: 10px;
     margin-bottom: 1.7rem;
     border: none;
-    font-size: 1.5rem;
-    padding: 1.4rem 0 0 1.4rem;
+    font-size: 2rem;
+    padding: 2rem 0 0 2rem;
 `;
 const Buttons = styled.div`
     margin-bottom: 20rem;

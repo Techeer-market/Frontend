@@ -23,7 +23,7 @@ function KakaoLogin() {
         },
       );
       await axios
-        .get(`http://localhost:8080/api/users/auth/kakao?code=${code}`)
+        .get(`http://54.180.142.116:8080/api/users/auth/kakao?code=${code}`)
         .then((res) => {
           localStorage.setItem('token', res.headers.authorization);
           window.location.href = '/';

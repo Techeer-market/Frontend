@@ -20,7 +20,7 @@
 
 //       axios
 //         .post(
-//           `http://localhost:8080/chat?email=${email}&productUuid=${productUuid}`,
+//           `http://54.180.142.116:8080/api/chat?email=${email}&productUuid=${productUuid}`,
 //         )
 //         .then((response) => {
 //           console.log('API response:', response.data);

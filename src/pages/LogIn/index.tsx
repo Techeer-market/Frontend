@@ -60,7 +60,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/users/login`,
+        `http://54.180.142.116:8080/api/users/login`,
         userInfo,
       );
       // setToken(res.data.access, res.data.refresh);

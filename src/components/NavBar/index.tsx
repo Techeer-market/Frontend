@@ -90,8 +90,8 @@ const NavBar = () => {
             <ModuleLink0 to="/chat">채팅</ModuleLink0>
             <div>마이페이지</div>
             <ModuleLink to="/wishlist">위시리스트</ModuleLink>
-            <ModuleLink to="/selling">판매중인 상품</ModuleLink>
-            <ModuleLink to="/purchase">구매내역</ModuleLink>
+            <ModuleLink to="saleslist/">판매중인 상품</ModuleLink>
+            <ModuleLink to="/purchaselist">구매내역</ModuleLink>
           </Textbox>
         </ModuleWindow0>
       )}
@@ -128,8 +128,8 @@ const NavBar = () => {
           <Textbox>
             <div>마이페이지</div>
             <ModuleLink to="/wishlist">위시리스트</ModuleLink>
-            <ModuleLink to="/selling">판매중인 상품</ModuleLink>
-            <ModuleLink to="/purchase">구매내역</ModuleLink>
+            <ModuleLink to="/saleslist">판매중인 상품</ModuleLink>
+            <ModuleLink to="/purchaselist">구매내역</ModuleLink>
           </Textbox>
         </ModuleWindow2>
       )}
