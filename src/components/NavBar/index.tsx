@@ -14,12 +14,12 @@ const NavBar = () => {
   const [posts, setPosts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
-  //모달창 셋
+  //모달창 셋 상태 설정
   const [showMenuBarModule, setShowMenuBarModule] = useState(false);
   const [showSearchModule, setShowSearchModule] = useState(false);
   const [showMyPageModule, setShowMyPageModule] = useState(false);
   
-  //모달창 셋 클릭하여 열고 닫고
+  //모달창 셋 클릭하여 열고 닫고하는 모달창 상태 변경 함수
   const handleMenuBarClick = () => {
     setShowMenuBarModule(!showMenuBarModule);
   };
@@ -35,6 +35,7 @@ const NavBar = () => {
     setShowMenuBarModule(false);
   };
 
+   // 검색 함수 //수정 필수!! 상품 검색 및 링크연결 기능 구현 까먹었습니다..죄송해요 부탁드립니다!ㅠㅠ
   const handleSearch = (event) => {
     event.preventDefault();
     const query = event.target.elements.search.value;
@@ -54,13 +55,17 @@ const NavBar = () => {
 
     setShowSearchModule(false);
   };
-
+//Navbar전체 안에 크게 LogoBackground(좌) Category(중) User(우)로 구성. 참고로 Bars는 가로1200px이하일때만 보이도록 설정해서 설명 생략
+//User(검색아이콘, 팔기, 로그인, 채팅, 마이페이지)은 가로1200px이하일 때 Bars라는 햄버거아이콘 사이드바로 대체됨.
+//모듈창은 총 3개. User(우)의 검색아이콘을 누르면 나오는 상단바와 User(우)의 마이페이지를 클릭하면 나오는 사이드바와 
+//화면 작아질 때 User(우)를 대체하는 Bars의 검색기능을 포함한 사이드바입니다.
   return (
     <Navbar>
+      {/* 로고 이미지 클릭시 홈페이지 메인으로 이동 */}
       <LogoBackground role="button" onClick={() => navigate('/')}>
         <img id="main" src={logo} alt="홈페이지 메인으로 이동"></img>
       </LogoBackground>
-
+      {/* 카테고리 메뉴들, 클릭 시 해당 카테고리로 이동 */}
       <Category>
         <StyledLink to="/category/Electronic">Electronic</StyledLink>
         <StyledLink to="/category/Living">Living</StyledLink>
@@ -70,8 +75,9 @@ const NavBar = () => {
         <StyledLink to="/category/Food">Food</StyledLink>
         <StyledLink to="/category/Fashion">Fashion</StyledLink>
       </Category>
-
-      <Bars onClick={handleMenuBarClick} src={menuBar} alt="측면바 생성" />
+      {/* 메뉴바 햄버거아이콘, 클릭시 반응형용 사이드바 생성 */}
+      <Bars onClick={handleMenuBarClick} src={menuBar} alt="사이드바 생성" />
+      {/* 이 사이드바(모달창0)는 검색, 팔기, 로그인, 채팅 링크와 마이페이지의 세부 항목들의 링크 제공 */}
       {showMenuBarModule && (
         <ModuleWindow0 showModule={showMenuBarModule}>
           <Form0 onSubmit={handleSearch}>
@@ -90,12 +96,12 @@ const NavBar = () => {
             <ModuleLink0 to="/chat">채팅</ModuleLink0>
             <div>마이페이지</div>
             <ModuleLink to="/wishlist">위시리스트</ModuleLink>
-            <ModuleLink to="saleslist/">판매중인 상품</ModuleLink>
+            <ModuleLink to="/saleslist">판매중인 상품</ModuleLink>
             <ModuleLink to="/purchaselist">구매내역</ModuleLink>
           </Textbox>
         </ModuleWindow0>
       )}
-
+      {/* 사용자 메뉴. 여기에서는 검색, 팔기, 로그인, 채팅, 마이페이지 링크를 제공, 여기서 마이페이지 클릭시 (모달창2) 펼쳐짐 */}
       <User>
         <StyledLink onClick={handleSearchClick}>
           <FiSearch />
@@ -105,7 +111,7 @@ const NavBar = () => {
         <StyledLink to="/chat">채팅</StyledLink>
         <StyledLink onClick={handleMyPageClick}>마이페이지</StyledLink>
       </User>
-
+      {/* 상단 검색 모달창(모달창1) */}
       {showSearchModule && (
         <ModuleWindow1 showModule={showSearchModule}>
           <Form onSubmit={handleSearch}>
@@ -120,9 +126,8 @@ const NavBar = () => {
           </Form>
         </ModuleWindow1>
       )}
-
       {searchResults.length > 0 && <SearchResults results={searchResults} />}
-
+      {/* 위에 언급했던 마이페이지 모달창(모달창2) */}
       {showMyPageModule && (
         <ModuleWindow2 showModule={showMyPageModule}>
           <Textbox>
@@ -133,7 +138,7 @@ const NavBar = () => {
           </Textbox>
         </ModuleWindow2>
       )}
-
+      {/* // 모달창이 떴을 때, 모달창 외부 클릭하면 모든 모달창이 닫히도록 설정*/}
       <ModuleBackdrop
         showModule={showSearchModule || showMyPageModule || showMenuBarModule}
         onClick={handleCloseModule}
@@ -174,7 +179,7 @@ const Category = styled.div`
 const Bars = styled.img`
   display: none;
 
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1200px) { //가로길이 1200px 이하면 Bars 햄버거아이콘바 보이게 구현
     display: block;
     width: 2rem;
     margin: 0.8rem 4rem;
@@ -183,15 +188,15 @@ const Bars = styled.img`
   }
 `;
 
-const ModuleWindow0 = styled.div`
-  position: fixed;
-  top: 0;
-  right: ${({ showModule }) => (showModule ? '0' : '-37rem')};
+const ModuleWindow0 = styled.div`//모달창0인 반응형용 햄버거아이콘 사이드 모달창
+  position: fixed; // 뷰포트에 상대적으로 고정 위치
+  top: 0; // 뷰포트의 상단에서부터 0의 위치에 위치
+  right: ${({ showModule }) => (showModule ? '0' : '-37rem')}; //보이거나 숨겨짐(showModule prop이 true이면 오른쪽에서 0의 위치에, 아니면 -37rem 위치에 위치)
   width: 37rem;
   height: 100%;
   background-color: #fff;
-  z-index: 1;
-  transition: all 0.3s ease-in-out;
+  z-index: 10;
+  transition: all 0.3s ease-in-out; //부드럽게 나타나거나 사라짐 (모든 속성에 대해 0.3초 동안의 트랜지션을 적용)
 `;
 const Form0 = styled.form`
   display: flex;
@@ -212,7 +217,7 @@ const User = styled.div`
   align-items: center;
   margin-top: 1.5rem;
 
-   @media screen and (max-width: 1200px) {
+   @media screen and (max-width: 1200px) {//1200px이하가 되면 Bars가 대체해야하니 안보이게 설정
     display: none;
   }
 `;
@@ -230,7 +235,7 @@ const ModuleWindow1 = styled.div`
   width: 100%;
   height: 37rem;
   background-color: #fff;
-  z-index: 1;
+  z-index: 2;
   transition: all 0.3s ease-in-out;
   padding-left: 10%;
   padding-right: 10%;
@@ -260,19 +265,18 @@ const SearchButton = styled.button`
 `;
 
 const SearchResults = styled.div`
-  position: absolute;
-  top: 100%;
+  position: absolute; // 부모 요소에 상대적으로 절대 위치
+  top: 100%; // 부모 요소의 상단에서부터 100% 위치에 위치 (=부모 요소 바로 아래)
   left: 0;
-  width: 100%;
+  width: 100%; //부모 요소의 너비와 같음
   max-height: 400px;
   overflow-y: auto;
   padding: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
-  z-index: 1;
+  z-index: 2;//모달창 펼쳤을때 어두워지지 않도록 다른 요소들 위(위일수록 숫자높게 설정)에 놓이게함(레이어링개념)
 
-  // Styles for individual search result items
   .result-item {
     margin-bottom: 1em;
     padding-bottom: 1em;
@@ -287,7 +291,7 @@ const ModuleWindow2 = styled.div`
   width: 37rem;
   height: 100%;
   background-color: #fff;
-  z-index: 1;
+  z-index: 2;//모달창 펼쳤을때 어두워지지 않도록 다른 요소들 위(위일수록 숫자높게 설정)에 놓이게함(레이어링개념)
   transition: all 0.3s ease-in-out;
 `;
 
@@ -338,6 +342,6 @@ const ModuleBackdrop = styled.div`
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5); // 검은색 배경에 30%의 투명도 적용
   opacity: ${({ showModule }) => (showModule ? 1 : 0)};
-  z-index: 0;
+  z-index: 1; //모달창 펼쳤을때 어두워지도록 다른 요소들(z-index: 1)보다 아래(아래일수록 숫자낮게 설정)에 놓이게 함(레이어링개념)
   transition: opacity 0.3s ease-in-out;
 `;

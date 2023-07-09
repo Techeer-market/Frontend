@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+//불러오는 api만 다를 뿐 CategoryElectronicrhk 매우 유사하니 참고.
 const SalesList: React.FC = () => {
   const [items, setItems] = useState<Product[]>([]);
   const [userUuid, setUserUuid] = useState("");
@@ -35,16 +36,18 @@ const SalesList: React.FC = () => {
     getItems();
   }, [getItems]);
 
+//유저가 유일하게 다른 부분, 유저의 판매리스트인 만큼 로컬 스토리지에서 uuid를 가져옴
   useEffect(() => {
     const uuid = localStorage.getItem('uuid');
     if(uuid){ 
-        setUserUuid(uuid);
-        getItems(); // UUID가 설정된 후에 items를 가져옵니다.
+        setUserUuid(uuid); //uuid가 있다면 이를 state로 설정
+        getItems(); // UUID가 설정된 후에 items를 가져옴
     }else{
         console.log("uuid 가 없습니다.")
     }
 }, []);
 
+//CategoryElectronicrhk 매우유사하니 참고. Saleslist페이지제목의 스타일링만 다름
   return (
     <MainDiv>
       <NavBar />
@@ -57,7 +60,11 @@ const SalesList: React.FC = () => {
             <ProductDiv>
               {items && items.map((item) => (
                 <Div key={item.productUuid}>
-                  <PostLink to={`/post/${item.productUuid}`}>
+                  {/* 수정필수!! 지금은 판매리스트에서 바로 수정하게 설정, 원래는 상세페이지 하단에 수정하기 버튼이 있어야함 */}
+                  {/* 그걸 눌러야 edit 링크로 넘어가는 건데 작성자와 타유저 비교하는 데이터가 요구되어 이렇게 제작함 */}
+                  {/* 죄송함니다..ㅠ최선을 다했어요..! 부디! 잘 완수해주시길 바라요 다들 파이팅!! 테커마켓 짱짱!! */}
+                  {/* 저희팀 짱! 팀원인 성한님 다연님 유라님은 세젤짱!!!bb 끝까지 응원합니다!!*/}
+                  <PostLink to={`/edit/${item.productUuid}`}>
                     <Image style={{ backgroundImage: `url(${item.image_url_1})` }} />
                     <TextDiv>
                       <Title>{item.title}</Title>
@@ -84,17 +91,13 @@ const SalesList: React.FC = () => {
 export default SalesList;
 
 const PostLink = styled(Link)`
-  margin-right: 3rem;
   text-decoration: none;
   color: black;
 `;
 
 const MainDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-family:"LINESeedKRBd";
-    font-style: normal;
-    font-weight: 700;
+  display: flex;
+  flex-direction: column;
 `;
 const Wrap = styled.div`
   display: flex;
@@ -157,7 +160,8 @@ const Image = styled.div`
   width: 15rem;
   height: 18rem;
   margin-bottom: 0.6rem;
-  background-color: #000;
+  background-size: cover; //원본 이미지가 요소(Image태그)에 맞게 확대or축소
+  background-position: center; //이미지가 요소(Image태그)의 중앙에 위치
   cursor: pointer;
 `;
 const TextDiv = styled.div`
