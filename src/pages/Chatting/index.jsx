@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import 'react-chat-elements/dist/main.css';
+import { SystemMessage } from 'react-chat-elements';
 
 const index = () => {
   const [messageInput, setMessageInput] = useState('');
