@@ -42,7 +42,6 @@ function Login() {
     [],
   );
 
-
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const passwordCurrent = e.target.value;
@@ -60,7 +59,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/users/login`,
+        `http://54.180.142.116:8080/api/users/login`,
         userInfo,
       );
       // setToken(res.data.access, res.data.refresh);
@@ -79,7 +78,7 @@ function Login() {
       localStorage.setItem('name', res.data.name);
       localStorage.setItem('email', res.data.email);
       localStorage.setItem('uuid', res.data.userUuid);
-      console.log(localStorage)
+      console.log(localStorage);
 
       navigate('/');
     } catch (err) {
@@ -107,7 +106,13 @@ function Login() {
             {emailMessage}
           </Message>
         )}
-        <Input name="password" placeholder="비밀번호" type="password" value = {password} onChange={onChangePassword}/>
+        <Input
+          name="password"
+          placeholder="비밀번호"
+          type="password"
+          value={password}
+          onChange={onChangePassword}
+        />
       </Form>
       <Etc>
         <Check>
