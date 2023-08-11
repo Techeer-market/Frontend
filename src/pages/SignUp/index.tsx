@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Logo from '@/components/Logo';
 import axios from 'axios';
@@ -9,20 +9,12 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [birth, setBirth] = useState('');
-  // const [thumb, setThumb] = useState(profile);
 
   const [nValid, setNValid] = useState(true);
   const [pwConfirm, setPwConfirm] = useState('');
   const [eValid, setEValid] = useState(true);
 
   const navigate = useNavigate();
-  // const getThumb = (data: any) => {
-  //   setThumb(data);
-  // };
-
-  // useEffect(() => {
-  //   console.log(thumb + '부모');
-  // }, [thumb]);
 
   function onClick(e: any) {
     e.preventDefault();
@@ -52,7 +44,6 @@ const SignUp = () => {
   return (
     <ConDiv>
       <Logo />
-      {/* <CProfile getThumb={getThumb} /> */}
       <FirstForm />
       <Input
         placeholder="이름"
@@ -93,7 +84,7 @@ const SignUp = () => {
           }}
         />
         <ValidCheck style={{ display: pwConfirm === pw ? 'none' : 'block' }}>
-          pw한번더 확인해 주세요.
+          비밀번호를 한번 더 확인하세요.
         </ValidCheck>
         <PwInput
           placeholder="ex) yyyy-mm-dd"
@@ -136,28 +127,7 @@ const TextForm = styled.div`
   margin-top: 1.3rem;
 `;
 
-// const CheckBtn = styled.button`
-//   width: 10rem;
-//   height: 3rem;
-//   display: flex;
-//   border-radius: 0.8rem;
-//   float: right;
-//   align-items: center;
-//   justify-content: center;
-//   color: black;
-//   font-size: 1.4rem;
-//   background-color: white;
-//   &:hover {
-//     cursor: pointer;
-//     background-color: rgb(246, 246, 246);
-//   }
-//   &:active {
-//     background-color: rgb(200, 200, 200);
-//   }
-// `;
-
 const Input = styled.input`
-  // width: 19rem;
   width: 30rem;
   height: 3rem;
   border-radius: 1rem;
@@ -179,7 +149,6 @@ const ValidCheck = styled.h4`
   margin-bottom: 0.1rem;
   align-items: center;
   font-size: 0.8rem;
-  // display: none;
 `;
 
 const PwInput = styled.input`
