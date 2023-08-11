@@ -23,7 +23,6 @@ const SignUp = () => {
         email: email,
         password: pw,
         name: name,
-        birthDay: birth,
       })
       .then(function (res) {
         console.log(res);
@@ -67,7 +66,7 @@ const SignUp = () => {
         다른 email을 입력해주세요.
       </ValidCheck>
       <TextForm>
-        <PwInput
+        <Input
           placeholder="비밀번호"
           type="password"
           value={pw}
@@ -75,7 +74,7 @@ const SignUp = () => {
             setPw(e.target.value);
           }}
         />
-        <PwInput
+        <Input
           placeholder="비밀번호 확인"
           type="password"
           value={pwConfirm}
@@ -86,7 +85,7 @@ const SignUp = () => {
         <ValidCheck style={{ display: pwConfirm === pw ? 'none' : 'block' }}>
           비밀번호를 한번 더 확인하세요.
         </ValidCheck>
-        <PwInput
+        <Input
           placeholder="ex) yyyy-mm-dd"
           type="date"
           value={birth}
@@ -151,17 +150,6 @@ const ValidCheck = styled.h4`
   font-size: 0.8rem;
 `;
 
-const PwInput = styled.input`
-  width: 30rem;
-  height: 3rem;
-  border-radius: 1rem;
-  border: none;
-  background: #ffffff;
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom: 1.3rem;
-  padding-left: 1.7rem;
-  font-size: 1.4rem;
-`;
 
 const JoinInBtn = styled.button`
   width: 30rem;
