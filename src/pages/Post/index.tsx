@@ -97,7 +97,6 @@ const Title = styled.h1`
     font-size: 3rem;
     line-height: 4.1rem;
     font-weight: bold;
-    /* identical to box height */
     color: #000000;
 `;
 const Wrapper = styled.div`
@@ -221,27 +220,7 @@ const ImageItem = styled.img`
   border-radius: 0.5rem;
   object-fit: cover;
 `;
-// const Buttons2 = styled.div`
-//     margin-bottom: 20rem;
-// `;
-// const EditButton = styled.button`
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-//     width: 92.47rem;
-//     height: 4.2rem;
-//     left: 29.27rem;
-//     top: 160rem;
-//     color: #FFFFFF;
-//     background: #000000;
-//     border-radius: 10px;
-//     margin-bottom: 1.25rem;
-//     border: none;
-//     cursor: pointer;
-//     font-size: 2.5rem;
-//     line-height: 4.1rem;
-// `;
+
 const ReturnButton = styled.button`
     display: flex;
     flex-direction: column;
@@ -251,7 +230,6 @@ const ReturnButton = styled.button`
     height: 4.2rem;
     left: 29.27rem;
     top: 167.6rem;
-    /* background: #EFEFEF; */
     color: #FFFFFF;
     background: #000000;
     border-radius: 10px;
