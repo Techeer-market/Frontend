@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-// import styled from 'styled-components';
-import * as S from './styles';
+import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+// import { setUser } from '@/redux/userID';
+import { setToken, decodeAccessToken, getToken } from '@/utils/tokenManager';
 import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
+import { SiNaver } from 'react-icons/Si';
 
 interface LoginInfo {
   email: string;
@@ -40,6 +42,7 @@ function Login() {
     [],
   );
 
+
   const onChangePassword = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const passwordCurrent = e.target.value;
@@ -60,12 +63,23 @@ function Login() {
         `http://54.180.142.116:8080/api/users/login`,
         userInfo,
       );
+      // setToken(res.data.access, res.data.refresh);
+      // const uuid: any = decodeAccessToken(getToken().access || '');
+
+      // 리덕스 스토어에 사용자 정보 저장
+      // dispatch(
+      //   setUser({
+      //     name: res.data.name,
+      //     email: res.data.email,
+      //     uuid: uuid,
+      //   }),
+      // );
       console.log(res);
       // 로컬 스토리지에 사용자 정보 저장
       localStorage.setItem('name', res.data.name);
       localStorage.setItem('email', res.data.email);
       localStorage.setItem('uuid', res.data.userUuid);
-      console.log(localStorage);
+      console.log(localStorage)
 
       navigate('/');
     } catch (err) {
@@ -78,10 +92,10 @@ function Login() {
   };
 
   return (
-    <S.LoginForm onSubmit={handleLogin}>
+    <LoginForm onSubmit={handleLogin}>
       <Logo />
-      <S.Form>
-        <S.Input
+      <Form>
+        <Input
           name="email"
           placeholder="이메일"
           type="email"
@@ -89,36 +103,146 @@ function Login() {
           onChange={onChangeEmail}
         />
         {email.length > 0 && (
-          <S.Message className={`message ${isEmail ? 'true' : 'false'}`}>
+          <Message className={`message ${isEmail ? 'true' : 'false'}`}>
             {emailMessage}
-          </S.Message>
+          </Message>
         )}
-        <S.Input
-          name="password"
-          placeholder="비밀번호"
-          type="password"
-          value={password}
-          onChange={onChangePassword}
-        />
-      </S.Form>
-      <S.Etc>
-        <S.Check>
-          <S.Checkbox type="checkbox" />
-          <S.CheckLogin>로그인 상태 유지</S.CheckLogin>
-        </S.Check>
-        <S.FindAccount>아이디/비밀번호 찾기</S.FindAccount>
-      </S.Etc>
+        <Input name="password" placeholder="비밀번호" type="password" value = {password} onChange={onChangePassword}/>
+      </Form>
+      <Etc>
+        <Check>
+          <Checkbox type="checkbox" />
+          <CheckLogin>로그인 상태 유지</CheckLogin>
+        </Check>
+        <FindAccount>아이디/비밀번호 찾기</FindAccount>
+      </Etc>
 
-      <S.Buttons>
-        <S.LogInButton type="submit">로그인</S.LogInButton>
-        <S.KakaoButton as="a" href={KAKAO_AUTH_URL}>
+      <Buttons>
+        <LogInButton type="submit">로그인</LogInButton>
+        <KakaoButton as="a" href={KAKAO_AUTH_URL}>
           <RiKakaoTalkFill size={'3.3rem'} />
           &nbsp;&nbsp;카카오 계정으로 로그인
-        </S.KakaoButton>
-        <S.SignUpeButton onClick={goToSign}>회원가입</S.SignUpeButton>
-      </S.Buttons>
-    </S.LoginForm>
+        </KakaoButton>
+        <NaverButton>
+          <SiNaver size={'2.2rem'} />
+          &nbsp;&nbsp;&nbsp;네이버 계정으로 로그인
+        </NaverButton>
+        <SignUpeButton onClick={goToSign}>회원가입</SignUpeButton>
+      </Buttons>
+    </LoginForm>
   );
 }
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media screen and (max-width: 1080px) {
+    justify-content: center;
+  }
+`;
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  width: 36rem;
+  height: 4.5rem;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom: 2.8rem;
+  padding-left: 17px;
+`;
+
+const Etc = styled.div`
+  width: 36rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -1rem;
+  margin-bottom: 6rem;
+`;
+const Check = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+const Checkbox = styled.input`
+  width: 1.5rem;
+  height: 1.5rem;
+`;
+const CheckLogin = styled.button`
+  background: none;
+  border: 0;
+  font-size: 1.4rem;
+`;
+const FindAccount = styled.button`
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  font-size: 1.4rem;
+`;
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const LogInButton = styled.button`
+  width: 36rem;
+  height: 5.5rem;
+  border-radius: 10px;
+  background: #000;
+  color: white;
+  border: none;
+  margin-bottom: 12px;
+`;
+const KakaoButton = styled.button`
+  width: 36rem;
+  height: 5.5rem;
+  border-radius: 10px;
+  background: #ffdb20;
+  border: none;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+`;
+
+const NaverButton = styled.button`
+  width: 36rem;
+  height: 5.5rem;
+  border-radius: 10px;
+  background: #00bf18;
+  color: white;
+  border: none;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const SignUpeButton = styled.button`
+  width: 36rem;
+  height: 5.5rem;
+  border-radius: 10px;
+  border: 2px solid #dfdfdf;
+  background: #fff;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Message = styled.span`
+  font-size: 0.8rem;
+  color: red;
+  display: flex;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
+`;
 
 export default Login;

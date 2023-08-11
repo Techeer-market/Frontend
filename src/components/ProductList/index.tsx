@@ -17,7 +17,7 @@ const Index = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        'http://54.180.142.116:8080/api/products/list',
+        'http://localhost:8080/api/products/list',
       );
       const { data } = response;
       setItems((prevState) => [...prevState, ...data]);
