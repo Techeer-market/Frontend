@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import profile from '../../assets/profile.png';
+import * as S from './styles';
 import axios from 'axios';
 import userID from '@/redux/userID';
 import { useSelector } from 'react-redux';
@@ -95,12 +95,12 @@ const CProfile = ({ getThumb }: any) => {
   };
 
   return (
-    <Div>
+    <S.Div>
       {/* <label htmlFor="CProfile">
       <div>changeProfileeee</div>
       <ChangeName src={Image} alt="none" />
       </label> */}
-      <ChangeProfile
+      <S.ChangeProfile
         id="CProfile"
         type="file"
         // background-image:src={profile}
@@ -113,127 +113,46 @@ const CProfile = ({ getThumb }: any) => {
       {/* userUuid로 구현 */}
       <span>(이름)</span> 
 
-      <InfoContainer>
-        <Section>
+      <S.InfoContainer>
+        <S.Section>
           <label htmlFor='email'>이메일</label>
-          <InputBox 
+          <S.InputBox 
             type='email'
             name='email'
             value={info?.email}
             // readOnly
           />
-          <ChangeBtn>변경</ChangeBtn>
-        </Section>
-        <Section>
+          <S.ChangeBtn>변경</S.ChangeBtn>
+        </S.Section>
+        <S.Section>
           <label htmlFor='password'>비밀번호</label>
-          <InputBox 
+          <S.InputBox 
             type='password'
             name='password'
             value={info?.password}
             // readOnly
           />
-          <ChangeBtn>변경</ChangeBtn>
-        </Section>
-        <Section>
+          <S.ChangeBtn>변경</S.ChangeBtn>
+        </S.Section>
+        <S.Section>
           <label htmlFor='birth'>생일</label>
-          <InputBox 
+          <S.InputBox 
             type='date'
             name='birth'
             value={info?.birth}
             // readOnly
           />
-          <ChangeBtn>변경</ChangeBtn>
-        </Section>
-        <Section>
-          <DelBtn onClick={handleLogout}>로그아웃</DelBtn>
-        </Section>
-        <Section>
-          <DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</DelBtn>
-        </Section>
-      </InfoContainer>
-    </Div>
+          <S.ChangeBtn>변경</S.ChangeBtn>
+        </S.Section>
+        <S.Section>
+          <S.DelBtn onClick={handleLogout}>로그아웃</S.DelBtn>
+        </S.Section>
+        <S.Section>
+          <S.DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</S.DelBtn>
+        </S.Section>
+      </S.InfoContainer>
+    </S.Div>
   );
 };
-
-const Div = styled.div`
-
-`
-
-const ChangeName = styled.img`
-  z-index: 2;
-  display: flex;
-  width: 14.3rem;
-  height: 14.3rem;
-  border-radius: 50%;
-  border: none;
-  background-color: white;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-  margin-top: -6.5rem;
-  background-color: rgba(255, 255, 255, 0);
-  color: black;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0px 1px 10px 1px rgba(124, 161, 255, 0.769);
-  }
-`;
-
-const ChangeProfile = styled.input`
-  z-index: 2;
-  display: flex;
-  width: 14.3rem;
-  height: 14.3rem;
-  // border-radius: 50%;
-  border: none;
-  background-color: white;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-  background-color: rgba(255, 255, 255, 0);
-  color: black;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0px 1px 10px 1px rgba(124, 161, 255, 0.769);
-  }
-`;
-
-const InfoContainer = styled.div`
-`
-
-const Section = styled.div`
-`
-
-const InputBox = styled.input`
-  appearance: none;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  border-radius: 0;
-  color: black;
-`
-
-const ChangeBtn = styled.button`
-color: #FD8944;
-font-size: 1rem;
-font-style: normal;
-font-weight: 700;
-// 브라우저 스타일 제거
-appearance: none;
-border: 0;
-padding: 0;
-background-color: transparent;
-`
-
-const DelBtn = styled.button`
-font-size: 1rem;
-font-style: normal;
-font-weight: 700;
-// 브라우저 스타일 제거
-appearance: none;
-border: 0;
-padding: 0;
-background-color: transparent;
-`
 
 export default CProfile;
