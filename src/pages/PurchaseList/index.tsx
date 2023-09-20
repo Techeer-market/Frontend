@@ -4,23 +4,28 @@ import NavBar from '@/components/NavBar';
 import styled from 'styled-components';
 import axios, { AxiosResponse } from 'axios';
 
-const PurchaseList = () => {
+interface Item {
+  title: string;
+  price: number;
+  image: string;
+}
+
+const PurchaseList: React.FC  = () => {
     const { userId } = useParams(); // 유저 아이디를 URL 파라미터에서 가져옵니다.
-    const [items, setItems] = useState([]); // 구매 내역을 저장할 상태 변수
-  
+    const [items, setItems] = useState<Item[]>([]); // 구매 내역을 저장할 상태 변수
+    
+    const fetchPurchaseList = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/users/purchase-products`);
+        setItems(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     useEffect(() => {
-      const fetchPurchaseList = async () => {
-        try {
-          const response = await axios.get(`API_URL/${userId}/purchases`); // API_URL을 실제 API 엔드포인트로 변경하고, userId를 사용하여 해당 유저의 구매 내역을 가져옵니다.
-          const purchaseList = response.data;
-          setItems(purchaseList);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
       fetchPurchaseList();
-    }, [userId]);
+    }, []);
 
   return (
     <MainDiv>
@@ -29,7 +34,7 @@ const PurchaseList = () => {
       <MainContainer className="list">
         <Section1>
           <HeaderText>Registered Product</HeaderText>
-          <KorText>등록 상품</KorText>
+          <KorText>판매 중</KorText>
           <ProductDiv>
             {items.map((item) => (
                 <Wrapper>

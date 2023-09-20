@@ -5,14 +5,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const SalesList: React.FC = () => {
-  const [items, setItems] = useState<Product[]>([]);
-  const [userUuid, setUserUuid] = useState("");
-
-
   interface Product {
     productUuid: string;
     title: string;
     image_url_1: string;
+    productState: 'SALE' | 'RESERVED';
     tradeType: 'CoolDeal' | 'GeneralDeal';
     price: number;
   }
@@ -22,6 +19,9 @@ const SalesList: React.FC = () => {
     GeneralDeal: '일반거래',
   };
 
+  const [items, setItems] = useState<Product[]>([]);
+  const [userUuid, setUserUuid] = useState("");
+
   const getItems = useCallback(async () => {
     try {
       const res = await axios.get(`http://54.180.142.116:8080/api/products/my/${userUuid}`);
@@ -30,6 +30,11 @@ const SalesList: React.FC = () => {
       console.log(error);
     }
   }, [userUuid]); //성한님 코드에 따라 userUuid에 대한 의존성 추가
+
+
+  // 판매중, 거래 완료 상품 분류
+  const onSaleItems = items.filter(item => item.productState === 'SALE');
+  const completedItems = items.filter(item => item.productState !== 'SALE');
 
   useEffect(() => {
     getItems();
@@ -43,7 +48,7 @@ const SalesList: React.FC = () => {
     }else{
         console.log("uuid 가 없습니다.")
     }
-}, []);
+  }, []);
 
   return (
     <MainDiv>
@@ -53,7 +58,7 @@ const SalesList: React.FC = () => {
         <MainContainer className="list">
           <Section1>
             <HeaderText>Registered Products</HeaderText>
-            <KorText>등록 상품</KorText>
+            <KorText>판매 중</KorText>
             <ProductDiv>
               {items && items.map((item) => (
                 <Div key={item.productUuid}>
@@ -74,6 +79,8 @@ const SalesList: React.FC = () => {
                 </Div>
               ))}
             </ProductDiv>
+            <KorText>등록 상품</KorText>
+            
           </Section1>
         </MainContainer>
       </Wrap>
