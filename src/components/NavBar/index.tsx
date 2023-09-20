@@ -118,7 +118,7 @@ const NavBar = () => {
             <ModuleLink to="/wishlist">위시리스트</ModuleLink>
             <ModuleLink to="/saleslist">판매 내역</ModuleLink>
             <ModuleLink to="/purchaselist">구매 내역</ModuleLink>
-            <ModuleLink to="/profile">프로필 관리</ModuleLink>
+            <ModuleLink to="/mypage">프로필 관리</ModuleLink>
           </Textbox>
         </ModuleWindow2>
       )}

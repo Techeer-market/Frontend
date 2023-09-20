@@ -4,7 +4,7 @@ import profile from '../../assets/profile.png';
 import * as S from './styles';
 import axios from 'axios';
 import userID from '@/redux/userID';
-import { useSelector } from 'react-redux';
+import EditInfoModal from '@/components/EditInfoModal';
 
 interface Info {
   email: string;
@@ -12,29 +12,30 @@ interface Info {
   birth: string;
 }
 
-const CProfile = ({ getThumb }: any) => {
-  const reader = new FileReader();
-  const [image, setImage] = useState<string>(profile);
-  const [info, setInfo] = useState<Info>();
-  // const [RD, setRD] = useState(reader.result);
-  // const Rd = reader.result;
-  const fileInput = useRef(null);
+const EditInfo = ({ getThumb }: any) => {
   const navigate = useNavigate();
+  const reader = new FileReader();
+  const [image, setImage] = useState(profile);
+  const [info, setInfo] = useState<Info>();
 
-  // const uuid = useSelector((state: any) => state.userIdSlice.value);
-  // const uuid = useSelector((state: RootState) => state.userIdSlice.value);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  const fileInput = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try{
         const response = await axios.get(`http://localhost:8080/api/users/${userID}`);
         setInfo(response.data);
+        if(response.data.image){
+          setImage(response.data.image);
+        }
       } catch(error) {
         console.error(error);
       }
     };
     fetchUserInfo();
-  }, [info]);
+  }, []);
 
   const onImgChange = (e: any) => {
     reader.readAsDataURL(e.target.files[0]);
@@ -64,7 +65,8 @@ const CProfile = ({ getThumb }: any) => {
     };
   };
 
-  const onInfoChange = (e:any) => {
+  // 정보 업데이트
+  const onInfoChange = () => {
     axios.patch(`http://localhost:8080/api/users/update`, info)
     .then(response=>{
       setInfo(response.data);
@@ -74,7 +76,15 @@ const CProfile = ({ getThumb }: any) => {
     })
   };
 
-  const handleLogout = (e:any) => {
+  const openModal = () => {
+    setIsOpenModal(true);
+  };
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
+
+  // 로그아웃
+  const handleLogout = () => {
     axios.post('http://localhost:8080/api/users/logout')
     .then(response => {
         navigate('/login');
@@ -84,6 +94,7 @@ const CProfile = ({ getThumb }: any) => {
     })
   };
 
+  // 회원탈퇴
   const handleDeleteUser = () => {
     axios.delete(`http://localhost:8080/api/users/${userID}`)
     .then(response => {
@@ -96,63 +107,59 @@ const CProfile = ({ getThumb }: any) => {
 
   return (
     <S.Div>
-      {/* <label htmlFor="CProfile">
-      <div>changeProfileeee</div>
-      <ChangeName src={Image} alt="none" />
-      </label> */}
+      <S.ProfileContainer>
+        <label htmlFor="Profile">
+          <S.ChangeName src={image} alt="Profile" />
+        </label>
+        {/* userUuid로 구현 */}
+        <S.Name>(이름)</S.Name> 
+      </S.ProfileContainer>
+
       <S.ChangeProfile
-        id="CProfile"
+        id="Profile"
         type="file"
-        // background-image:src={profile}
-        style={{ display: 'none' }}
-        accept="image/jpg,image.png,image/jpeg"
+        accept="image/jpg,image/png,image/jpeg"
         name="profile_img"
         onChange={onImgChange}
         ref={fileInput}
+        style={{ display: 'none' }}
       />
-      {/* userUuid로 구현 */}
-      <span>(이름)</span> 
 
       <S.InfoContainer>
         <S.Section>
-          <label htmlFor='email'>이메일</label>
-          <S.InputBox 
-            type='email'
-            name='email'
-            value={info?.email}
-            // readOnly
-          />
+          <div>
+            <S.Title>이메일</S.Title>
+            <S.InfoContent>{info?.email? info?.email : "....@gmail.com"}</S.InfoContent>
+          </div>
           <S.ChangeBtn>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
-          <label htmlFor='password'>비밀번호</label>
-          <S.InputBox 
-            type='password'
-            name='password'
-            value={info?.password}
-            // readOnly
-          />
+          <div>
+            <S.Title>비밀번호</S.Title>
+            <S.InfoContent>{info?.password? info?.password : "******"}</S.InfoContent>
+          </div>
           <S.ChangeBtn>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
-          <label htmlFor='birth'>생일</label>
-          <S.InputBox 
-            type='date'
-            name='birth'
-            value={info?.birth}
-            // readOnly
-          />
+          <div>
+            <S.Title>생일</S.Title>
+            <S.InfoContent>{info?.birth? info?.birth : "2001-01-01"}</S.InfoContent>
+          </div>
           <S.ChangeBtn>변경</S.ChangeBtn>
         </S.Section>
-        <S.Section>
+        {/* {isOpenModal && (
+          <EditInfoModal
+            closeModal={closeModal}
+          />
+        )} */}
+
+        <S.Section2>
           <S.DelBtn onClick={handleLogout}>로그아웃</S.DelBtn>
-        </S.Section>
-        <S.Section>
           <S.DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</S.DelBtn>
-        </S.Section>
+        </S.Section2>
       </S.InfoContainer>
     </S.Div>
   );
 };
 
-export default CProfile;
+export default EditInfo;
