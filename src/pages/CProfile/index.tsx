@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import profile from '../../assets/profile.png';
 import axios from 'axios';
 import userID from '@/redux/userID';
+import { useSelector } from 'react-redux';
 
 interface Info {
   email: string;
@@ -17,6 +19,10 @@ const CProfile = ({ getThumb }: any) => {
   // const [RD, setRD] = useState(reader.result);
   // const Rd = reader.result;
   const fileInput = useRef(null);
+  const navigate = useNavigate();
+
+  // const uuid = useSelector((state: any) => state.userIdSlice.value);
+  // const uuid = useSelector((state: RootState) => state.userIdSlice.value);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -53,14 +59,43 @@ const CProfile = ({ getThumb }: any) => {
         console.log(typeof reader.result);
         const aa: any = reader.result;
         setImage(aa);
-
         // setImage(e.target.files[0].name);
       }
     };
   };
 
+  const onInfoChange = (e:any) => {
+    axios.patch(`http://localhost:8080/api/users/update`, info)
+    .then(response=>{
+      setInfo(response.data);
+    })
+    .catch(error=>{
+      console.error(error);
+    })
+  };
+
+  const handleLogout = (e:any) => {
+    axios.post('http://localhost:8080/api/users/logout')
+    .then(response => {
+        navigate('/login');
+    })
+    .catch(error => {
+      console.error(error);
+    })
+  };
+
+  const handleDeleteUser = () => {
+    axios.delete(`http://localhost:8080/api/users/${userID}`)
+    .then(response => {
+      navigate('/login');
+    })
+    .catch(error => {
+      console.error(error);
+    })
+  };
+
   return (
-    <>
+    <Div>
       {/* <label htmlFor="CProfile">
       <div>changeProfileeee</div>
       <ChangeName src={Image} alt="none" />
@@ -109,10 +144,20 @@ const CProfile = ({ getThumb }: any) => {
           />
           <ChangeBtn>변경</ChangeBtn>
         </Section>
+        <Section>
+          <DelBtn onClick={handleLogout}>로그아웃</DelBtn>
+        </Section>
+        <Section>
+          <DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</DelBtn>
+        </Section>
       </InfoContainer>
-    </>
+    </Div>
   );
 };
+
+const Div = styled.div`
+
+`
 
 const ChangeName = styled.img`
   z-index: 2;
@@ -170,6 +215,17 @@ const InputBox = styled.input`
 
 const ChangeBtn = styled.button`
 color: #FD8944;
+font-size: 1rem;
+font-style: normal;
+font-weight: 700;
+// 브라우저 스타일 제거
+appearance: none;
+border: 0;
+padding: 0;
+background-color: transparent;
+`
+
+const DelBtn = styled.button`
 font-size: 1rem;
 font-style: normal;
 font-weight: 700;

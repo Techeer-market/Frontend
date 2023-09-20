@@ -79,8 +79,7 @@ const SalesList: React.FC = () => {
                 </Div>
               ))}
             </ProductDiv>
-            <KorText>등록 상품</KorText>
-            
+            {/* <KorText>거래 완료</KorText> */}
           </Section1>
         </MainContainer>
       </Wrap>

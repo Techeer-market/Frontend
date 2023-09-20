@@ -47,6 +47,7 @@ const PurchaseList: React.FC  = () => {
             ))}
           </ProductDiv>
         </Section1>
+        
       </MainContainer>
     </MainDiv>
   );
