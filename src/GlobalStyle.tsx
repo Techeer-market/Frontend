@@ -1,28 +1,10 @@
 //GlobalStyle.tsx
 import { createGlobalStyle } from 'styled-components';
-import LINESeedKRBd from '../src/fonts/LINESeedKRBd.ttf';
-import LINESeedKRRg from '../src/fonts/LINESeedKRRg.ttf';
-import LINESeedKRTh from '../src/fonts/LINESeedKRTh.ttf';
+// import LINESeedKRBd from '../src/fonts/LINESeedKRBd.ttf';
+// import LINESeedKRRg from '../src/fonts/LINESeedKRRg.ttf';
+// import LINESeedKRTh from '../src/fonts/LINESeedKRTh.ttf';
 
 const GlobalStyle = createGlobalStyle`
-@font-face{
-	font-family:"LINESeedKRBd";
-	src:local("LINESeedKRBd"),local("LINESeedKRBd");
-	font-style:normal;
-	src:url(${LINESeedKRBd}) format("truetype")
-}
-@font-face{
-	font-family:"LINESeedKRRg";
-	src:local("LINESeedKRRg"),local("LINESeedKRRg");
-	font-style:normal;
-	src:url(${LINESeedKRRg}) format("truetype")
-}
-@font-face{
-	font-family:"LINESeedKRTh";
-	src:local("LINESeedKRTh"),local("LINESeedKRTh");
-	font-style:normal;
-	src:url(${LINESeedKRTh}) format("truetype")
-}
 *{
 	box-sizing: border-box;
 }

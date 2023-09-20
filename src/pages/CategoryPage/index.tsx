@@ -13,7 +13,7 @@ import category9 from '@/assets/category9.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const index = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   return (
     <S.Container>
       <S.Nav>

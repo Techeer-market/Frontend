@@ -22,7 +22,7 @@ export const Grid = styled.div`
   grid-template-columns: 120px 120px 120px;
   grid-template-rows: 160px 160px 160px;
   gap: 5px;
-  margin-top: 200px;
+  margin-top: 170px;
   align-items: center;
   place-content: center;
   img {

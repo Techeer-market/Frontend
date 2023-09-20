@@ -11,6 +11,7 @@ const Post = lazy(() => import('./pages/Post'));
 // const SalesList = lazy(() => import('./pages/SalesList'));
 const Chatting = lazy(() => import('./pages/Chatting'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
+const SearchPage = lazy(() => import('@/pages/SearchPage'));
 
 const Router = () => {
   return (
@@ -25,6 +26,7 @@ const Router = () => {
         {/* <Route path="/saleslist" element={<SalesList />} /> */}
         <Route path="/chat" element={<Chatting />} />
         <Route path="/category" element={<CategoryPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </BrowserRouter>
   );
