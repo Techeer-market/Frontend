@@ -70,7 +70,6 @@ const Title = styled.h1`
     padding-bottom: 6rem;
     border-bottom: 0.07rem solid #000000;
     width: 92.68rem;
-
     font-size: 3rem;
     line-height: 4.1rem;
     font-weight: bold;

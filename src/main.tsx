@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import App from './App';
 import GlobalStyle from './GlobalStyle';
 import { Theme } from './theme';
+import Modal from 'react-modal';
 
 const persistor = persistStore(store);
 
@@ -22,3 +23,5 @@ root.render(
     {/* </PersistGate> */}
   </Provider>,
 );
+
+Modal.setAppElement('#root')
