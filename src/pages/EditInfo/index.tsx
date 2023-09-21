@@ -10,13 +10,19 @@ interface Info {
   email: string;
   password: string;
   birth: string;
+  image: string;
 }
 
 const EditInfo = ({ getThumb }: any) => {
   const navigate = useNavigate();
   const reader = new FileReader();
-  const [image, setImage] = useState(profile);
-  const [info, setInfo] = useState<Info>();
+
+  const [info, setInfo] = useState<Info>({
+    email: "",
+    password: "",
+    birth: "",
+    image: profile,
+  });
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [currentModalType, setCurrentModalType] = useState<"이메일" | "비밀번호" | "생일" | null>(null);
@@ -28,9 +34,6 @@ const EditInfo = ({ getThumb }: any) => {
       try{
         const response = await axios.get(`http://localhost:8080/api/users/${userID}`);
         setInfo(response.data);
-        if(response.data.image){
-          setImage(response.data.image);
-        }
       } catch(error) {
         console.error(error);
       }
@@ -39,39 +42,38 @@ const EditInfo = ({ getThumb }: any) => {
   }, []);
 
   const onImgChange = (e: any) => {
-    reader.readAsDataURL(e.target.files[0]);
-    console.log(e.target.files[0].name);
+    const selectedFile = e.target.files[0];
 
-    if (e.target.files[0].name) {
-      setImage(e.target.files[0].name);
-      console.log(e.target.files[0].name);
-      getThumb(e.target.files[0].name);
+    if (selectedFile) {
+      reader.readAsDataURL(selectedFile);
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          const newImage = reader.result as string;
+          onInfoChange('image', newImage);
+
+          setInfo({
+            ...info,
+            image: newImage,
+          });
+        }
+      };
     } else {
-      //업로드 취소
-      setImage(profile);
-      getThumb(profile);
-      return;
+      // 업로드가 취소
+      setInfo({
+        ...info,
+        image: profile,
+      });
+      onInfoChange('image', profile);
     }
-    console.log(reader.result);
-    // 화면에 프로필 사진 표시
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        console.log(reader);
-        // console.log(reader.result);
-        console.log(typeof reader.result);
-        const aa: any = reader.result;
-        setImage(aa);
-        // setImage(e.target.files[0].name);
-      }
-    };
   };
 
   // 정보 업데이트
-  const onInfoChange = (type: "이메일" | "비밀번호" | "생일" | null, newValue: string) => {
+  const onInfoChange = (type: "이메일" | "비밀번호" | "생일" | "image" | null, newValue: string) => {
     const updatedInfo = { ...info };
     if (type === '이메일') updatedInfo.email = newValue;
     if (type === '비밀번호') updatedInfo.password = newValue;
     if (type === '생일') updatedInfo.birth = newValue;
+    if (type === 'image') updatedInfo.image = newValue;
 
     axios.patch(`http://localhost:8080/api/users/update`, updatedInfo)
     .then(response=>{
@@ -118,7 +120,7 @@ const EditInfo = ({ getThumb }: any) => {
     <S.Div>
       <S.ProfileContainer>
         <label htmlFor="Profile">
-          <S.ChangeName src={image} alt="Profile" />
+          <S.ChangeName src={info.image} alt="Profile" />
         </label>
         {/* userUuid로 구현 */}
         <S.Name>(이름)</S.Name> 
