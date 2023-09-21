@@ -1,13 +1,10 @@
 import styled from 'styled-components';
 
-export const Div = styled.div`
-  padding: 12rem 4rem 0;
-`
 export const MyPageContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2.6rem;
-  padding-bottom: 5rem;
+  padding: 4rem 4rem 5rem;
 `;
 
 export const ChangeName = styled.img`
@@ -29,6 +26,10 @@ export const Name = styled.span`
   color: #000;
   font-size: 20px;
   font-weight: 700;
+`
+
+export const Div = styled.div`
+  padding: 0 4rem;
 `
 
 export const Title = styled.span`

@@ -5,6 +5,7 @@ import * as S from './styles';
 import axios from 'axios';
 import userID from '@/redux/userID';
 import EditInfoModal from '@/components/EditInfoModal';
+import TopNavBar from '@/components/TopNavBar';
 
 interface Info {
   email: string;
@@ -117,7 +118,8 @@ const EditInfo = ({ getThumb }: any) => {
   };
 
   return (
-    <S.Div>
+    <>
+      <TopNavBar page="계정/정보 관리"/>
       <S.ProfileContainer>
         <label htmlFor="Profile">
           <S.ChangeName src={info.image} alt="Profile" />
@@ -172,7 +174,7 @@ const EditInfo = ({ getThumb }: any) => {
           <S.DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</S.DelBtn>
         </S.Section2>
       </S.InfoContainer>
-    </S.Div>
+    </>
   );
 };
 

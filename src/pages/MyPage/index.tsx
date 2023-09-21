@@ -7,6 +7,7 @@ import Store from '../../assets/StoreIcon.svg'
 import Cart from '../../assets/CartIcon.svg'
 import axios from 'axios';
 import userID from '@/redux/userID';
+import TopNavBar from '@/components/TopNavBar';
 
 const MyPage = () => {
     const navigate = useNavigate();
@@ -26,7 +27,8 @@ const MyPage = () => {
         fetchUserInfo();
       }, []);
     return(
-        <S.Div>
+        <>
+            <TopNavBar page="마이페이지"/>
             <S.MyPageContainer>
                 <label htmlFor="Profile">
                     <S.ChangeName src={img} alt="Profile" />
@@ -35,29 +37,31 @@ const MyPage = () => {
                 <S.Name>(이름)</S.Name> 
             </S.MyPageContainer>
 
-            <S.Title>나의 거래</S.Title>
+            <S.Div>
+                <S.Title>나의 거래</S.Title>
 
-            <S.ItemBox>
-                <S.ClickArea onClick={()=>navigate('/wishlist')}>
-                    <img src={Heart} alt='heartIcon'/>
-                    <S.Item>좋아요 목록</S.Item>
-                </S.ClickArea>
-            </S.ItemBox>
-            <S.ItemBox>
-                <S.ClickArea onClick={()=>navigate('/saleslist')}>
-                    <img src={Store} alt='StoreIcon'/>
-                    <S.Item>판매 내역</S.Item>
-                </S.ClickArea>
-            </S.ItemBox>
-            <S.ItemBox>
-                <S.ClickArea onClick={()=>navigate('/purchaselist')}>
-                    <img src={Cart} alt='CartIcon'/>
-                    <S.Item>구매 내역</S.Item>
-                </S.ClickArea>
-            </S.ItemBox>
+                <S.ItemBox>
+                    <S.ClickArea onClick={()=>navigate('/wishlist')}>
+                        <img src={Heart} alt='heartIcon'/>
+                        <S.Item>좋아요 목록</S.Item>
+                    </S.ClickArea>
+                </S.ItemBox>
+                <S.ItemBox>
+                    <S.ClickArea onClick={()=>navigate('/saleslist')}>
+                        <img src={Store} alt='StoreIcon'/>
+                        <S.Item>판매 내역</S.Item>
+                    </S.ClickArea>
+                </S.ItemBox>
+                <S.ItemBox>
+                    <S.ClickArea onClick={()=>navigate('/purchaselist')}>
+                        <img src={Cart} alt='CartIcon'/>
+                        <S.Item>구매 내역</S.Item>
+                    </S.ClickArea>
+                </S.ItemBox>
 
-            <S.NavBtn onClick={()=>navigate('/edit_info')}>계정 / 정보 관리</S.NavBtn>
-        </S.Div>
+                <S.NavBtn onClick={()=>navigate('/edit_info')}>계정 / 정보 관리</S.NavBtn>
+            </S.Div>
+        </>
     )
 }
 
