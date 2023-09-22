@@ -2,18 +2,18 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios, { AxiosResponse } from 'axios';
-// import ProductList from '../../components/ProductList'
 import TopNavBar from '@/components/TopNavBar';
+import ProductForm from '../../components/ProductForm'
 
-interface Item {
+interface Product {
   title: string;
   price: number;
-  image: string;
+  image_url_1: string;
 }
 
 const PurchaseList: React.FC  = () => {
     const { userId } = useParams(); // 유저 아이디를 URL 파라미터에서 가져옵니다.
-    const [items, setItems] = useState<Item[]>([]);
+    const [items, setItems] = useState<Product[]>([]);
     
     const fetchPurchaseList = async () => {
       try {
@@ -36,7 +36,7 @@ const PurchaseList: React.FC  = () => {
       </BtnDiv>
 
       <ProductContainer>
-        {/* <ProductList/> */}
+        <ProductForm items={items}/>
       </ProductContainer>
     </>
   );
