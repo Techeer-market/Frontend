@@ -23,7 +23,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
   return (
     <S.Div>
         {items.map((item, index) => (
-        <S.Container>
+        <S.Container key={index}>
             <S.ProductContent>
                 <S.ImageDiv style={{ backgroundImage: `url(${item.image_url_1})` }} />
                 <S.TextDiv>

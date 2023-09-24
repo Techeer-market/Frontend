@@ -96,6 +96,10 @@ const WriteBtn = styled.button`
   color: #FFF;
   font-size: 14px;
   font-weight: 700;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 
 const Tabs = styled.ul`
@@ -114,6 +118,10 @@ const Tab = styled.li<{ isActive: boolean }>`
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 const TabContent = styled.div`

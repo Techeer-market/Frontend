@@ -58,6 +58,10 @@ const WriteBtn = styled.button`
   color: #FFF;
   font-size: 14px;
   font-weight: 700;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 
 const ProductContainer = styled.div`
