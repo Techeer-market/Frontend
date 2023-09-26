@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from '@/pages/CategoryPage/styles';
 import backBtn from '@/assets/backBtn.jpg';
 import { useNavigate } from 'react-router-dom';
-import { mainCategory, Category } from '@/constants/MainCategory';
+import { mainCategory, Category } from '@/constants/mainCategory';
 
 const index = () => {
   const navigate = useNavigate();
@@ -24,11 +24,7 @@ const index = () => {
         <S.Grid>
           {mainCategory.map((category: Category) => (
             <S.Item key={category.id}>
-              <img
-                alt={`To ${category.title}`}
-                loading="lazy"
-                src={category.image}
-              ></img>
+              <img alt={`To ${category.title}`} loading="lazy" src={category.image}></img>
               <S.Text>{category.title}</S.Text>
             </S.Item>
           ))}
