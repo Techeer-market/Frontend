@@ -30,41 +30,18 @@ time, mark, audio, video {
 	font-family: 'Inria Sans';
 	
 
-}
-/* @media (max-width: 1023px) {//데스크탑
-html { font-size: 62.5% } //10px
-}
+
+// @media (max-width: 1023px) {//데스크탑
+// html { font-size: 62.5% } //10px
+// }
  
-@media (max-width: 767px) { // 태블릿
-	html { font-size: 50%; }  //8px
-}
+// @media (max-width: 767px) { // 태블릿
+// 	html { font-size: 50%; }  //8px
+// }
  
-@media (max-width: 639px) { // 모바일
-	html { font-size: 37.5%; } //6px
-} */
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-`;
+// @media (max-width: 639px) { // 모바일
+// 	html { font-size: 37.5%; } //6px
+// }
+
 
 export default GlobalStyle;
