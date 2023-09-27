@@ -8,11 +8,17 @@ import App from './App';
 import GlobalStyle from './GlobalStyle';
 import { Theme } from './theme';
 import Modal from 'react-modal';
+import { worker } from "./mocks/browser";
 
 const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement);
+
+if (process.env.NODE_ENV === "development") {
+  worker.start()
+}
+
 root.render(
   <Provider store={store}>
     {/* <PersistGate loading={null} persistor={persistor}> */}

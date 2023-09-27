@@ -17,7 +17,7 @@ const PurchaseList: React.FC  = () => {
     
     const fetchPurchaseList = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/users/purchase-products`);
+        const response = await axios.get("http://localhost:8080/api/mypage/purchase");
         setItems(response.data);
       } catch (error) {
         console.error(error);
@@ -65,7 +65,7 @@ const WriteBtn = styled.button`
 `
 
 const ProductContainer = styled.div`
-  padding: 4.3rem 5rem 0;
+  padding: 3rem 2rem 0;
 `
 
 export default PurchaseList;

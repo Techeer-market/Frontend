@@ -18,7 +18,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
   const location = useLocation();
   const isSalsePage = location.pathname === '/saleslist';
 
-  const [dropDown, setDropDown] = useState(false);
+  const [dropDown, setDropDown] = useState<number | null>(null);
 
   return (
     <S.Div>
@@ -46,8 +46,8 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
                         <S.Value>5</S.Value>
                     </S.Part>
                     {/* 판매 내역 페이지일 경우에만 보이도록 함 */}
-                    {isSalsePage && <S.MenuBar onClick={() => {setDropDown(!dropDown)}}><S.Circle/></S.MenuBar>}
-                    {dropDown && 
+                    {isSalsePage && <S.MenuBar onClick={() => {setDropDown(dropDown === index ? null : index)}}><S.Circle/></S.MenuBar>}
+                    {dropDown === index && 
                         <S.Dropdown>
                             <S.DropdownItem>거래 완료로 변경</S.DropdownItem>
                             <S.DropdownItem>게시글 수정</S.DropdownItem>

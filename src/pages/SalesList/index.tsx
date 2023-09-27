@@ -30,7 +30,7 @@ const SalesList: React.FC = () => {
 
   const fetchSalseList = useCallback(async () => {
     try {
-      const res = await axios.get(`http://54.180.142.116:8080/api/products/my/${userUuid}`);
+      const res = await axios.get("http://localhost:8080/api/mypage/sell");
       setItems(res.data);
     } catch (error) {
       console.log(error);
