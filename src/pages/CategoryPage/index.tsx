@@ -24,7 +24,14 @@ const index = () => {
         <S.Grid>
           {mainCategory.map((category: Category) => (
             <S.Item key={category.id}>
-              <img alt={`To ${category.title}`} loading="lazy" src={category.image}></img>
+              <img
+                alt={`To ${category.title}`}
+                loading="lazy"
+                src={category.image}
+                onClick={() => {
+                  fetch('/api/test');
+                }}
+              ></img>
               <S.Text>{category.title}</S.Text>
             </S.Item>
           ))}

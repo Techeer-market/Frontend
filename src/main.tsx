@@ -7,18 +7,17 @@ import { ThemeProvider } from 'styled-components';
 import App from './App';
 import GlobalStyle from './GlobalStyle';
 import { Theme } from './theme';
+import { worker } from './mocks/worker';
 
-const persistor = persistStore(store);
-
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement);
+if (process.env.NODE_ENV === 'development') {
+  worker.start();
+}
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <Provider store={store}>
-    {/* <PersistGate loading={null} persistor={persistor}> */}
-      <ThemeProvider theme={Theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
-    {/* </PersistGate> */}
+    <ThemeProvider theme={Theme}>
+      <GlobalStyle />
+      <App />
+    </ThemeProvider>
   </Provider>,
 );
