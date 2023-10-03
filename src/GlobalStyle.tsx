@@ -28,20 +28,18 @@ time, mark, audio, video {
 	vertical-align: baseline;
 	font-size: 62.5%;
 	font-family: 'Inria Sans';
-	
-
+}`;
 
 // @media (max-width: 1023px) {//데스크탑
 // html { font-size: 62.5% } //10px
 // }
- 
+
 // @media (max-width: 767px) { // 태블릿
 // 	html { font-size: 50%; }  //8px
 // }
- 
+
 // @media (max-width: 639px) { // 모바일
 // 	html { font-size: 37.5%; } //6px
 // }
-
 
 export default GlobalStyle;

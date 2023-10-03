@@ -15,7 +15,7 @@ const SearchPage = lazy(() => import('@/pages/SearchPage'));
 // const WishList = lazy(() => import('./pages/')) // 위시리스트
 const PurchaseList = lazy(() => import('@/pages/PurchaseList'));
 const SalesList = lazy(() => import('@/pages/SalesList'));
-const Chatting = lazy(() => import('./pages/Chatting'));
+// const Chatting = lazy(() => import('./pages/Chatting'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
 
@@ -33,10 +33,10 @@ const Router = () => {
         {/* <Route path="/edit" element={<EditPost />} /> */}
         {/* <Route path="/wishlist" element={<WishList/>} /> */}
         <Route path="/saleslist" element={<SalesList />} />
-        <Route path="/purchaselist" element={<PurchaseList/>} />
-        <Route path="/mypage" element={<MyPage/>} />
-        <Route path="/edit_info" element={<EditInfo/>} />
-        <Route path="/chat" element={<Chatting />} />
+        <Route path="/purchaselist" element={<PurchaseList />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/edit_info" element={<EditInfo />} />
+        {/* <Route path="/chat" element={<Chatting />} /> */}
         <Route path="/category" element={<CategoryPage />} />
         <Route path="/search" element={<SearchPage />} />
       </Routes>
