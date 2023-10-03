@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
+import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
 import ProductForm from '../../components/ProductForm'
 
@@ -33,7 +33,7 @@ const SalesList: React.FC = () => {
       const res = await axios.get("http://localhost:8080/api/mypage/sell");
       setItems(res.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [userUuid]); //성한님 코드에 따라 userUuid에 대한 의존성 추가
 
@@ -59,76 +59,25 @@ const SalesList: React.FC = () => {
   return (
     <>
       <TopNavBar page='나의 판매 내역'/>
-      <BtnDiv>
-        <WriteBtn>글쓰기</WriteBtn>
-      </BtnDiv>
+      <S.BtnDiv>
+        <S.WriteBtn>글쓰기</S.WriteBtn>
+      </S.BtnDiv>
 
-      <Tabs>
-        <Tab isActive={activeIndex === 0} onClick={()=>tabClickHandler(0)}> 판매 중 </Tab>
-        <Tab isActive={activeIndex === 1} onClick={()=>tabClickHandler(1)}> 거래 완료 </Tab>
-      </Tabs>
+      <S.Tabs>
+        <S.Tab isActive={activeIndex === 0} onClick={()=>tabClickHandler(0)}> 판매 중 </S.Tab>
+        <S.Tab isActive={activeIndex === 1} onClick={()=>tabClickHandler(1)}> 거래 완료 </S.Tab>
+      </S.Tabs>
 
-      <TabContent>
+      <S.TabContent>
         { activeIndex === 0? (
             <ProductForm items={onSaleItems}/>
           ) : (
             <ProductForm items={completedItems}/>
           )
         }
-      </TabContent>
+      </S.TabContent>
     </>
   );
 };
-
-const BtnDiv = styled.div`
-  padding: 2.8rem 2.2rem 0;
-`
-
-const WriteBtn = styled.button`
-  width: 106px;
-  height: 35px;
-  appearance: none;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  border-radius: 10px;
-  background: #FD8944;
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 700;
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`
-
-const Tabs = styled.ul`
-  display: flex;
-  padding: 6.2rem 3rem 0;
-  list-style: none;
-  cursor: pointer;
-`;
-
-const Tab = styled.li<{ isActive: boolean }>`
-  flex: 1;
-  text-align: center;
-  padding-bottom: 1rem;
-  border-bottom: ${props => (props.isActive ? '1px solid #000' : '0.5px solid #7A7676')};
-  color: ${props => (props.isActive ? '#000' : ' #7A7676')};
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 700;
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`;
-
-const TabContent = styled.div`
-  padding: 2rem 3rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
 
 export default SalesList;

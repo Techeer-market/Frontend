@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import * as S from './styles';
 import axios, { AxiosResponse } from 'axios';
 import TopNavBar from '@/components/TopNavBar';
 import ProductForm from '../../components/ProductForm'
@@ -31,41 +31,15 @@ const PurchaseList: React.FC  = () => {
   return (
     <>
       <TopNavBar page="나의 구매 내역"/>
-      <BtnDiv>
-        <WriteBtn>글쓰기</WriteBtn>
-      </BtnDiv>
+      <S.BtnDiv>
+        <S.WriteBtn>글쓰기</S.WriteBtn>
+      </S.BtnDiv>
 
-      <ProductContainer>
+      <S.ProductContainer>
         <ProductForm items={items}/>
-      </ProductContainer>
+      </S.ProductContainer>
     </>
   );
 };
-
-const BtnDiv = styled.div`
-  padding: 2.8rem 2.2rem 0;
-`
-
-const WriteBtn = styled.button`
-  width: 106px;
-  height: 35px;
-  appearance: none;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  border-radius: 10px;
-  background: #FD8944;
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 700;
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`
-
-const ProductContainer = styled.div`
-  padding: 3rem 2rem 0;
-`
 
 export default PurchaseList;

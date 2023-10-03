@@ -26,7 +26,7 @@ const EditInfo = ({ getThumb }: any) => {
   });
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [currentModalType, setCurrentModalType] = useState<"이메일" | "비밀번호" | "생일" | null>(null);
+  const [currentModalType, setCurrentModalType] = useState<"email" | "password" | "birth" | null>(null);
 
   const fileInput = useRef<HTMLInputElement | null>(null);
 
@@ -69,11 +69,11 @@ const EditInfo = ({ getThumb }: any) => {
   };
 
   // 정보 업데이트
-  const onInfoChange = (type: "이메일" | "비밀번호" | "생일" | "image" | null, newValue: string) => {
+  const onInfoChange = (type: "email" | "password" | "birth" | "image" | null, newValue: string) => {
     const updatedInfo = { ...info };
-    if (type === '이메일') updatedInfo.email = newValue;
-    if (type === '비밀번호') updatedInfo.password = newValue;
-    if (type === '생일') updatedInfo.birth = newValue;
+    if (type === 'email') updatedInfo.email = newValue;
+    if (type === 'password') updatedInfo.password = newValue;
+    if (type === 'birth') updatedInfo.birth = newValue;
     if (type === 'image') updatedInfo.image = newValue;
 
     axios.patch(`http://localhost:8080/api/users/update`, updatedInfo)
@@ -87,7 +87,7 @@ const EditInfo = ({ getThumb }: any) => {
     })
   };
 
-  const openModal = (type: "이메일" | "비밀번호" | "생일") => {
+  const openModal = (type: "email" | "password" | "birth") => {
     setCurrentModalType(type);
     setIsOpenModal(true);
   };
@@ -144,21 +144,21 @@ const EditInfo = ({ getThumb }: any) => {
             <S.Title>이메일</S.Title>
             <S.InfoContent>{info?.email? info?.email : "....@gmail.com"}</S.InfoContent>
           </div>
-          <S.ChangeBtn onClick={() => openModal('이메일')}>변경</S.ChangeBtn>
+          <S.ChangeBtn onClick={() => openModal('email')}>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
           <div>
             <S.Title>비밀번호</S.Title>
             <S.InfoContent>{info?.password? info?.password : "******"}</S.InfoContent>
           </div>
-          <S.ChangeBtn onClick={() => openModal('비밀번호')}>변경</S.ChangeBtn>
+          <S.ChangeBtn onClick={() => openModal('password')}>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
           <div>
             <S.Title>생일</S.Title>
             <S.InfoContent>{info?.birth? info?.birth : "2001-01-01"}</S.InfoContent>
           </div>
-          <S.ChangeBtn onClick={() => openModal('생일')}>변경</S.ChangeBtn>
+          <S.ChangeBtn onClick={() => openModal('birth')}>변경</S.ChangeBtn>
         </S.Section>
         
         <EditInfoModal
