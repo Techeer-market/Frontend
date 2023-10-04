@@ -7,11 +7,15 @@ import { ThemeProvider } from 'styled-components';
 import App from './App';
 import GlobalStyle from './GlobalStyle';
 import { Theme } from './theme';
-import { worker } from './mocks/worker';
+import Modal from 'react-modal';
+import { worker } from "./mocks/browser";
+
+const persistor = persistStore(store);
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
 }
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <Provider store={store}>
@@ -21,3 +25,5 @@ root.render(
     </ThemeProvider>
   </Provider>,
 );
+
+Modal.setAppElement('#root')
