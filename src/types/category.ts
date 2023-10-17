@@ -1,5 +1,5 @@
 export type CategoryData = {
-  id: string;
+  id: number;
   title: string;
   image: string;
 };

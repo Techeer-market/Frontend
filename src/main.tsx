@@ -1,23 +1,19 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import store from '@/redux/configStore';
-import { persistStore } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
-import { ThemeProvider } from 'styled-components';
 import App from './App';
-import GlobalStyle from './GlobalStyle';
-import { Theme } from './theme';
 import { worker } from './mocks/worker';
+import { BrowserRouter } from 'react-router-dom';
+import GlobalStyle from './GlobalStyle';
 
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.DEV) {
   worker.start();
 }
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <Provider store={store}>
-    <ThemeProvider theme={Theme}>
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <BrowserRouter>
       <GlobalStyle />
       <App />
-    </ThemeProvider>
-  </Provider>,
+    </BrowserRouter>
+  </React.StrictMode>,
 );

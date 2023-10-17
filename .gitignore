@@ -31,3 +31,4 @@ dist-ssr
 
 # Api Keys
 .env
+src/Router.tsx

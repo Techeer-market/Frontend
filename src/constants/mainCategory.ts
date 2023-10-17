@@ -7,56 +7,57 @@ import category6 from '@/assets/category6.jpg';
 import category7 from '@/assets/category7.jpg';
 import category8 from '@/assets/category8.jpg';
 import category9 from '@/assets/category9.jpg';
+import { CategoryData } from '@/types/category';
 
 export interface Category {
-  id: string;
+  id: number;
   title: string;
   image: string;
 }
 
-export const mainCategory: Category[] = [
+export const mainCategory: CategoryData[] = [
   {
-    id: 'category1',
+    id: 1,
     title: '디지털기기',
     image: category1,
   },
   {
-    id: 'category2',
+    id: 2,
     title: '여성의류',
     image: category2,
   },
   {
-    id: 'category3',
+    id: 3,
     title: '남성의류/잡화',
     image: category3,
   },
   {
-    id: 'category4',
+    id: 4,
     title: '뷰티/미용',
     image: category4,
   },
   {
-    id: 'category5',
+    id: 5,
     title: '여성잡화',
     image: category5,
   },
   {
-    id: 'category6',
+    id: 6,
     title: '생활가전',
     image: category6,
   },
   {
-    id: 'category7',
+    id: 7,
     title: '생활/주방',
     image: category7,
   },
   {
-    id: 'category8',
+    id: 8,
     title: '취미/게임/음반',
     image: category8,
   },
   {
-    id: 'category9',
+    id: 9,
     title: '도서',
     image: category9,
   },
