@@ -1,75 +1,71 @@
-// import { rest } from 'msw';
-// import { CategoryData } from '@/types/category';
+import { rest } from 'msw';
+import { CategoryData, CategoryNumData } from '@/types/category';
+import { mainCategory } from '@/constants/mainCategory';
 
-// const dummy = '테스트데이터';
-// const category: CategoryData[] = [
-//   {
-//     id: 'category1',
-//     title: '디지털기기',
-//     image: 'category1',
-//   },
-//   {
-//     id: 'category2',
-//     title: '여성의류',
-//     image: 'category2',
-//   },
-//   {
-//     id: 'category3',
-//     title: '남성의류/잡화',
-//     image: 'category3',
-//   },
-//   {
-//     id: 'category4',
-//     title: '뷰티/미용',
-//     image: 'category4',
-//   },
-//   {
-//     id: 'category5',
-//     title: '여성잡화',
-//     image: 'category5',
-//   },
-//   {
-//     id: 'category6',
-//     title: '생활가전',
-//     image: 'category6',
-//   },
-//   {
-//     id: 'category7',
-//     title: '생활/주방',
-//     image: 'category7',
-//   },
-//   {
-//     id: 'category8',
-//     title: '취미/게임/음반',
-//     image: 'category8',
-//   },
-//   {
-//     id: 'category9',
-//     title: '도서',
-//     image: 'category9',
-//   },
-// ];
+const dummy = '테스트데이터';
+const category: CategoryData[] = [
+  {
+    id: 1,
+    title: '디지털기기',
+    image: 'category1',
+  },
+  {
+    id: 2,
+    title: '여성의류',
+    image: 'category2',
+  },
+  {
+    id: 3,
+    title: '남성의류/잡화',
+    image: 'category3',
+  },
+  {
+    id: 4,
+    title: '뷰티/미용',
+    image: 'category4',
+  },
+  {
+    id: 5,
+    title: '여성잡화',
+    image: 'category5',
+  },
+  {
+    id: 6,
+    title: '생활가전',
+    image: 'category6',
+  },
+  {
+    id: 7,
+    title: '생활/주방',
+    image: 'category7',
+  },
+  {
+    id: 8,
+    title: '취미/게임/음반',
+    image: 'category8',
+  },
+  {
+    id: 9,
+    title: '도서',
+    image: 'category9',
+  },
+];
 
-// export const handlers = [
-//   rest.get('/api/test', async (req, res, ctx) => {
-//     return res(ctx.status(200), ctx.json(dummy));
-//   }),
-//   rest.get('/api/category', (req, res, ctx) => {
-//     const categoryParam = req.url.searchParams.get('category1');
-//     if (categoryParam) {
-//       const found = category.find((category) => category.id === categoryParam);
-//       if (found) {
-//         return res(ctx.status(200), ctx.json(found));
-//       } else {
-//         return res(ctx.status(404), ctx.json({ message: '잘못된 경로입니다.' }));
-//       }
-//     }
-//   }),
-// ];
+export const handlers = [
+  rest.get(`/category/:id=${category.id}`, async (req, res, ctx) => {
+    const categoryId = parseInt(req.params.category.id);
+    const filterCategory = category.find((categoryId) => categoryId.id === mainCategory);
+    if (filterCategory) {
+      return res(ctx.status(200), ctx.json(filterCategory));
+    } else {
+      return res(ctx.status(404), ctx.json({ message: '카테고리 못찾겠어여' }));
+    }
+  }),
+];
 
 // mock/api로 분리
-import wishResultHandler from './api/wishResultHandler';
-import salseResultHandler from './api/salseResultHandler';
-import purchaseResultHandler from './api/purchaseResultHandler';
+// import wishResultHandler from './api/wishResultHandler';
+// import salseResultHandler from './api/salseResultHandler';
+// import purchaseResultHandler from './api/purchaseResultHandler';
 
-export const handlers = [...wishResultHandler, ...salseResultHandler, ...purchaseResultHandler];
+// export const handlers = [...wishResultHandler, ...salseResultHandler, ...purchaseResultHandler];

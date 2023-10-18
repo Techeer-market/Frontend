@@ -6,6 +6,9 @@ import { mainCategory, Category } from '@/constants/mainCategory';
 
 const index = () => {
   const navigate = useNavigate();
+  const handleCategory = (category: number) => {
+    navigate(`/category/id=${category}`);
+  };
   return (
     <S.Container>
       <S.Nav>
@@ -29,7 +32,7 @@ const index = () => {
                 loading="lazy"
                 src={category.image}
                 onClick={() => {
-                  fetch('/api/test');
+                  handleCategory(category.id);
                 }}
               ></img>
               <S.Text>{category.title}</S.Text>
