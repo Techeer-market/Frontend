@@ -68,7 +68,6 @@ export const ChangeBtn = styled.button`
   background-color: transparent;
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
   }
 `
 
@@ -91,6 +90,5 @@ export const DelBtn = styled.button`
   &:hover {
     cursor: pointer;
     color: #828385;
-    text-decoration: underline;
   }
 `

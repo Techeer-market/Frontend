@@ -6,17 +6,17 @@ import Heart from '../../assets/HeartIcon.svg'
 import Store from '../../assets/StoreIcon.svg'
 import Cart from '../../assets/CartIcon.svg'
 import axios from 'axios';
-import userID from '@/redux/userID';
 import TopNavBar from '@/components/TopNavBar';
+import { BASE_URL } from '@/constants/baseURL';
 
-const MyPage = () => {
+const MyPage: React.FC = () => {
     const navigate = useNavigate();
     const [img, setImg] = useState(profile);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
           try{
-            const response = await axios.get(`http://localhost:8080/api/users/${userID}`);
+            const response = await axios.get(`${BASE_URL}/users`);
             if(response.data.image){
                 setImg(response.data.image);
             }

@@ -18,7 +18,6 @@ export const WriteBtn = styled.button`
   font-weight: 700;
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
   }
 `
 
@@ -33,14 +32,13 @@ export const Tab = styled.li<{ isActive: boolean }>`
   flex: 1;
   text-align: center;
   padding-bottom: 1rem;
-  border-bottom: ${props => (props.isActive ? '1px solid #000' : '0.5px solid #7A7676')};
+  border-bottom: ${props => (props.isActive ? '1px solid #000' : '0.5px solid #D9D9D9')};
   color: ${props => (props.isActive ? '#000' : ' #7A7676')};
   font-size: 15px;
   font-style: normal;
   font-weight: 700;
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
   }
 `;
 

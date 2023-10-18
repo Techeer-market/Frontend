@@ -6,6 +6,7 @@ import axios from 'axios';
 import userID from '@/redux/userID';
 import EditInfoModal from '@/components/EditInfoModal';
 import TopNavBar from '@/components/TopNavBar';
+import { BASE_URL } from '@/constants/baseURL';
 
 interface Info {
   email: string;
@@ -33,7 +34,7 @@ const EditInfo = ({ getThumb }: any) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try{
-        const response = await axios.get(`http://localhost:8080/api/users/${userID}`);
+        const response = await axios.get(`${BASE_URL}/users/${userID}`);
         setInfo(response.data);
       } catch(error) {
         console.error(error);
@@ -76,7 +77,7 @@ const EditInfo = ({ getThumb }: any) => {
     if (type === 'birth') updatedInfo.birth = newValue;
     if (type === 'image') updatedInfo.image = newValue;
 
-    axios.patch(`http://localhost:8080/api/users/update`, updatedInfo)
+    axios.patch(`${BASE_URL}/users/update`, updatedInfo)
     .then(response=>{
       setInfo(response.data);
       alert('정상적으로 변경되었습니다.');
@@ -97,7 +98,7 @@ const EditInfo = ({ getThumb }: any) => {
 
   // 로그아웃
   const handleLogout = () => {
-    axios.post('http://localhost:8080/api/users/logout')
+    axios.post(`${BASE_URL}/users/logout`)
     .then(response => {
         navigate('/login');
     })
@@ -108,7 +109,7 @@ const EditInfo = ({ getThumb }: any) => {
 
   // 회원탈퇴
   const handleDeleteUser = () => {
-    axios.delete(`http://localhost:8080/api/users/${userID}`)
+    axios.delete(`${BASE_URL}/users/${userID}`)
     .then(response => {
       navigate('/login');
     })

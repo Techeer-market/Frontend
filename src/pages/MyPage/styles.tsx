@@ -47,37 +47,36 @@ export const ItemBox = styled.div`
   padding-top: 2rem;
 `
 export const ClickArea = styled.div`
-  width: 100px;
-  height: 30px;
+  width: 100%;
   display: flex;
   align-items: center;
-  transition: color 0.3s;
+  padding: 1rem 0;
+
+  &:hover {
+    cursor: pointer;
+    // background-color: rgba(217, 217, 217, 0.15);
+  }
 `;
 
 export const Item = styled.span`
   position: absolute;
-  left: 34px;
+  left: 3.4rem;
   color: #000;
   font-size: 15px;
   font-weight: 400;
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
 `
 
 export const NavBtn = styled.button`
   margin-top: 6rem;
-  height: 3rem;
   font-size: 15px;
   font-weight: 700;
   appearance: none;
   border: 0;
   padding: 0;
   background-color: transparent;
+
   &:hover {
       cursor: pointer;
       color: #828385;
-      text-decoration: underline;
   }
 `

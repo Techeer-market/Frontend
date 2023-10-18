@@ -1,8 +1,21 @@
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 export const Div = styled.div`
     width: 100%;
 `
+
+const fadeOutAnimation = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(30%);
+    padding-top: -12rem;
+    display: none;
+  }
+`;
 
 export const Container = styled.div`
     position: relative;
@@ -10,7 +23,11 @@ export const Container = styled.div`
     height: 12rem;
     border-radius: 10px;
     background-color: rgba(217, 217, 217, 0.15);
-    margin-bottom: 25px;
+    margin-bottom: 1.6rem;
+
+    &.fade-out {
+        animation: ${fadeOutAnimation} 300ms forwards;
+    }
 `;
 
 export const ProductContent = styled.div`
@@ -20,7 +37,7 @@ export const ProductContent = styled.div`
     padding-left: 1rem;
 `;
 
-export const ImageDiv = styled.image`
+export const ImageDiv = styled.div`
     width: 9rem;
     height: 9rem;
     border-radius: 10px;
@@ -80,7 +97,15 @@ export const Image = styled.svg`
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: contain;
-    stroke: rgba(130, 131, 133, 1)
+
+    transform: scale(1);
+    transition: transform 0.3s ease-out;
+    cursor: pointer;
+
+    // 마우스 클릭 시 스케일 효과 적용
+    &:active {
+        transform: scale(1.2);
+    }
 `
 
 export const Value = styled.span`
@@ -128,13 +153,12 @@ export const Dropdown = styled.div`
     position: absolute;
     top: 100%;
     left: 0;
-    width: 11rem;
+    width: 10rem;
     height: 11rem;
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    padding-left: 12px;
     border-radius: 10px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
     background-color: #fff;
@@ -142,13 +166,13 @@ export const Dropdown = styled.div`
 `
 
 export const DropdownItem = styled.span`
-    padding: 1rem 0;
+    width: 100%;
+    padding: 1rem 1rem;
     font-size: 10px;
     font-weight: 400;
 
     &:hover {
         cursor: pointer;
-        transform: scale(1.1);
-        transition: all 0.3s ease-out;
+        background-color: rgba(217, 217, 217, 0.15);
     }
 `

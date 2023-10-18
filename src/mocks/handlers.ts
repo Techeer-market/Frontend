@@ -64,7 +64,8 @@ export const handlers = [
 ];
 
 // mock/api로 분리
+// import wishResultHandler from './api/wishResultHandler';
 // import salseResultHandler from './api/salseResultHandler';
 // import purchaseResultHandler from './api/purchaseResultHandler';
 
-// export const handlers = [...salseResultHandler, ...purchaseResultHandler];
+// export const handlers = [...wishResultHandler, ...salseResultHandler, ...purchaseResultHandler];
