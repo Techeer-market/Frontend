@@ -28,7 +28,7 @@ export const routes = [
   { path: '/mypage', element: <MyPage /> },
   { path: '/edit_info', element: <EditInfo /> },
   { path: '/category', element: <CategoryPage /> },
-  { path: `/category/:id=${mainCategory.id}`, element: <Detail /> },
+  { path: `/category/:category`, element: <Detail /> },
   { path: '/search', element: <SearchPage /> },
   { path: '/detail', element: <Detail /> },
 ];

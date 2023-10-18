@@ -6,7 +6,6 @@ import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
 import { Theme } from './theme';
 import Modal from 'react-modal';
-const persistor = persistStore(store);
 
 if (import.meta.env.DEV) {
   worker.start();
@@ -21,4 +20,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   </React.StrictMode>,
 );
 
-Modal.setAppElement('#root')
+Modal.setAppElement('#root');
