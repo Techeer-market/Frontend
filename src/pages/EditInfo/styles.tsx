@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 
-export const Div = styled.div`
-  padding-top: 12rem;
-
-`
 export const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2.6rem;
-  padding: 0 4rem 5rem;
+  padding: 4rem 4rem 5rem;
 `;
 
 export const ChangeName = styled.img`
@@ -72,7 +68,7 @@ export const ChangeBtn = styled.button`
   background-color: transparent;
   &:hover {
     cursor: pointer;
-    border: 1px solid #D9D9D9;
+    text-decoration: underline;
   }
 `
 
@@ -95,5 +91,6 @@ export const DelBtn = styled.button`
   &:hover {
     cursor: pointer;
     color: #828385;
+    text-decoration: underline;
   }
 `
