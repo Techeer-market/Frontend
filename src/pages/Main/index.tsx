@@ -1,5 +1,5 @@
 import NavBar from '@/components/NavBar';
-import ProductList from '@/components/ProductList';
+// import ProductList from '@/components/ProductList';
 import * as S from './styles';
 
 const index = () => {
@@ -11,9 +11,7 @@ const index = () => {
           <S.KorText>방금 올라온 상품이에요 !</S.KorText>
           <S.TextLine />
         </S.TextDiv>
-        <S.ProductDiv className="list-item">
-          <ProductList />
-        </S.ProductDiv>
+        <S.ProductDiv className="list-item"></S.ProductDiv>
       </S.MainContainer>
     </S.MainDiv>
   );
