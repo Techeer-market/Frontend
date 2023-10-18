@@ -35,33 +35,40 @@ const ProductForm: React.FC<ProductProps> = ({ items, refreshProductList }) => {
     }, 300);
   };
 
+  // 좋아요 상태 업데이트
+  const updateLikedByUuid = (productUuid: string, userHasLiked: boolean) => {
+    return products.map(item => 
+      item.productUuid === productUuid ?
+      {
+        ...item,
+        userHasLiked: !userHasLiked,
+        likeCount: userHasLiked ? item.likeCount - 1 : item.likeCount + 1,
+      }
+      : item
+    );
+  };
+
   // 좋아요 버튼 핸들러
-  const likedHandler = async (currentProduct: Product) => {
+  const likedHandler = async ({ productUuid, userHasLiked }: Product) => {
     try {
-      if (currentProduct.userHasLiked) {
+      if (userHasLiked) {
         // 좋아요 취소
-        await axios.delete(`${BASE_URL}/products/like/${currentProduct.productUuid}`);
+        await axios.delete(`${BASE_URL}/products/like/${productUuid}`);
         
         if(isWishPage) {
-          fadeOutHandler(currentProduct.productUuid, () => {
-            const updatedItems = products.filter(item => item.productUuid !== currentProduct.productUuid);
+          fadeOutHandler(productUuid, () => {
+            const updatedItems = products.filter(item => item.productUuid !== productUuid);
             setProducts(updatedItems);
           })
         } else {
-          const updatedItems = products.map(item => 
-            item.productUuid === currentProduct.productUuid ?
-              { ...item, userHasLiked: false, likeCount: item.likeCount - 1 } : item
-          );
+          const updatedItems = updateLikedByUuid(productUuid, true);
           setProducts(updatedItems);
         }
       } else {
         // 좋아요 누르기
-        await axios.post(`${BASE_URL}/products/like/${currentProduct.productUuid}`);
+        await axios.post(`${BASE_URL}/products/like/${productUuid}`);
       
-        const updatedItems = products.map(item => 
-          item.productUuid === currentProduct.productUuid ?
-            { ...item, userHasLiked: true, likeCount: item.likeCount + 1 } : item
-        );
+        const updatedItems = updateLikedByUuid(productUuid, false);
         setProducts(updatedItems);
       }
     } catch (error) {
