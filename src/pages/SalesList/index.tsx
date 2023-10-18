@@ -2,59 +2,49 @@ import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
-import ProductForm from '../../components/ProductForm'
-
-interface Product {
-  productUuid: string;
-  title: string;
-  image_url_1: string;
-  productState: 'SALE' | 'RESERVED';
-  tradeType: 'CoolDeal' | 'GeneralDeal';
-  price: number;
-}
+import ProductForm from '@/components/ProductForm'
+import { Product } from '@/types/product'
+import { BASE_URL } from '@/constants/baseURL';
 
 const SalesList: React.FC = () => {
-  const tradeTypeMap = {
-    CoolDeal: '쿨거래',
-    GeneralDeal: '일반거래',
-  };
-
   const [items, setItems] = useState<Product[]>([]);
-  const [userUuid, setUserUuid] = useState("");
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const tabClickHandler=( index: number )=>{
-    setActiveIndex(index)
+  const tabClickHandler = (index: number) => {
+    setActiveIndex(index);
   }
 
-  const fetchSalseList = useCallback(async () => {
+  const fetchSalseList = useCallback (async () => {
+    setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8080/api/mypage/sell");
-      setItems(res.data);
+      const res = await axios.get(`${BASE_URL}/mypage/sell`);
+      if(res.data) {
+        const chatroomCountPromises = res.data.map((product: Product) =>
+          axios.get(`${BASE_URL}/chatroom/count/${product.productUuid}`)
+        );
+        const chatroomCounts = await Promise.all(chatroomCountPromises);
+        const updatedProducts = res.data.map((product: Product, index: number) => ({
+          ...product,
+          chatroomCount: chatroomCounts[index].data
+        }));
+        setItems(updatedProducts);
+      }
     } catch (error) {
       console.error(error);
     }
-  }, [userUuid]); //성한님 코드에 따라 userUuid에 대한 의존성 추가
-
-
-  // 판매중, 거래 완료 상품 분류
-  const onSaleItems = items.filter(item => item.productState === 'SALE');
-  const completedItems = items.filter(item => item.productState !== 'SALE');
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     fetchSalseList();
-  }, [fetchSalseList]);
-
-  useEffect(() => {
-    const uuid = localStorage.getItem('uuid');
-    if(uuid){ 
-        setUserUuid(uuid);
-        fetchSalseList(); // UUID가 설정된 후에 items를 가져옵니다.
-    }else{
-        console.log("uuid 가 없습니다.")
-    }
   }, []);
+
+  // 판매중, 거래 완료 상품 분류
+  const onSaleItems = items.filter(item => item.productState !== 'SOLD');
+  const completedItems = items.filter(item => item.productState === 'SOLD');
+
+  let displayedItems = activeIndex === 0 ? onSaleItems : completedItems;
 
   return (
     <>
@@ -64,16 +54,14 @@ const SalesList: React.FC = () => {
       </S.BtnDiv>
 
       <S.Tabs>
-        <S.Tab isActive={activeIndex === 0} onClick={()=>tabClickHandler(0)}> 판매 중 </S.Tab>
-        <S.Tab isActive={activeIndex === 1} onClick={()=>tabClickHandler(1)}> 거래 완료 </S.Tab>
+        <S.Tab isActive = {activeIndex === 0} onClick={()=>tabClickHandler(0)}> 판매 중 </S.Tab>
+        <S.Tab isActive = {activeIndex === 1} onClick={()=>tabClickHandler(1)}> 거래 완료 </S.Tab>
       </S.Tabs>
 
       <S.TabContent>
-        { activeIndex === 0? (
-            <ProductForm items={onSaleItems}/>
-          ) : (
-            <ProductForm items={completedItems}/>
-          )
+        { isLoading ? 
+          <div>로딩 중...</div> // 로딩중 뷰 추가 예정
+          :  <ProductForm items={displayedItems} refreshProductList={fetchSalseList}/> 
         }
       </S.TabContent>
     </>

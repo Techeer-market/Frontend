@@ -28,6 +28,11 @@ time, mark, audio, video {
 	vertical-align: baseline;
 	font-size: 62.5%;
 	font-family: 'Inria Sans';
+}
+body {
+	margin: 0 auto;
+	width: 50rem;
+	height: 100vh;
 }`;
 
 // @media (max-width: 1023px) {//데스크탑

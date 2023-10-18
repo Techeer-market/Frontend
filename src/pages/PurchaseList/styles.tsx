@@ -18,7 +18,6 @@ export const WriteBtn = styled.button`
   font-weight: 700;
   &:hover {
     cursor: pointer;
-    text-decoration: underline;
   }
 `
 

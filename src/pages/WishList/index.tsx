@@ -1,21 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import * as S from './styles';
-import axios, { AxiosResponse } from 'axios';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import ProductForm from '@/components/ProductForm';
 import TopNavBar from '@/components/TopNavBar';
-import ProductForm from '../../components/ProductForm'
-import { Product } from '@/types/product'
+import * as S from './styles';
+import { Product } from '@/types/product';
 import { BASE_URL } from '@/constants/baseURL';
 
-const PurchaseList: React.FC  = () => {
+const WishList: React.FC = () => {
   const [items, setItems] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  
-  const fetchPurchaseList = async () => {
+
+  // 좋아요를 누른 상품 리스트 불러오는 함수
+  const fetchWishList = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/mypage/purchase`);
-      if(response.data) {
+      const response = await axios.get(`${BASE_URL}/mypage/like`);
+      if (response.data) {
+        // 각 상품마다 채팅방 개수 가져오는 Promise 배열 생성
         const chatroomCountPromises = response.data.map((product: Product) =>
           axios.get(`${BASE_URL}/chatroom/count/${product.productUuid}`),
         );
@@ -36,24 +37,22 @@ const PurchaseList: React.FC  = () => {
   };
 
   useEffect(() => {
-    fetchPurchaseList();
+    fetchWishList();
   }, []);
 
   return (
     <>
-      <TopNavBar page="나의 구매 내역"/>
-      <S.BtnDiv>
-        <S.WriteBtn>글쓰기</S.WriteBtn>
-      </S.BtnDiv>
+      <TopNavBar page="좋아요 목록" />
 
       <S.ProductContainer>
-        {isLoading? 
-          ( <div>로딩 중...</div> )
-          : <ProductForm items={items} refreshProductList={fetchPurchaseList}/>
-        } 
+        {isLoading ? (
+          <div>로딩 중...</div> // 로딩중 뷰 추가 예정
+        ) : (
+          <ProductForm items={items} refreshProductList={fetchWishList} />
+        )}
       </S.ProductContainer>
     </>
   );
 };
 
-export default PurchaseList;
+export default WishList;

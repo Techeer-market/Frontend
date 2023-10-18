@@ -8,11 +8,10 @@ const SignUp = lazy(() => import('./pages/SignUp'));
 const WritePost = lazy(() => import('./pages/WritePost'));
 const Post = lazy(() => import('./pages/Post'));
 // const EditPost = lazy(() => import('./pages/EditPost'));
-// const SalesList = lazy(() => import('./pages/SalesList'));
 const Chatting = lazy(() => import('./pages/Chatting'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
-// const WishList = lazy(() => import('./pages/')) // 위시리스트
+const WishList = lazy(() => import('@/pages/WishList'));
 const PurchaseList = lazy(() => import('@/pages/PurchaseList'));
 const SalesList = lazy(() => import('@/pages/SalesList'));
 // const Chatting = lazy(() => import('./pages/Chatting'));
@@ -29,9 +28,8 @@ const Router = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/write" element={<WritePost />} />
         <Route path="/post/:productUuid" element={<Post />} />
-        {/* <Route path="/saleslist" element={<SalesList />} /> */}
         {/* <Route path="/edit" element={<EditPost />} /> */}
-        {/* <Route path="/wishlist" element={<WishList/>} /> */}
+        <Route path="/wishlist" element={<WishList/>} />
         <Route path="/saleslist" element={<SalesList />} />
         <Route path="/purchaselist" element={<PurchaseList />} />
         <Route path="/mypage" element={<MyPage />} />
