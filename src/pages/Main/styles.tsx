@@ -230,6 +230,7 @@ export const ProductDiv = styled.div`
   display: grid;
   grid-template-columns: repeat(1, minmax(5px, auto));
   grid-template-rows: repeat(5, 1fr);
+
 `;
 
 
@@ -255,3 +256,6 @@ export const Button = styled.button`
   background: no-repeat center center;
   background-size: contain; /* 이미지 크기에 맞게 조정 */
 `;
+
+`;
+

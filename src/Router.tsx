@@ -1,5 +1,5 @@
-import React, { lazy } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { mainCategory } from './constants/mainCategory';
+import { lazy } from 'react';
 
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
@@ -8,35 +8,30 @@ const SignUp = lazy(() => import('./pages/SignUp'));
 const WritePost = lazy(() => import('./pages/WritePost'));
 const Post = lazy(() => import('./pages/Post'));
 // const EditPost = lazy(() => import('./pages/EditPost'));
-const CategoryElectronic = lazy(() => import('./pages/CategoryElectronic'));
-const CategoryFood = lazy(() => import('./pages/CategoryFood'));
-const CategoryLiving = lazy(() => import('./pages/CategoryLiving'));
-const CategoryBook_Magazine = lazy(() => import('./pages/CategoryBook_Magazine'));
-const CategoryFashion = lazy(() => import('./pages/CategoryFashion'));
-const SalesList = lazy(() => import('./pages/SalesList'));
 const Chatting = lazy(() => import('./pages/Chatting'));
+const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
+const SearchPage = lazy(() => import('@/pages/SearchPage'));
+const WishList = lazy(() => import('@/pages/WishList'));
+const PurchaseList = lazy(() => import('@/pages/PurchaseList'));
+const SalesList = lazy(() => import('@/pages/SalesList'));
+const MyPage = lazy(() => import('@/pages/MyPage'));
+const EditInfo = lazy(() => import('@/pages/EditInfo'));
+const Detail = lazy(() => import('@/pages/Detail'));
 
-const Router = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/auth/kakao" element={<KakaoLogin />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/write" element={<WritePost />} />
-        <Route path="/post/:productUuid" element={<Post />} />
-        {/* <Route path="/edit" element={<EditPost />} /> */}
-        <Route path="/category/Electronic" element={<CategoryElectronic />} />
-        <Route path="/category/Food" element={<CategoryFood />} />
-        <Route path="/category/Living" element={<CategoryLiving />} />
-        <Route path="/category/Book_Magazine" element={<CategoryBook_Magazine />} />
-        <Route path="/category/Fashion" element={<CategoryFashion />} /> 
-        <Route path="/saleslist" element={<SalesList />} />
-        <Route path="/chat" element={<Chatting />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
-
-export default Router;
+export const routes = [
+  { path: '/', element: <Main /> },
+  { path: '/login', element: <Login /> },
+  { path: '/auth/kakao', element: <KakaoLogin /> },
+  { path: '/signup', element: <SignUp /> },
+  { path: '/write', element: <WritePost /> },
+  { path: '/post/:productUuid', element: <Post /> },
+  { path: '/wishlist', element: <WishList /> },
+  { path: '/saleslist', element: <SalesList /> },
+  { path: '/purchaselist', element: <PurchaseList /> },
+  { path: '/mypage', element: <MyPage /> },
+  { path: '/edit_info', element: <EditInfo /> },
+  { path: '/category', element: <CategoryPage /> },
+  { path: `/category/:category`, element: <Detail /> },
+  { path: '/search', element: <SearchPage /> },
+  { path: '/detail', element: <Detail /> },
+];

@@ -1,5 +1,5 @@
 import NavBar from '@/components/NavBar';
-import ProductList from '@/components/ProductList';
+// import ProductList from '@/components/ProductList';
 import * as S from './styles';
 import Logo from '@/components/Logo';
 import logo from '../../assets/logo.svg';
@@ -32,7 +32,7 @@ const index = () => {
       </S.NavContainer>
     
       <NavBar />
-      
+
         <S.MainContainer className="list">
           <S.scroll className="scroll"> 
 
@@ -172,6 +172,14 @@ const index = () => {
           </S.scroll>
       
         </S.MainContainer>
+
+      <S.MainContainer className="list">
+        <S.TextDiv>
+          <S.KorText>방금 올라온 상품이에요 !</S.KorText>
+          <S.TextLine />
+        </S.TextDiv>
+        <S.ProductDiv className="list-item"></S.ProductDiv>
+      </S.MainContainer>
 
     </S.MainDiv>
   );
