@@ -6,6 +6,7 @@ import * as S from './styles';
 import { Product } from '@/types/product';
 import { BASE_URL } from '@/constants/baseURL';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import Loading from '@/components/Loading';
 
 const WishList: React.FC = () => {
   const [items, setItems] = useState<Product[]>([]);
@@ -56,7 +57,7 @@ const WishList: React.FC = () => {
 
       <S.ProductContainer>
         {isLoading && !isFetching ? (
-          <div>로딩 중...</div> // 로딩중 뷰 추가 예정
+          <Loading />
         ) : (
           <ProductForm items={items} refreshProductList={fetchWishList} />
         )}
