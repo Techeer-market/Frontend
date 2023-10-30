@@ -15,11 +15,15 @@ const WishList: React.FC = () => {
   // 좋아요를 누른 상품 리스트 불러오는 함수
   const fetchWishList = async () => {
     try {
+      const nextPage = idx.current;
+      idx.current++;
+
+      // pageNo → 1부터 시작 , pageSize → 한페이지에 들어가는 게시물 수
       const response = await axios.get(`${BASE_URL}/mypage/like`, {
-        params: {pageNo: idx, pageSize: 10}, // pageNo → 1부터 시작 , pageSize → 한페이지에 들어가는 게시물
+        params: { pageNo: nextPage, pageSize: 5 },
       });
 
-      if (response.data) {
+      if (Array.isArray(response.data) && response.data) {
         // 각 상품마다 채팅방 개수 가져오는 Promise 배열 생성
         const chatroomCountPromises = response.data.map((product: Product) =>
           axios.get(`${BASE_URL}/chatroom/count/${product.productUuid}`),
@@ -32,9 +36,7 @@ const WishList: React.FC = () => {
           chatroomCount: chatroomCounts[index].data,
         }));
 
-        // setItems(updatedProducts);
-        // idx.current++;
-        setItems(prevItems => [...prevItems, ...updatedProducts]);
+        setItems((prevItems) => [...prevItems, ...updatedProducts]);
       }
     } catch (error) {
       console.error(error);
@@ -42,7 +44,7 @@ const WishList: React.FC = () => {
     setIsLoading(false);
   };
 
-  const { isFetching } = useInfiniteScroll(fetchWishList);
+  const { isFetching } = useInfiniteScroll({ fetchCallback: fetchWishList });
 
   useEffect(() => {
     fetchWishList();

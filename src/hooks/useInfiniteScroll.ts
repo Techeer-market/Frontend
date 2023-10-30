@@ -8,7 +8,7 @@ interface InfiniteScrollProps {
 const useInfiniteScroll = ({ fetchCallback }: InfiniteScrollProps) => {
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  // throttle: 0.5초에 한번씩만 실행되도록 설정
+  // throttle: 0.3초에 한번씩만 실행되도록 설정
   const handleScroll = throttle(async () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
@@ -25,7 +25,7 @@ const useInfiniteScroll = ({ fetchCallback }: InfiniteScrollProps) => {
         setIsFetching(false);
       }
     }
-  }, 500);
+  }, 300);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
