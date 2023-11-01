@@ -16,7 +16,7 @@ const WishList: React.FC = () => {
   const fetchWishList = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/mypage/like`, {
-        params: {pageNo: idx, pageSize: 10}, // pageNo → 1부터 시작 , pageSize → 한페이지에 들어가는 게시물
+        params: { pageNo: idx, pageSize: 10 }, // pageNo → 1부터 시작 , pageSize → 한페이지에 들어가는 게시물
       });
 
       if (response.data) {
@@ -34,7 +34,7 @@ const WishList: React.FC = () => {
 
         // setItems(updatedProducts);
         // idx.current++;
-        setItems(prevItems => [...prevItems, ...updatedProducts]);
+        setItems((prevItems) => [...prevItems, ...updatedProducts]);
       }
     } catch (error) {
       console.error(error);
