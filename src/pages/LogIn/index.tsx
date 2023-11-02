@@ -6,7 +6,6 @@ import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { restFetcher } from '@/queryClient';
-import { api } from '@/queryClient';
 
 // 만료 시간 (ms)
 const JWT_EXPIRY_TIME = 24 * 3600 * 1000;

@@ -18,6 +18,20 @@ const loginResultHandler = [
       return res(ctx.status(401), ctx.json({ error: 'Invalid credentials' }));
     }
   }),
+
+  rest.get('http://localhost:3000/api/users', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        email: 'test@test.com',
+        name: 'test',
+        birthday: '2001-07-21',
+        social: 'LOCAl',
+        profileUrl:
+          'https://res.cloudinary.com/dusavg0vn/image/upload/v1695805125/214244769_1_1678264995_w1100_10_1_uwaqdy.png',
+      }),
+    );
+  }),
 ];
 
 export default loginResultHandler;
