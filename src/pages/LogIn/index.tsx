@@ -67,7 +67,6 @@ const Login = () => {
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
 
-          alert('로그인에 성공했습니다.');
           navigate('/');
         } else {
           throw new Error('토큰을 받아올 수 없습니다.');

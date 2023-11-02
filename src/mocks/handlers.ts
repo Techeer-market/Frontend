@@ -67,11 +67,11 @@
 import wishResultHandler from './api/wishResultHandler';
 import salseResultHandler from './api/salseResultHandler';
 import purchaseResultHandler from './api/purchaseResultHandler';
-import loginResultHandler from './api/loginResultHandler';
+import userResultHandler from './api/userResultHandler';
 
 export const handlers = [
   ...wishResultHandler,
   ...salseResultHandler,
   ...purchaseResultHandler,
-  ...loginResultHandler,
+  ...userResultHandler,
 ];
