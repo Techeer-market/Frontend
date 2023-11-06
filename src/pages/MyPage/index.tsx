@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 import profile from '../../assets/profile.png';
@@ -7,6 +7,8 @@ import Store from '../../assets/StoreIcon.svg';
 import Cart from '../../assets/CartIcon.svg';
 import TopNavBar from '@/components/TopNavBar';
 import { restFetcher } from '@/queryClient';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 interface UserInfo {
   email: string;
@@ -18,34 +20,31 @@ interface UserInfo {
 
 const MyPage: React.FC = () => {
   const navigate = useNavigate();
-  const [img, setImg] = useState(profile);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
 
-  const fetchUserInfo = async () => {
-    try {
+  const { data: userInfo } = useQuery<UserInfo, AxiosError>(
+    ['userInfo'],
+    async () => {
       const response = await restFetcher({
         method: 'GET',
         path: '/users',
       });
-      if (response.data.profileUrl) {
-        setImg(response.data.profileUrl);
-      }
-      setUserInfo(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
+      return response.data;
+    },
+    {
+      onError: (error) => {
+        console.error(error);
+      },
+      // 자동 리프레시 비활성화
+      refetchOnWindowFocus: false,
+    },
+  );
 
   return (
     <>
       <TopNavBar page="마이페이지" />
       <S.MyPageContainer>
         <label htmlFor="Profile">
-          <S.ChangeName src={img} alt="Profile" />
+          <S.ChangeName src={userInfo?.profileUrl || profile} alt="Profile" />
         </label>
         <S.Name>{userInfo?.name}</S.Name>
       </S.MyPageContainer>

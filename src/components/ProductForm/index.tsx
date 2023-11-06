@@ -94,7 +94,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
 
       await restFetcher({
         method: 'PUT',
-        path: `/products/${product.productUuid}/${product.productState}/${product.productState}`,
+        path: `/products/${product.productUuid}/${product.productState}/state`,
         body: { state: newState },
       });
 
