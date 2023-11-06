@@ -35,7 +35,7 @@ const useInfiniteScroll = ({ fetchCallback }: InfiniteScrollProps) => {
     };
   }, [handleScroll]);
 
-  return { isFetching };
+  return isFetching;
 };
 
 export default useInfiniteScroll;
