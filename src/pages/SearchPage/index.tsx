@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from '@/pages/SearchPage/styles';
 import backBtn from '@/assets/backBtn.jpg';
-import searchBtn from '@/assets/searchBtn.jpg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useInfiniteQuery } from 'react-query';
+import { Product } from '@/types/product';
+import { QueryKeys, restFetcher } from '@/queryClient';
+import useSearchThing from '@/hooks/useSearchThing';
 
-const index = () => {
+type LocationState = { thingName: string } | null;
+
+export default function SearchPage() {
+  const location = useLocation();
   const navigate = useNavigate();
+  const [thingName, handleThingName, goToMain, onKeyDown] = useSearchThing('');
   return (
     <S.Container>
       <S.Nav>
@@ -17,11 +24,16 @@ const index = () => {
           onClick={() => navigate('/')}
         ></img>
         <S.Div>
-          <S.Input placeholder="통합 검색" type="text" id="search"></S.Input>
+          <S.Input
+            placeholder="통합 검색"
+            type="text"
+            id="search"
+            onChange={handleThingName}
+            onKeyDown={onKeyDown}
+            value={thingName}
+          ></S.Input>
         </S.Div>
       </S.Nav>
     </S.Container>
   );
-};
-
-export default index;
+}
