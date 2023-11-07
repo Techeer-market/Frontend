@@ -14,7 +14,8 @@ const useSearchThing = (initialData: string): ReturnTypes => {
   const [thingName, handleThingName, setThingName] = useInput(initialData);
   const goToMain = async () => {
     // 주소
-    navigate('/', {
+    const searchPath = `/search=${thingName}`;
+    navigate(searchPath, {
       state: { thingName },
     });
     setThingName('');
