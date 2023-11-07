@@ -1,20 +1,23 @@
 import Heart from '../../assets/grayHeartIcon.svg';
 import FilledHeart from '../../assets/likedHeart.svg';
 import Chat from '../../assets/chatIcon.svg';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Product } from '@/types/product';
 import * as S from './styles';
-import { restFetcher } from '@/queryClient';
+import { getClient, restFetcher } from '@/queryClient';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import ko from 'date-fns/locale/ko';
+import { useMutation } from '@tanstack/react-query';
 
 interface ProductProps {
   items: Product[];
 }
 
 const ProductForm: React.FC<ProductProps> = ({ items }) => {
+  const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = getClient();
   const isWishPage = location.pathname === '/wishlist';
   const isSalsePage = location.pathname === '/saleslist';
 
@@ -86,41 +89,65 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     }
   };
 
-  // 상품 상태 변경 핸들러
-  const changeStateHandler = async (product: Product) => {
-    try {
-      let newState: 'SALE' | 'RESERVED' | 'SOLD';
-      newState = product.productState !== 'SOLD' ? 'SOLD' : 'SALE';
-
-      await restFetcher({
+  const changeProductStateMutation = useMutation(
+    (product: Product) => {
+      let newState: 'SALE' | 'RESERVED' | 'SOLD' =
+        product.productState !== 'SOLD' ? 'SOLD' : 'SALE';
+      return restFetcher({
         method: 'PUT',
-        path: `/products/${product.productUuid}/${product.productState}/state`,
+        path: `/products/${product.productUuid}/state`,
         body: { state: newState },
       });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['salesList']);
+      },
+      onError: (error) => {
+        console.log('상품 상태 변경 중 오류가 발생했습니다.', error);
+        alert('상품 상태 변경에 실패했습니다. 다시 시도해주세요.');
+      },
+    },
+  );
 
-      const updatedItems = products.map((item) =>
-        item.productUuid === product.productUuid ? { ...item, productState: newState } : item,
-      );
-      setProducts(updatedItems);
-    } catch (error) {
-      console.log('상품 상태 변경 중 오류가 발생했습니다.', error);
-    }
+  // 상품 상태 변경 핸들러
+  const changeStateHandler = async (product: Product) => {
+    await changeProductStateMutation.mutateAsync(product);
+    setProducts((currentProducts) => {
+      return currentProducts.map((item) => {
+        if (item.productUuid === product.productUuid) {
+          return { ...item, productState: product.productState !== 'SOLD' ? 'SOLD' : 'SALE' };
+        } else {
+          return item;
+        }
+      });
+    });
   };
+
+  const deleteProductMutation = useMutation(
+    (productUuid: string) =>
+      restFetcher({
+        method: 'DELETE',
+        path: `/products/${productUuid}`,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['salesList']);
+      },
+      onError: (error) => {
+        console.error('상품 삭제 중 오류가 발생했습니다.', error);
+        alert('상품 삭제에 실패했습니다. 다시 시도해주세요.');
+      },
+    },
+  );
 
   // 삭제 버튼 핸들러
   const deleteHandler = async (productUuid: string) => {
-    try {
-      await restFetcher({
-        method: 'DELETE',
-        path: `/products/${productUuid}`,
-      });
-      fadeOutHandler(productUuid, () => {
-        const updatedItems = products.filter((item) => item.productUuid !== productUuid);
-        setProducts(updatedItems);
-      });
-    } catch (error) {
-      console.error('상품 삭제 중 오류가 발생했습니다.', error);
-    }
+    await deleteProductMutation.mutateAsync(productUuid);
+    fadeOutHandler(productUuid, () => {
+      const updatedItems = products.filter((item) => item.productUuid !== productUuid);
+      setProducts(updatedItems);
+    });
   };
 
   // 날짜 포매팅
@@ -184,7 +211,13 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
                   >
                     {item.productState !== 'SOLD' ? '거래 완료로 변경' : '판매 중으로 변경'}
                   </S.DropdownItem>
-                  <S.DropdownItem>게시글 수정</S.DropdownItem>
+                  <S.DropdownItem
+                    onClick={() => {
+                      navigate('/edit_post'); // 게시글 수정 페이지 (url 수정 필요)
+                    }}
+                  >
+                    게시글 수정
+                  </S.DropdownItem>
                   <S.DropdownItem onClick={() => deleteHandler(item.productUuid)}>
                     삭제
                   </S.DropdownItem>

@@ -1,48 +1,50 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
 import ProductForm from '@/components/ProductForm';
 import { Product } from '@/types/product';
-import { BASE_URL } from '@/constants/baseURL';
+import { restFetcher } from '@/queryClient';
 import Loading from '@/components/Loading';
+import { useQuery } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 
 const SalesList: React.FC = () => {
-  const [items, setItems] = useState<Product[]>([]);
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const tabClickHandler = (index: number) => {
     setActiveIndex(index);
   };
 
-  const fetchSalseList = useCallback(async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/mypage/sell`);
-      if (res.data) {
-        const chatroomCountPromises = res.data.map((product: Product) =>
-          axios.get(`${BASE_URL}/chatroom/count/${product.productUuid}`),
+  const { data: items, isLoading } = useQuery<Product[], AxiosError>(
+    ['salesList'],
+    async () => {
+      const response = await restFetcher({
+        method: 'GET',
+        path: '/mypage/sell',
+      });
+      return response.data;
+    },
+    {
+      onSuccess: async (data) => {
+        Promise.all(
+          data.map((product) => {
+            restFetcher({
+              method: 'GET',
+              path: `/chatroom/count/${product.productUuid}`,
+            }).then((response) => {
+              product.chatroomCount = response.data;
+            });
+          }),
         );
-        const chatroomCounts = await Promise.all(chatroomCountPromises);
-        const updatedProducts = res.data.map((product: Product, index: number) => ({
-          ...product,
-          chatroomCount: chatroomCounts[index].data,
-        }));
-        setItems(updatedProducts);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    fetchSalseList();
-  }, []);
+      },
+    },
+  );
 
   // 판매중, 거래 완료 상품 분류
-  const onSaleItems = items.filter((item) => item.productState !== 'SOLD');
-  const completedItems = items.filter((item) => item.productState === 'SOLD');
+  const onSaleItems = items?.filter((item) => item.productState !== 'SOLD') || [];
+  const completedItems = items?.filter((item) => item.productState === 'SOLD') || [];
 
   let displayedItems = activeIndex === 0 ? onSaleItems : completedItems;
 
@@ -50,7 +52,13 @@ const SalesList: React.FC = () => {
     <>
       <TopNavBar page="나의 판매 내역" />
       <S.BtnDiv>
-        <S.WriteBtn>글쓰기</S.WriteBtn>
+        <S.WriteBtn
+          onClick={() => {
+            navigate('/write');
+          }}
+        >
+          글쓰기
+        </S.WriteBtn>
       </S.BtnDiv>
 
       <S.Tabs>
@@ -63,11 +71,7 @@ const SalesList: React.FC = () => {
       </S.Tabs>
 
       <S.TabContent>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <ProductForm items={displayedItems} refreshProductList={fetchSalseList} />
-        )}
+        {isLoading ? <Loading /> : <ProductForm items={displayedItems} />}
       </S.TabContent>
     </>
   );
