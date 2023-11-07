@@ -101,7 +101,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['salesList']);
+        // queryClient.invalidateQueries(['salesList']);
       },
       onError: (error) => {
         console.log('상품 상태 변경 중 오류가 발생했습니다.', error);
@@ -132,7 +132,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(['salesList']);
+        // queryClient.invalidateQueries(['salesList']);
       },
       onError: (error) => {
         console.error('상품 삭제 중 오류가 발생했습니다.', error);
