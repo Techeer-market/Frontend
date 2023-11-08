@@ -1,87 +1,64 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import ProductForm from '@/components/ProductForm';
 import TopNavBar from '@/components/TopNavBar';
 import * as S from './styles';
 import { Product } from '@/types/product';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Loading from '@/components/Loading';
-import { getClient, restFetcher } from '@/queryClient';
-import { useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { restFetcher } from '@/queryClient';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 const WishList: React.FC = () => {
-  const [items, setItems] = useState<Product[]>([]);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const idx = useRef<number>(1);
-  const queryClient = getClient();
+  const fetchWishList = async ({ pageParam = 1 }) => {
+    const response = await restFetcher({
+      method: 'GET',
+      path: '/mypage/like',
+      params: { pageNo: pageParam, pageSize: 5 },
+    });
 
-  // 좋아요를 누른 상품 리스트 불러오는 함수
-  const fetchWishList = async (page: number) => {
-    try {
-      const response = await restFetcher({
-        method: 'GET',
-        path: '/mypage/like',
-        params: { pageNo: page, pageSize: 5 },
-      });
-
-      if (response) {
-        const chatroomCountPromises = response.data.map((product: Product) => {
-          return restFetcher({
-            method: 'GET',
-            path: `/chatroom/count/${product.productUuid}`,
-          });
-        });
-
-        const chatroomCounts = await Promise.all(chatroomCountPromises);
-        const updatedProducts = response.data.map((product: Product, index: number) => ({
+    await Promise.all(
+      response.data.map((product: Product) =>
+        restFetcher({
+          method: 'GET',
+          path: `/chatroom/count/${product.productUuid}`,
+        }).then((chatroomResponse) => ({
           ...product,
-          chatroomCount: chatroomCounts[index].data,
-        }));
+          chatroomCount: chatroomResponse.data,
+        })),
+      ),
+    );
 
-        return updatedProducts;
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    return { data: response.data, nextPage: response.data.length ? pageParam + 1 : undefined };
   };
 
-  const { isLoading } = useQuery<Product[], AxiosError>(
-    ['wishList', idx.current],
-    () => fetchWishList(idx.current),
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    ['wishlist'],
+    ({ pageParam = 1 }) => fetchWishList({ pageParam }),
     {
-      onSuccess: (newData) => {
-        if (newData.length === 0) {
-          setHasMore(false);
-        }
-        setItems((prevItems) => [...prevItems, ...newData]);
-        idx.current++;
-      },
-      onError: (error) => {
-        if (error.response?.status === 404) {
-          setHasMore(false);
-        }
-      },
+      getNextPageParam: (lastPage) => lastPage.nextPage,
     },
   );
 
-  useInfiniteScroll({
-    fetchCallback: async () => {
-      if (!isLoading && hasMore) {
-        await queryClient.fetchQuery(['wishList', idx.current], () => fetchWishList(idx.current));
-      }
-    },
-  });
+  const loadMore = async () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
-  useEffect(() => {
-    fetchWishList(idx.current);
-  });
+  useInfiniteScroll({ fetchCallback: loadMore });
 
   return (
     <>
       <TopNavBar page="좋아요 목록" />
 
       <S.ProductContainer>
-        {isLoading ? <Loading /> : <ProductForm items={items} />}
+        {isLoading ? (
+          <Loading />
+        ) : data ? (
+          <ProductForm items={data?.pages.flatMap((page) => page.data)} />
+        ) : (
+          <S.EmptyList>좋아요 목록이 없습니다.</S.EmptyList>
+        )}
       </S.ProductContainer>
     </>
   );

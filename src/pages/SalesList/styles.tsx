@@ -23,7 +23,7 @@ export const WriteBtn = styled.button`
 
 export const Tabs = styled.ul`
   display: flex;
-  padding: 6.2rem 3rem 0;
+  padding: 6.2rem 2rem 0;
   list-style: none;
   cursor: pointer;
 `;
@@ -43,8 +43,14 @@ export const Tab = styled.li<{ isActive: boolean }>`
 `;
 
 export const TabContent = styled.div`
-  padding: 2rem 3rem 0;
+  padding: 2rem 2rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const EmptyList = styled.div`
+  padding-top: 2rem;
+  text-align: center;
+  color: #828385;
 `;

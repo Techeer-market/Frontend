@@ -18,7 +18,7 @@ const SalesList: React.FC = () => {
   };
 
   const { data: items, isLoading } = useQuery<Product[], AxiosError>(
-    ['salesList'],
+    ['saleslist'],
     async () => {
       const response = await restFetcher({
         method: 'GET',
@@ -71,7 +71,15 @@ const SalesList: React.FC = () => {
       </S.Tabs>
 
       <S.TabContent>
-        {isLoading ? <Loading /> : <ProductForm items={displayedItems} />}
+        {isLoading ? (
+          <Loading />
+        ) : displayedItems && displayedItems.length > 0 ? (
+          <ProductForm items={displayedItems} />
+        ) : (
+          <S.EmptyList>
+            {activeIndex === 0 ? '판매 중인 게시글이 없습니다.' : '거래 완료된 게시글이 없습니다.'}
+          </S.EmptyList>
+        )}
       </S.TabContent>
     </>
   );

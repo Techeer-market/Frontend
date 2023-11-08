@@ -51,19 +51,48 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     );
   };
 
+  // 좋아요 취소 mutation
+  const deleteLikeMutation = useMutation(
+    (productUuid: string) =>
+      restFetcher({
+        method: 'DELETE',
+        path: `/products/like/${productUuid}`,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([`${location.pathname.replace('/', '')}`]);
+      },
+      onError: (error) => {
+        console.error('좋아요 취소 중 오류가 발생했습니다.', error);
+        alert('좋아요 취소에 실패했습니다. 다시 시도해주세요.');
+      },
+    },
+  );
+
+  // 좋아요 누르기 mutation
+  const changeLikeMutation = useMutation(
+    (productUuid: string) =>
+      restFetcher({
+        method: 'POST',
+        path: `/products/like/${productUuid}`,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([`${location.pathname.replace('/', '')}`]);
+      },
+      onError: (error) => {
+        console.error('좋아요 처리 중 오류가 발생했습니다.', error);
+        alert('좋아요 처리에 실패했습니다. 다시 시도해주세요.');
+      },
+    },
+  );
+
   // 좋아요 버튼 핸들러
   const likedHandler = async ({ productUuid, userHasLiked }: Product) => {
     try {
       if (userHasLiked) {
         // 좋아요 취소
-        try {
-          await restFetcher({
-            method: 'DELETE',
-            path: `/products/like/${productUuid}`,
-          });
-        } catch (error) {
-          console.error(error);
-        }
+        await deleteLikeMutation.mutateAsync(productUuid);
 
         if (isWishPage) {
           fadeOutHandler(productUuid, () => {
@@ -76,10 +105,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
         }
       } else {
         // 좋아요 누르기
-        await restFetcher({
-          method: 'POST',
-          path: `/products/like/${productUuid}`,
-        });
+        await changeLikeMutation.mutateAsync(productUuid);
 
         const updatedItems = updateLikedByUuid(productUuid, false);
         setProducts(updatedItems);
@@ -101,7 +127,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     },
     {
       onSuccess: () => {
-        // queryClient.invalidateQueries(['salesList']);
+        queryClient.invalidateQueries(['saleslist']);
       },
       onError: (error) => {
         console.log('상품 상태 변경 중 오류가 발생했습니다.', error);
@@ -110,7 +136,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     },
   );
 
-  // 상품 상태 변경 핸들러
+  // 상품 상태 변경 핸들러 (판매 내역 페이지)
   const changeStateHandler = async (product: Product) => {
     await changeProductStateMutation.mutateAsync(product);
     setProducts((currentProducts) => {
@@ -132,7 +158,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
       }),
     {
       onSuccess: () => {
-        // queryClient.invalidateQueries(['salesList']);
+        queryClient.invalidateQueries(['saleslist']);
       },
       onError: (error) => {
         console.error('상품 삭제 중 오류가 발생했습니다.', error);
@@ -141,7 +167,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     },
   );
 
-  // 삭제 버튼 핸들러
+  // 삭제 버튼 핸들러 (판매 내역 페이지)
   const deleteHandler = async (productUuid: string) => {
     await deleteProductMutation.mutateAsync(productUuid);
     fadeOutHandler(productUuid, () => {
