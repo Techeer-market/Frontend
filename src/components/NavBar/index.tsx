@@ -3,8 +3,17 @@ import styled from 'styled-components';
 import logo from '../../assets/logo.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
+import homeImage from '../../assets/Home.png';
+import heartImage from '../../assets/Heart.png';
+import chatImage from '../../assets/chat.png';
+import mypageImage from '../../assets/Mypage.png';
+
+
+
 
 const NavBar = () => {
+  
+  
   const navigate = useNavigate();
 
 
@@ -16,7 +25,9 @@ const NavBar = () => {
 
   const [posts, setPosts] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  
 
+  
   const handleLogout = () => {
     fetch('http://localhost:8080/api/users/logout', {
       method: 'POST',
@@ -68,11 +79,12 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar>
-      <LogoBackground role="button" onClick={() => navigate('/')}>
+    <NavbarContainer>
+      {/* <LogoBackground role="button" onClick={() => navigate('/')}>
         <img id="main" src={logo} alt="홈페이지 메인으로 이동"></img>
-      </LogoBackground>
+      </LogoBackground>  */}
 
+{/* 
       <Category>
         <StyledLink to="/category/Electronic Products">Electronic</StyledLink>
         <StyledLink to="/category/Living Products">Living</StyledLink>
@@ -81,17 +93,34 @@ const NavBar = () => {
         </StyledLink>
         <StyledLink to="/category/Food Products">Food</StyledLink>
         <StyledLink to="/category/Fashion Products">Fashion</StyledLink>
-      </Category>
+      </Category> */}
 
       <User>
-        <StyledLink onClick={handleSearchClick}>
+        {/* <StyledLink onClick={handleSearchClick}>
           <FiSearch />
+        </StyledLink> */}
+        <HomeLink to="/home">
+          <LogoImage src={homeImage} alt="로고 이미지" style={{margin:"0px 0px 5px 0px", width:"30px"}} />
+          홈
+        </HomeLink>
+        {/* <StyledLink to="/home">홈</StyledLink> */}
+        
+        <StyledLink to="/like">
+        <LogoImage src={heartImage} alt="로고 이미지" style={{margin:"0px 0px 5px 0px", width:"30px"}} />
+          좋아요
         </StyledLink>
-        <StyledLink to="/write">글쓰기</StyledLink>
-        <StyledLink to="/login">로그인</StyledLink>
-        <StyledLink to="/chat">채팅</StyledLink>
-        <StyledLink onClick={handleMyPageClick}>마이페이지</StyledLink>
-        <StyledLink onClick={handleLogout}>로그아웃</StyledLink>
+        {/* <StyledLink to="/write">글쓰기</StyledLink> */}
+        {/* <StyledLink to="/login">로그인</StyledLink> */}
+        <StyledLink to="/chat">
+        <LogoImage src={chatImage} alt="로고 이미지" style={{margin:"0px 0px 5px 0px", width:"30px"}} />
+          채팅
+        </StyledLink>
+
+        <StyledLink onClick={handleMyPageClick}>
+           <LogoImage src={mypageImage} alt="로고 이미지" style={{margin:"0px 0px 8 px 0px", width:"20px"}} />
+          마이페이지
+        </StyledLink>
+        {/* <StyledLink onClick={handleLogout}>로그아웃</StyledLink> */}
       </User>
 
       {showSearchModule && (
@@ -110,6 +139,7 @@ const NavBar = () => {
       )}
 
       {searchResults.length > 0 && <SearchResults results={searchResults} />}
+      
 
       {showMyPageModule && (
         <ModuleWindow2 showModule={showMyPageModule}>
@@ -127,9 +157,25 @@ const NavBar = () => {
         showModule={showSearchModule || showMyPageModule}
         onClick={handleCloseModule}
       />
-    </Navbar>
+    </NavbarContainer>
   );
 };
+
+const NavbarContainer = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+height: 8rem; // 필요에 따라 높이 조정
+background-color: #fff; // 원하는 배경색 설정
+z-index: 2; // 필요에 따라 z-index 조정
+font-size: 3rem; //글씨 크기 조정
+
+`;
+
 
 export default NavBar;
 
@@ -160,18 +206,42 @@ const Category = styled.div`
   margin-top: 1.5rem;
 `;
 
-const User = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 24rem;
-  margin-top: 1.5rem;
+
+// 이미지를 담은 컴포넌트 생성
+const LogoImage = styled.img`
+ 
+  width: 10%; // 이미지의 너비 설정
+  height: 100%; // 이미지의 높이 자동 조정
+  margin-right: 1rem; // 홈 글자와 로고 이미지 사이에 여백 추가
 `;
 
+const User = styled.div`
+  position: fixed; /* 화면에 고정하는 값 */
+  bottom: 2rem; /* 아래에 배치 */
+  left: 50%; /* 가운데 정렬을 위해 왼쪽 여백을 50%로 설정 */
+  transform: translateX(-48%); /* 가운데 정렬을 위한 변형 적용 */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50rem; /* User 컴포넌트의 고정 너비 설정 */
+  z-index: 2; /* 필요에 따라 z-index 조정 */
+  font-size: 2rem; /* 글씨 크기 조정 */
+  flex-grow: 1;
+`;
+
+
 const StyledLink = styled(Link)`
+  display:flex;
   margin-right: 3rem;
   text-decoration: none;
   color: black;
+  flex-direction:column;
+  align-items: center; // 홈 글자와 로고 이미지를 세로로 중앙 정렬
+`;
+const HomeLink = styled(StyledLink)`
+  display: flex;
+  flex-direction:column;
+  align-items: center; // 홈 글자와 로고 이미지를 세로로 중앙 정렬
 `;
 
 const ModuleWindow1 = styled.div`
