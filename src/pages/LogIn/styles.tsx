@@ -17,7 +17,8 @@ export const Form = styled.div`
 export const Input = styled.input`
   width: 36rem;
   height: 4.5rem;
-  border-radius: 10px;
+  border-radius: 1rem;
+  border: none;
   background: #ffffff;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   margin-bottom: 2.8rem;
@@ -41,6 +42,10 @@ export const Check = styled.div`
 export const Checkbox = styled.input`
   width: 1.5rem;
   height: 1.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export const CheckLogin = styled.button`
   background: none;
@@ -52,6 +57,11 @@ export const FindAccount = styled.button`
   border: 0;
   text-decoration: underline;
   font-size: 1.4rem;
+  color: #a0a0a0;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export const Buttons = styled.div`
   display: flex;

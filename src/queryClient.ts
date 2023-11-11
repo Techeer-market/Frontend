@@ -1,6 +1,8 @@
 // "test 부분에 배포된 api 주소 설정하기 "
 import { QueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
+import { useAuth } from './hooks/useAuth';
+import { useEffect } from 'react';
 
 type AnyOBJ = {
   [key: string]: any;
@@ -33,20 +35,30 @@ export const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// 토큰을 포함하는 인터셉터
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `access_token:${token}`;
-      // config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+export const useAxiosInterceptor = () => {
+  const { authTokens } = useAuth();
+
+  useEffect(() => {
+    // 토큰을 포함하는 인터셉터
+    const interceptor = api.interceptors.request.use(
+      (config) => {
+        const token = authTokens.accessToken;
+        if (token) {
+          config.headers.Authorization = `access_token:${token}`;
+          // config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
+    return () => {
+      api.interceptors.request.eject(interceptor);
+    };
+  }, [authTokens]);
+  return null;
+};
 
 export const restFetcher = async ({
   method,

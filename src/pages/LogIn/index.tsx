@@ -1,14 +1,13 @@
-import axios from 'axios';
 import React, { useCallback, useState } from 'react';
 import * as S from './styles';
 import { useNavigate } from 'react-router-dom';
-import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
+import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { restFetcher } from '@/queryClient';
-
-// 만료 시간 (ms)
-const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/useAuth';
+import { set } from 'lodash';
 
 interface LoginInfo {
   email: string;
@@ -22,6 +21,7 @@ const Login = () => {
   const [isEmail, setIsEmail] = useState(false);
 
   const navigate = useNavigate();
+  const { setTokens } = useAuth();
 
   const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const emailRegex =
@@ -43,30 +43,26 @@ const Login = () => {
     setPassword(passwordCurrent);
   }, []);
 
+  const loginMutation = useMutation(async (loginInfo: LoginInfo) => {
+    const response = await restFetcher({
+      method: 'POST',
+      path: '/users/login',
+      body: loginInfo,
+    });
+    return response;
+  });
+
   const handleLogin = async () => {
-    const loginInfo: LoginInfo = {
-      email,
-      password,
-    };
-
     try {
-      const response = await restFetcher({
-        method: 'POST',
-        path: '/users/login',
-        body: loginInfo,
-      });
-
-      console.log(response);
-      console.log(response.headers);
+      const loginInfo: LoginInfo = { email, password };
+      const response = await loginMutation.mutateAsync(loginInfo);
 
       if (response && response.headers) {
         const accessToken = response.headers['access-token'];
         const refreshToken = response.headers['refresh-token'];
 
         if (accessToken && refreshToken) {
-          localStorage.setItem('accessToken', accessToken);
-          localStorage.setItem('refreshToken', refreshToken);
-
+          setTokens({ accessToken, refreshToken });
           navigate('/');
         } else {
           throw new Error('토큰을 받아올 수 없습니다.');
@@ -116,10 +112,10 @@ const Login = () => {
         <S.LogInButton type="submit" onClick={handleLogin}>
           로그인
         </S.LogInButton>
-        <S.KakaoButton as="a" href={KAKAO_AUTH_URL}>
+        {/* <S.KakaoButton as="a" href={KAKAO_AUTH_URL}>
           <RiKakaoTalkFill size={'3.3rem'} />
           &nbsp;&nbsp;카카오 계정으로 로그인
-        </S.KakaoButton>
+        </S.KakaoButton> */}
         <S.SignUpeButton onClick={goToSign}>회원가입</S.SignUpeButton>
       </S.Buttons>
     </S.LoginForm>

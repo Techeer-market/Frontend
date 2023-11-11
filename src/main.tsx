@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
 import { Theme } from './theme';
 import Modal from 'react-modal';
+import { AuthProvider } from './hooks/useAuth';
 
 if (import.meta.env.DEV) {
   worker.start();
@@ -14,8 +15,10 @@ if (import.meta.env.DEV) {
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <GlobalStyle />
-      <App />
+      <AuthProvider>
+        <GlobalStyle />
+        <App />
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

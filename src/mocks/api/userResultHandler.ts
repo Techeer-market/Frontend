@@ -11,8 +11,8 @@ const userResultHandler = [
     if (email === 'test@test.com' && password === 'test12') {
       return res(
         ctx.status(200),
-        ctx.set('Access-Token', 'mocked_access_token'),
-        ctx.set('Refresh-Token', 'mocked_refresh_token'),
+        ctx.set('Access-Token', '1111'),
+        ctx.set('Refresh-Token', '2222'),
         ctx.json({ success: true }),
       );
     } else {
