@@ -7,7 +7,7 @@ export const MyPageContainer = styled.div`
   padding: 4rem 4rem 5rem;
 `;
 
-export const ChangeName = styled.img`
+export const ChangImg = styled.img`
   z-index: 2;
   width: 5rem;
   height: 5rem;
@@ -26,18 +26,18 @@ export const Name = styled.span`
   color: #000;
   font-size: 20px;
   font-weight: 700;
-`
+`;
 
 export const Div = styled.div`
   padding: 0 4rem;
-`
+`;
 
 export const Title = styled.span`
   display: flex;
   color: #000;
   font-size: 15px;
   font-weight: 700;
-`
+`;
 
 export const ItemBox = styled.div`
   position: relative;
@@ -45,7 +45,7 @@ export const ItemBox = styled.div`
   align-items: center;
   justify-content: start;
   padding-top: 2rem;
-`
+`;
 export const ClickArea = styled.div`
   width: 100%;
   display: flex;
@@ -64,7 +64,7 @@ export const Item = styled.span`
   color: #000;
   font-size: 15px;
   font-weight: 400;
-`
+`;
 
 export const NavBtn = styled.button`
   margin-top: 6rem;
@@ -76,7 +76,7 @@ export const NavBtn = styled.button`
   background-color: transparent;
 
   &:hover {
-      cursor: pointer;
-      color: #828385;
+    cursor: pointer;
+    color: #828385;
   }
-`
+`;

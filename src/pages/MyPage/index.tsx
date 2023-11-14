@@ -13,13 +13,19 @@ import { AxiosError } from 'axios';
 interface UserInfo {
   email: string;
   name: string;
-  barthday: string;
+  // barthday: string;
   social: string;
-  profileUrl: string;
+  // profileUrl: string;
 }
 
 const MyPage: React.FC = () => {
   const navigate = useNavigate();
+
+  const navItems = [
+    { path: '/wishlist', imgSrc: Heart, altText: 'heartIcon', label: '좋아요 목록' },
+    { path: '/saleslist', imgSrc: Store, altText: 'StoreIcon', label: '판매 내역' },
+    { path: '/purchaselist', imgSrc: Cart, altText: 'CartIcon', label: '구매 내역' },
+  ];
 
   const { data: userInfo } = useQuery<UserInfo, AxiosError>(
     ['userInfo'],
@@ -44,7 +50,7 @@ const MyPage: React.FC = () => {
       <TopNavBar page="마이페이지" />
       <S.MyPageContainer>
         <label htmlFor="Profile">
-          <S.ChangeName src={userInfo?.profileUrl || profile} alt="Profile" />
+          <S.ChangImg src={profile} alt="Profile" />
         </label>
         <S.Name>{userInfo?.name}</S.Name>
       </S.MyPageContainer>
@@ -52,24 +58,14 @@ const MyPage: React.FC = () => {
       <S.Div>
         <S.Title>나의 거래</S.Title>
 
-        <S.ItemBox>
-          <S.ClickArea onClick={() => navigate('/wishlist')}>
-            <img src={Heart} alt="heartIcon" />
-            <S.Item>좋아요 목록</S.Item>
-          </S.ClickArea>
-        </S.ItemBox>
-        <S.ItemBox>
-          <S.ClickArea onClick={() => navigate('/saleslist')}>
-            <img src={Store} alt="StoreIcon" />
-            <S.Item>판매 내역</S.Item>
-          </S.ClickArea>
-        </S.ItemBox>
-        <S.ItemBox>
-          <S.ClickArea onClick={() => navigate('/purchaselist')}>
-            <img src={Cart} alt="CartIcon" />
-            <S.Item>구매 내역</S.Item>
-          </S.ClickArea>
-        </S.ItemBox>
+        {navItems.map((item, index) => (
+          <S.ItemBox key={index}>
+            <S.ClickArea onClick={() => navigate(item.path)}>
+              <img src={item.imgSrc} alt={item.altText} />
+              <S.Item>{item.label}</S.Item>
+            </S.ClickArea>
+          </S.ItemBox>
+        ))}
 
         <S.NavBtn onClick={() => navigate('/edit_info')}>계정 / 정보 관리</S.NavBtn>
       </S.Div>
