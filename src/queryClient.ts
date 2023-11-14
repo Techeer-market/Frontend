@@ -1,8 +1,8 @@
 // "test 부분에 배포된 api 주소 설정하기 "
+import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
-import { useAuth } from './hooks/useAuth';
-import { useEffect } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 type AnyOBJ = {
   [key: string]: any;
@@ -53,6 +53,7 @@ export const useAxiosInterceptor = () => {
         return Promise.reject(error);
       },
     );
+    // 클린업 함수 (인터셉트 해제)
     return () => {
       api.interceptors.request.eject(interceptor);
     };
