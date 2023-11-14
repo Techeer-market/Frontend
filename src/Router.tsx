@@ -1,4 +1,3 @@
-import { mainCategory } from './constants/mainCategory';
 import { lazy } from 'react';
 
 const Main = lazy(() => import('./pages/Main'));
