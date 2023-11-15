@@ -16,7 +16,7 @@ const PurchaseList: React.FC = () => {
     const response = await restFetcher({
       method: 'GET',
       path: '/mypage/purchase',
-      params: { pageNo: pageParam, pageSize: 5 },
+      params: { pageNo: pageParam, pageSize: 10 },
     });
 
     await Promise.all(
