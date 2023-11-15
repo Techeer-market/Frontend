@@ -103,7 +103,7 @@ export const Image = styled.svg`
   background-position: 50% 50%;
   background-size: contain;
 
-  transform: scale(1);
+  // transform: scale(1);
   transition: transform 0.3s ease-out;
   cursor: pointer;
 

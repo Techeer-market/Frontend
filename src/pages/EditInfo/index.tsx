@@ -1,132 +1,134 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import profile from '../../assets/profile.png';
 import * as S from './styles';
-import axios from 'axios';
-import userID from '@/redux/userID';
+import { AxiosError } from 'axios';
 import EditInfoModal from '@/components/EditInfoModal';
 import TopNavBar from '@/components/TopNavBar';
-import { BASE_URL } from '@/constants/baseURL';
-import { restFetcher } from '@/queryClient';
+import { getClient, restFetcher } from '@/queryClient';
+import { UserInfo } from '@/types/userInfo';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/useAuth';
 
-interface Info {
-  email: string;
-  password: string;
-  birth: string;
-  image: string;
-}
-
-const EditInfo = ({ getThumb }: any) => {
+const EditInfo = () => {
   const navigate = useNavigate();
-  const reader = new FileReader();
-
-  const [info, setInfo] = useState<Info>({
-    email: '',
-    password: '',
-    birth: '',
-    image: profile,
-  });
+  const queryClient = getClient();
+  const { clearTokens } = useAuth();
+  // const reader = new FileReader();
+  // const fileInput = useRef<HTMLInputElement | null>(null);
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [currentModalType, setCurrentModalType] = useState<'email' | 'password' | 'birth' | null>(
-    null,
-  );
+  const [currentModalType, setCurrentModalType] = useState<string>('');
 
-  const fileInput = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/users/${userID}`);
-        setInfo(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUserInfo();
-  }, []);
-
-  const onImgChange = (e: any) => {
-    const selectedFile = e.target.files[0];
-
-    if (selectedFile) {
-      reader.readAsDataURL(selectedFile);
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          const newImage = reader.result as string;
-          onInfoChange('image', newImage);
-
-          setInfo({
-            ...info,
-            image: newImage,
-          });
-        }
-      };
-    } else {
-      // 업로드가 취소
-      setInfo({
-        ...info,
-        image: profile,
-      });
-      onInfoChange('image', profile);
-    }
-  };
-
-  // 정보 업데이트
-  const onInfoChange = (
-    type: 'email' | 'password' | 'birth' | 'image' | null,
-    newValue: string,
-  ) => {
-    const updatedInfo = { ...info };
-    if (type === 'email') updatedInfo.email = newValue;
-    if (type === 'password') updatedInfo.password = newValue;
-    if (type === 'birth') updatedInfo.birth = newValue;
-    if (type === 'image') updatedInfo.image = newValue;
-
-    axios
-      .patch(`${BASE_URL}/users/update`, updatedInfo)
-      .then((response) => {
-        setInfo(response.data);
-        alert('정상적으로 변경되었습니다.');
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('변경에 실패하였습니다. 다시 시도해주세요.');
-      });
-  };
-
-  const openModal = (type: 'email' | 'password' | 'birth') => {
+  const openModal = (type: string) => {
     setCurrentModalType(type);
     setIsOpenModal(true);
   };
+
   const closeModal = () => {
     setIsOpenModal(false);
   };
 
-  // 로그아웃
-  const handleLogout = async () => {
-    try {
+  const { data: userInfo } = useQuery<UserInfo, AxiosError>(
+    ['userInfo'],
+    async () => {
       const response = await restFetcher({
-        method: 'POST',
-        path: '/users/logout',
+        method: 'GET',
+        path: '/users',
       });
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      return response.data;
+    },
+    {
+      onError: (error) => {
+        console.error(error);
+      },
+      // 자동 리프레시 비활성화
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  // 프로필 이미지 업로드
+  // const onImgChange = (e: any) => {
+  //   const selectedFile = e.target.files[0];
+
+  //   if (selectedFile) {
+  //     reader.readAsDataURL(selectedFile);
+  //     reader.onload = () => {
+  //       if (reader.readyState === 2) {
+  //         const newImage = reader.result as string;
+  //         onInfoChange('image', newImage);
+
+  //         setInfo({
+  //           ...info,
+  //           image: newImage,
+  //         });
+  //       }
+  //     };
+  //   } else {
+  //     // 업로드가 취소
+  //     setInfo({
+  //       ...info,
+  //       image: profile,
+  //     });
+  //     onInfoChange('image', profile);
+  //   }
+  // };
+
+  const infoChangeMutation = useMutation(
+    (updateInfo: UserInfo) => {
+      return restFetcher({
+        method: 'PATCH',
+        path: '/users/update',
+        body: updateInfo,
+      });
+    },
+    {
+      onSuccess: (response) => {
+        queryClient.setQueryData(['userInfo'], response.data);
+      },
+    },
+  );
+
+  const infoChangeHandler = async (type: string, newValue: string) => {
+    try {
+      let updateInfo = {};
+      if (type === 'email') updateInfo = { email: newValue };
+      if (type === 'password') updateInfo = { password: newValue };
+
+      await infoChangeMutation.mutateAsync(updateInfo as UserInfo);
+    } catch (error) {
+      alert('정보 변경에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  const logoutMutation = useMutation(() => {
+    return restFetcher({
+      method: 'POST',
+      path: '/users/logout',
+    });
+  });
+
+  const logoutHandler = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      clearTokens();
       navigate('/');
     } catch (error) {
       console.error(error);
     }
   };
 
-  // 회원탈퇴
-  const handleDeleteUser = async () => {
+  const deleteUserMutation = useMutation(() => {
+    return restFetcher({
+      method: 'DELETE',
+      path: '/users',
+    });
+  });
+
+  const deleteUserHandler = async () => {
     try {
-      const response = await restFetcher({
-        method: 'DELETE',
-        path: '/users',
-      });
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      await deleteUserMutation.mutateAsync();
+      clearTokens();
       navigate('/');
     } catch (error) {
       console.error(error);
@@ -136,57 +138,47 @@ const EditInfo = ({ getThumb }: any) => {
   return (
     <>
       <TopNavBar page="계정/정보 관리" />
-      <S.ProfileContainer>
-        <label htmlFor="Profile">
-          <S.ChangeName src={info.image} alt="Profile" />
-        </label>
-        <S.Name>(이름)</S.Name>
-      </S.ProfileContainer>
-
-      <S.ChangeProfile
-        id="Profile"
-        type="file"
-        accept="image/jpg,image/png,image/jpeg"
-        name="profile_img"
-        onChange={onImgChange}
-        ref={fileInput}
-        style={{ display: 'none' }}
-      />
-
       <S.InfoContainer>
+        <S.ProfileContainer>
+          <S.ChangeImg src={profile} alt="Profile" />
+          <S.Name>{userInfo?.name}</S.Name>
+        </S.ProfileContainer>
+
+        {/* <S.ChangeProfile
+          id="Profile"
+          type="file"
+          accept="image/jpg,image/png,image/jpeg"
+          name="profile_img"
+          onChange={onImgChange}
+          ref={fileInput}
+          style={{ display: 'none' }}
+        /> */}
+
         <S.Section>
           <div>
             <S.Title>이메일</S.Title>
-            <S.InfoContent>{info?.email ? info?.email : '....@gmail.com'}</S.InfoContent>
+            <S.InfoContent>{userInfo?.email}</S.InfoContent>
           </div>
           <S.ChangeBtn onClick={() => openModal('email')}>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
           <div>
             <S.Title>비밀번호</S.Title>
-            <S.InfoContent>{info?.password ? info?.password : '******'}</S.InfoContent>
+            {/* <S.InfoContent>{'******'}</S.InfoContent> */}
           </div>
           <S.ChangeBtn onClick={() => openModal('password')}>변경</S.ChangeBtn>
-        </S.Section>
-        <S.Section>
-          <div>
-            <S.Title>생일</S.Title>
-            <S.InfoContent>{info?.birth ? info?.birth : '2001-01-01'}</S.InfoContent>
-          </div>
-          <S.ChangeBtn onClick={() => openModal('birth')}>변경</S.ChangeBtn>
         </S.Section>
 
         <EditInfoModal
           openModal={isOpenModal}
           type={currentModalType}
-          value=""
           onRequestClose={closeModal}
-          updateInfo={onInfoChange}
+          updateInfo={infoChangeHandler}
         />
 
         <S.Section2>
-          <S.DelBtn onClick={handleLogout}>로그아웃</S.DelBtn>
-          <S.DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</S.DelBtn>
+          <S.DelBtn onClick={logoutHandler}>로그아웃</S.DelBtn>
+          <S.DelBtn onClick={deleteUserHandler}>회원 탈퇴하기</S.DelBtn>
         </S.Section2>
       </S.InfoContainer>
     </>

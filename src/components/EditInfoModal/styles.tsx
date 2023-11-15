@@ -18,26 +18,34 @@ export const BtnArea = styled.button`
 
 export const Contaniner = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 2rem;
+  flex-direction: column;
+  padding-bottom: 3.6rem;
 `;
 
 export const Label = styled.span`
-  padding-right: 1.4rem;
-  font-size: 1.4rem;
+  padding: 4px;
+  font-size: 1.2rem;
   color: #000000;
   font-weight: 700;
 `;
 
 export const InputBox = styled.input`
-  height: 2.4rem;
+  height: 3rem;
+  width: 24rem;
   padding: 0 1rem;
   appearance: none;
-  border: none;
-  background-color: #efefef;
+  border: 1px solid #d9d9d9;
+  background-color: #ffffff;
   border-radius: 1rem;
   font-size: 1.4rem;
+`;
+
+export const ErrorMessage = styled.span<{ show: boolean }>`
+  height: 1.2rem;
+  padding: 4px;
+  font-size: 0.8rem;
+  color: red;
+  visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
 `;
 
 export const EditBtn = styled.button`
@@ -50,10 +58,10 @@ export const EditBtn = styled.button`
   appearance: none;
   border: 0;
   border-radius: 10px;
-  background-color: #fd8944;
+  background-color: ${(props) => (props.disabled ? '#ccc' : '#fd8944')};
   color: #fff;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   }
 `;

@@ -9,14 +9,7 @@ import TopNavBar from '@/components/TopNavBar';
 import { restFetcher } from '@/queryClient';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-
-interface UserInfo {
-  email: string;
-  name: string;
-  // barthday: string;
-  social: string;
-  // profileUrl: string;
-}
+import { UserInfo } from '@/types/userInfo';
 
 const MyPage: React.FC = () => {
   const navigate = useNavigate();
@@ -48,14 +41,13 @@ const MyPage: React.FC = () => {
   return (
     <>
       <TopNavBar page="마이페이지" />
-      <S.MyPageContainer>
-        <label htmlFor="Profile">
-          <S.ChangImg src={profile} alt="Profile" />
-        </label>
-        <S.Name>{userInfo?.name}</S.Name>
-      </S.MyPageContainer>
 
       <S.Div>
+        <S.MyPageContainer>
+          <S.ChangImg src={profile} alt="Profile" />
+          <S.Name>{userInfo?.name}</S.Name>
+        </S.MyPageContainer>
+
         <S.Title>나의 거래</S.Title>
 
         {navItems.map((item, index) => (

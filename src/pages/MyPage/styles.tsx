@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
+export const Div = styled.div`
+  padding: 6rem 3.3rem 0;
+`;
+
 export const MyPageContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 2.6rem;
-  padding: 4rem 4rem 5rem;
+  padding-bottom: 5rem;
 `;
 
 export const ChangImg = styled.img`
@@ -15,21 +19,12 @@ export const ChangImg = styled.img`
   border: none;
   background-color: white;
   background-color: rgba(255, 255, 255, 0);
-  color: black;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0px 1px 10px 1px rgba(124, 161, 255, 0.769);
-  }
 `;
 
 export const Name = styled.span`
   color: #000;
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 700;
-`;
-
-export const Div = styled.div`
-  padding: 0 4rem;
 `;
 
 export const Title = styled.span`

@@ -27,12 +27,14 @@ const userResultHandler = [
       ctx.json({
         email: 'test@test.com',
         name: 'test',
-        // birthday: '2001-07-21',
         social: 'LOCAl',
-        // profileUrl:
-        //   'https://res.cloudinary.com/dusavg0vn/image/upload/v1695805125/214244769_1_1678264995_w1100_10_1_uwaqdy.png',
       }),
     );
+  }),
+
+  // 유저 정보 수정
+  rest.patch('http://localhost:3000/api/users/update', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(req.body));
   }),
 
   // 로그아웃

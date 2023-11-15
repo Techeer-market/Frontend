@@ -8,6 +8,7 @@ interface AuthTokens {
 interface AuthContextType {
   authTokens: AuthTokens;
   setTokens: (tokens: AuthTokens) => void;
+  clearTokens: () => void;
 }
 
 interface AuthProviderProps {
@@ -26,7 +27,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setAuthTokens(tokens);
   };
 
-  return <AuthContext.Provider value={{ authTokens, setTokens }}>{children}</AuthContext.Provider>;
+  const clearTokens = () => {
+    setAuthTokens({ accessToken: null, refreshToken: null });
+  };
+
+  return (
+    <AuthContext.Provider value={{ authTokens, setTokens, clearTokens }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
