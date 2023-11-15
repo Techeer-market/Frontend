@@ -7,6 +7,7 @@ import userID from '@/redux/userID';
 import EditInfoModal from '@/components/EditInfoModal';
 import TopNavBar from '@/components/TopNavBar';
 import { BASE_URL } from '@/constants/baseURL';
+import { restFetcher } from '@/queryClient';
 
 interface Info {
   email: string;
@@ -20,23 +21,25 @@ const EditInfo = ({ getThumb }: any) => {
   const reader = new FileReader();
 
   const [info, setInfo] = useState<Info>({
-    email: "",
-    password: "",
-    birth: "",
+    email: '',
+    password: '',
+    birth: '',
     image: profile,
   });
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [currentModalType, setCurrentModalType] = useState<"email" | "password" | "birth" | null>(null);
+  const [currentModalType, setCurrentModalType] = useState<'email' | 'password' | 'birth' | null>(
+    null,
+  );
 
   const fileInput = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      try{
+      try {
         const response = await axios.get(`${BASE_URL}/users/${userID}`);
         setInfo(response.data);
-      } catch(error) {
+      } catch (error) {
         console.error(error);
       }
     };
@@ -70,25 +73,29 @@ const EditInfo = ({ getThumb }: any) => {
   };
 
   // 정보 업데이트
-  const onInfoChange = (type: "email" | "password" | "birth" | "image" | null, newValue: string) => {
+  const onInfoChange = (
+    type: 'email' | 'password' | 'birth' | 'image' | null,
+    newValue: string,
+  ) => {
     const updatedInfo = { ...info };
     if (type === 'email') updatedInfo.email = newValue;
     if (type === 'password') updatedInfo.password = newValue;
     if (type === 'birth') updatedInfo.birth = newValue;
     if (type === 'image') updatedInfo.image = newValue;
 
-    axios.patch(`${BASE_URL}/users/update`, updatedInfo)
-    .then(response=>{
-      setInfo(response.data);
-      alert('정상적으로 변경되었습니다.');
-    })
-    .catch(error=>{
-      console.error(error);
-      alert('변경에 실패하였습니다. 다시 시도해주세요.');
-    })
+    axios
+      .patch(`${BASE_URL}/users/update`, updatedInfo)
+      .then((response) => {
+        setInfo(response.data);
+        alert('정상적으로 변경되었습니다.');
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('변경에 실패하였습니다. 다시 시도해주세요.');
+      });
   };
 
-  const openModal = (type: "email" | "password" | "birth") => {
+  const openModal = (type: 'email' | 'password' | 'birth') => {
     setCurrentModalType(type);
     setIsOpenModal(true);
   };
@@ -97,36 +104,43 @@ const EditInfo = ({ getThumb }: any) => {
   };
 
   // 로그아웃
-  const handleLogout = () => {
-    axios.post(`${BASE_URL}/users/logout`)
-    .then(response => {
-        navigate('/login');
-    })
-    .catch(error => {
+  const handleLogout = async () => {
+    try {
+      const response = await restFetcher({
+        method: 'POST',
+        path: '/users/logout',
+      });
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      navigate('/');
+    } catch (error) {
       console.error(error);
-    })
+    }
   };
 
   // 회원탈퇴
-  const handleDeleteUser = () => {
-    axios.delete(`${BASE_URL}/users/${userID}`)
-    .then(response => {
-      navigate('/login');
-    })
-    .catch(error => {
+  const handleDeleteUser = async () => {
+    try {
+      const response = await restFetcher({
+        method: 'DELETE',
+        path: '/users',
+      });
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      navigate('/');
+    } catch (error) {
       console.error(error);
-    })
+    }
   };
 
   return (
     <>
-      <TopNavBar page="계정/정보 관리"/>
+      <TopNavBar page="계정/정보 관리" />
       <S.ProfileContainer>
         <label htmlFor="Profile">
           <S.ChangeName src={info.image} alt="Profile" />
         </label>
-        {/* userUuid로 구현 */}
-        <S.Name>(이름)</S.Name> 
+        <S.Name>(이름)</S.Name>
       </S.ProfileContainer>
 
       <S.ChangeProfile
@@ -143,33 +157,33 @@ const EditInfo = ({ getThumb }: any) => {
         <S.Section>
           <div>
             <S.Title>이메일</S.Title>
-            <S.InfoContent>{info?.email? info?.email : "....@gmail.com"}</S.InfoContent>
+            <S.InfoContent>{info?.email ? info?.email : '....@gmail.com'}</S.InfoContent>
           </div>
           <S.ChangeBtn onClick={() => openModal('email')}>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
           <div>
             <S.Title>비밀번호</S.Title>
-            <S.InfoContent>{info?.password? info?.password : "******"}</S.InfoContent>
+            <S.InfoContent>{info?.password ? info?.password : '******'}</S.InfoContent>
           </div>
           <S.ChangeBtn onClick={() => openModal('password')}>변경</S.ChangeBtn>
         </S.Section>
         <S.Section>
           <div>
             <S.Title>생일</S.Title>
-            <S.InfoContent>{info?.birth? info?.birth : "2001-01-01"}</S.InfoContent>
+            <S.InfoContent>{info?.birth ? info?.birth : '2001-01-01'}</S.InfoContent>
           </div>
           <S.ChangeBtn onClick={() => openModal('birth')}>변경</S.ChangeBtn>
         </S.Section>
-        
+
         <EditInfoModal
           openModal={isOpenModal}
           type={currentModalType}
-          value=''
+          value=""
           onRequestClose={closeModal}
           updateInfo={onInfoChange}
         />
-        
+
         <S.Section2>
           <S.DelBtn onClick={handleLogout}>로그아웃</S.DelBtn>
           <S.DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</S.DelBtn>

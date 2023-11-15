@@ -29,6 +29,25 @@ export const getClient = (() => {
 //const { VITE_BASE_URL } = import.meta.env;
 const BASE_URL = import.meta.env.DEV ? '/api' : 'test';
 
+export const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+// 토큰을 포함하는 인터셉터
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `access_token:${token}`;
+      // config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
 export const restFetcher = async ({
   method,
   path,
@@ -41,7 +60,7 @@ export const restFetcher = async ({
   params?: AnyOBJ;
 }) => {
   try {
-    let url = `${BASE_URL}${path}`;
+    let url = `${path}`;
     const axiosConfig: AxiosRequestConfig = {
       method,
     };
@@ -50,10 +69,11 @@ export const restFetcher = async ({
       const searchParams = new URLSearchParams(params);
       url += '?' + searchParams.toString();
     }
-    const res = await axios(url, axiosConfig);
-    return res.data;
+    const res = await api(url, axiosConfig);
+    return res;
   } catch (err) {
     console.error(err);
+    throw err;
   }
 };
 

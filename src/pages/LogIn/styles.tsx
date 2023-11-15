@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const LoginForm = styled.form`
+export const LoginForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,6 +65,10 @@ export const LogInButton = styled.button`
   color: white;
   border: none;
   margin-bottom: 12px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export const KakaoButton = styled.button`
   width: 36rem;
@@ -90,6 +94,10 @@ export const SignUpeButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const Message = styled.span`

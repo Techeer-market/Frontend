@@ -1,56 +1,76 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
-import axios, { AxiosResponse } from 'axios';
 import TopNavBar from '@/components/TopNavBar';
-import ProductForm from '../../components/ProductForm'
-import { Product } from '@/types/product'
-import { BASE_URL } from '@/constants/baseURL';
+import ProductForm from '../../components/ProductForm';
+import { Product } from '@/types/product';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { restFetcher } from '@/queryClient';
+import Loading from '@/components/Loading';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-const PurchaseList: React.FC  = () => {
-  const [items, setItems] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  
-  const fetchPurchaseList = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${BASE_URL}/mypage/purchase`);
-      if(response.data) {
-        const chatroomCountPromises = response.data.map((product: Product) =>
-          axios.get(`${BASE_URL}/chatroom/count/${product.productUuid}`),
-        );
+const PurchaseList: React.FC = () => {
+  const navigate = useNavigate();
 
-        const chatroomCounts = await Promise.all(chatroomCountPromises);
+  const fetchPurchase = async ({ pageParam = 1 }) => {
+    const response = await restFetcher({
+      method: 'GET',
+      path: '/mypage/purchase',
+      params: { pageNo: pageParam, pageSize: 5 },
+    });
 
-        const updatedProducts = response.data.map((product: Product, index: number) => ({
+    await Promise.all(
+      response.data.map((product: Product) =>
+        restFetcher({
+          method: 'GET',
+          path: `/chatroom/count/${product.productUuid}`,
+        }).then((chatroomResponse) => ({
           ...product,
-          chatroomCount: chatroomCounts[index].data,
-        }));
+          chatroomCount: chatroomResponse.data,
+        })),
+      ),
+    );
 
-        setItems(updatedProducts);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
+    return { data: response.data, nextPage: response.data.length ? pageParam + 1 : undefined };
   };
 
-  useEffect(() => {
-    fetchPurchaseList();
-  }, []);
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    ['purchaselist'],
+    ({ pageParam = 1 }) => fetchPurchase({ pageParam }),
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    },
+  );
+
+  const loadMore = async () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useInfiniteScroll({ fetchCallback: loadMore });
 
   return (
     <>
-      <TopNavBar page="나의 구매 내역"/>
+      <TopNavBar page="나의 구매 내역" />
       <S.BtnDiv>
-        <S.WriteBtn>글쓰기</S.WriteBtn>
+        <S.WriteBtn
+          onClick={() => {
+            navigate('/write');
+          }}
+        >
+          글쓰기
+        </S.WriteBtn>
       </S.BtnDiv>
 
       <S.ProductContainer>
-        {isLoading? 
-          ( <div>로딩 중...</div> )
-          : <ProductForm items={items} refreshProductList={fetchPurchaseList}/>
-        } 
+        {isLoading ? (
+          <Loading />
+        ) : data ? (
+          <ProductForm items={data?.pages.flatMap((page) => page.data)} />
+        ) : (
+          <S.EmptyListMessage>구매 내역이 없습니다.</S.EmptyListMessage>
+        )}
       </S.ProductContainer>
     </>
   );

@@ -1,75 +1,80 @@
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-// import styled from 'styled-components';
 import * as S from './styles';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import Logo from '@/components/Logo';
 import { RiKakaoTalkFill } from 'react-icons/ri';
+import { restFetcher } from '@/queryClient';
+
+// 만료 시간 (ms)
+const JWT_EXPIRY_TIME = 24 * 3600 * 1000;
 
 interface LoginInfo {
   email: string;
   password: string;
 }
 
-function Login() {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
   const [isEmail, setIsEmail] = useState(false);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const onChangeEmail = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const emailRegex =
-        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-      const emailCurrent = e.target.value;
-      setEmail(emailCurrent);
+  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
 
-      if (!emailRegex.test(emailCurrent)) {
-        setEmailMessage('이메일 형식이 아닙니다.');
-        setIsEmail(false);
-      } else {
-        setEmailMessage('');
-        setIsEmail(true);
-      }
-    },
-    [],
-  );
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage('이메일 형식이 아닙니다.');
+      setIsEmail(false);
+    } else {
+      setEmailMessage('');
+      setIsEmail(true);
+    }
+  }, []);
 
-  const onChangePassword = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const passwordCurrent = e.target.value;
-      setPassword(passwordCurrent);
-    },
-    [],
-  );
+  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordCurrent = e.target.value;
+    setPassword(passwordCurrent);
+  }, []);
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const userInfo: LoginInfo = {
+  const handleLogin = async () => {
+    const loginInfo: LoginInfo = {
       email,
       password,
     };
 
     try {
-      const res = await axios.post(
-        `http://54.180.142.116:8080/api/users/login`,
-        userInfo,
-      );
-      console.log(res);
-      // 로컬 스토리지에 사용자 정보 저장
-      localStorage.setItem('name', res.data.name);
-      localStorage.setItem('email', res.data.email);
-      localStorage.setItem('uuid', res.data.userUuid);
-      console.log(localStorage);
+      const response = await restFetcher({
+        method: 'POST',
+        path: '/users/login',
+        body: loginInfo,
+      });
 
-      navigate('/');
-    } catch (err) {
-      console.log(err);
+      console.log(response);
+      console.log(response.headers);
+
+      if (response && response.headers) {
+        const accessToken = response.headers['access-token'];
+        const refreshToken = response.headers['refresh-token'];
+
+        if (accessToken && refreshToken) {
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
+
+          navigate('/');
+        } else {
+          throw new Error('토큰을 받아올 수 없습니다.');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      alert('로그인에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -78,7 +83,7 @@ function Login() {
   };
 
   return (
-    <S.LoginForm onSubmit={handleLogin}>
+    <S.LoginForm>
       <Logo />
       <S.Form>
         <S.Input
@@ -89,9 +94,7 @@ function Login() {
           onChange={onChangeEmail}
         />
         {email.length > 0 && (
-          <S.Message className={`message ${isEmail ? 'true' : 'false'}`}>
-            {emailMessage}
-          </S.Message>
+          <S.Message className={`message ${isEmail ? 'true' : 'false'}`}>{emailMessage}</S.Message>
         )}
         <S.Input
           name="password"
@@ -110,7 +113,9 @@ function Login() {
       </S.Etc>
 
       <S.Buttons>
-        <S.LogInButton type="submit">로그인</S.LogInButton>
+        <S.LogInButton type="submit" onClick={handleLogin}>
+          로그인
+        </S.LogInButton>
         <S.KakaoButton as="a" href={KAKAO_AUTH_URL}>
           <RiKakaoTalkFill size={'3.3rem'} />
           &nbsp;&nbsp;카카오 계정으로 로그인
@@ -119,6 +124,6 @@ function Login() {
       </S.Buttons>
     </S.LoginForm>
   );
-}
+};
 
 export default Login;

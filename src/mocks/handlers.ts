@@ -67,5 +67,11 @@
 import wishResultHandler from './api/wishResultHandler';
 import salseResultHandler from './api/salseResultHandler';
 import purchaseResultHandler from './api/purchaseResultHandler';
+import userResultHandler from './api/userResultHandler';
 
-export const handlers = [...wishResultHandler, ...salseResultHandler, ...purchaseResultHandler];
+export const handlers = [
+  ...wishResultHandler,
+  ...salseResultHandler,
+  ...purchaseResultHandler,
+  ...userResultHandler,
+];
