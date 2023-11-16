@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '../../assets/logo.svg';
+import logo from '@/assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 
 const Logo = () => {
@@ -29,4 +29,3 @@ const LogoBackground = styled.div`
   margin-bottom: 8rem;
 `;
 
-export default Logo;
