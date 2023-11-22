@@ -26,7 +26,7 @@ export const getClient = (() => {
   };
 })();
 
-//const { VITE_BASE_URL } = import.meta.env;
+// const { VITE_BASE_URL } = import.meta.env;
 const BASE_URL = import.meta.env.DEV ? '/api' : 'test';
 
 export const api = axios.create({
