@@ -10,32 +10,39 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 const WishList: React.FC = () => {
   const fetchWishList = async ({ pageParam = 1 }) => {
-    const response = await restFetcher({
-      method: 'GET',
-      path: '/mypage/like',
-      params: { pageNo: pageParam, pageSize: 10 },
-    });
+    try {
+      const response = await restFetcher({
+        method: 'GET',
+        path: '/mypage/like',
+        params: { pageNo: pageParam, pageSize: 5 },
+      });
 
-    await Promise.all(
-      response.data.map((product: Product) =>
-        restFetcher({
-          method: 'GET',
-          path: `/chatroom/count/${product.productUuid}`,
-        }).then((chatroomResponse) => ({
-          ...product,
-          chatroomCount: chatroomResponse.data,
-        })),
-      ),
-    );
+      const productsWithChatroomCounts = await Promise.all(
+        response.data.map(async (product: Product) => {
+          const chatroomResponse = await restFetcher({
+            method: 'GET',
+            path: `/chatroom/count/${product.productUuid}`,
+          });
+          return { ...product, chatroomCount: chatroomResponse.data };
+        }),
+      );
 
-    return { data: response.data, nextPage: response.data.length ? pageParam + 1 : undefined };
+      return {
+        data: productsWithChatroomCounts,
+        nextPage: response.data.length ? pageParam + 1 : undefined,
+      };
+    } catch (error) {
+      return { data: [], nextPage: undefined };
+    }
   };
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ['wishlist'],
     ({ pageParam = 1 }) => fetchWishList({ pageParam }),
     {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
+      getNextPageParam: (lastPage) => {
+        return lastPage?.data.length ? lastPage.nextPage : undefined;
+      },
     },
   );
 
@@ -55,7 +62,7 @@ const WishList: React.FC = () => {
         {isLoading ? (
           <Loading />
         ) : data ? (
-          <ProductForm items={data?.pages.flatMap((page) => page.data)} />
+          <ProductForm items={data?.pages.flatMap((page) => page?.data)} />
         ) : (
           <S.EmptyList>좋아요 목록이 없습니다.</S.EmptyList>
         )}

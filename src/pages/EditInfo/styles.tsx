@@ -5,24 +5,43 @@ export const InfoContainer = styled.div`
 `;
 
 export const ProfileContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 2.6rem;
-  padding-bottom: 4.4rem;
 `;
 
 export const ChangeImg = styled.img`
-  z-index: 2;
-  width: 5rem;
-  height: 5rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: none;
-  background-color: white;
-  background-color: rgba(255, 255, 255, 0);
+  border: 0.5px solid #d9d9d9;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const ChangeProfile = styled.input`
   display: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const CameraIcom = styled.div`
+  position: absolute;
+  left: 33px;
+  top: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border: 0.5px solid #d9d9d9;
+  border-radius: 50%;
 `;
 
 export const Name = styled.span`

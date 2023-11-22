@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import profile from '../../assets/profile.png';
 import * as S from './styles';
@@ -8,14 +8,13 @@ import TopNavBar from '@/components/TopNavBar';
 import { getClient, restFetcher } from '@/queryClient';
 import { UserInfo } from '@/types/userInfo';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useAuth } from '@/hooks/useAuth';
+import { clearLocalStorage } from '@/hooks/useTokenRefreshTimer';
+import { IoCamera } from 'react-icons/io5';
 
 const EditInfo = () => {
   const navigate = useNavigate();
   const queryClient = getClient();
-  const { clearTokens } = useAuth();
-  // const reader = new FileReader();
-  // const fileInput = useRef<HTMLInputElement | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [currentModalType, setCurrentModalType] = useState<string>('');
@@ -47,34 +46,43 @@ const EditInfo = () => {
     },
   );
 
+  // 파일 입력(input) 엘리먼트를 클릭
+  const openFileInput = () => {
+    if (fileInput.current) {
+      fileInput.current.click();
+    }
+  };
+
   // 프로필 이미지 업로드
-  // const onImgChange = (e: any) => {
-  //   const selectedFile = e.target.files[0];
+  const onChangeImg = (e: any) => {
+    const selectedFile = e.target.files[0];
 
-  //   if (selectedFile) {
-  //     reader.readAsDataURL(selectedFile);
-  //     reader.onload = () => {
-  //       if (reader.readyState === 2) {
-  //         const newImage = reader.result as string;
-  //         onInfoChange('image', newImage);
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          // base64 형식 url 반환
+          const base64Image = reader.result as string;
+          handleInfoChange('profileUrl', base64Image);
+        }
+      };
+    }
+  };
 
-  //         setInfo({
-  //           ...info,
-  //           image: newImage,
-  //         });
-  //       }
-  //     };
-  //   } else {
-  //     // 업로드가 취소
-  //     setInfo({
-  //       ...info,
-  //       image: profile,
-  //     });
-  //     onInfoChange('image', profile);
-  //   }
-  // };
+  // 프로필 이미지 삭제
+  const onDeleteImg = () => {
+    if (!userInfo?.profileUrl) {
+      alert('프로필 이미지가 없습니다.');
+      return;
+    }
+    let result = confirm('프로필 이미지를 삭제하시겠습니까?');
+    if (result === true && userInfo?.profileUrl) {
+      handleInfoChange('profileUrl', null);
+    }
+  };
 
-  const infoChangeMutation = useMutation(
+  const mutateInfoChange = useMutation(
     (updateInfo: UserInfo) => {
       return restFetcher({
         method: 'PATCH',
@@ -89,70 +97,84 @@ const EditInfo = () => {
     },
   );
 
-  const infoChangeHandler = async (type: string, newValue: string) => {
+  const handleInfoChange = async (type: string, newValue: string | null) => {
     try {
       let updateInfo = {};
       if (type === 'email') updateInfo = { email: newValue };
       if (type === 'password') updateInfo = { password: newValue };
+      if (type === 'profileUrl') updateInfo = { profileUrl: newValue };
 
-      await infoChangeMutation.mutateAsync(updateInfo as UserInfo);
+      await mutateInfoChange.mutateAsync(updateInfo as UserInfo);
     } catch (error) {
       alert('정보 변경에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const logoutMutation = useMutation(() => {
+  const mutateLogout = useMutation(() => {
     return restFetcher({
       method: 'POST',
       path: '/users/logout',
     });
   });
 
-  const logoutHandler = async () => {
+  const handleLogout = async () => {
     try {
-      await logoutMutation.mutateAsync();
-      clearTokens();
-      navigate('/');
+      await mutateLogout.mutateAsync();
+      clearLocalStorage();
+      navigate('/', { replace: true });
     } catch (error) {
-      console.error(error);
+      alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
-  const deleteUserMutation = useMutation(() => {
+  const mutateDeleteUser = useMutation(() => {
     return restFetcher({
       method: 'DELETE',
       path: '/users',
     });
   });
 
-  const deleteUserHandler = async () => {
+  const handleDeleteUser = async () => {
     try {
-      await deleteUserMutation.mutateAsync();
-      clearTokens();
-      navigate('/');
+      await mutateDeleteUser.mutateAsync();
+      clearLocalStorage();
+      navigate('/', { replace: true });
     } catch (error) {
-      console.error(error);
+      alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
   return (
     <>
       <TopNavBar page="계정/정보 관리" />
-      <S.InfoContainer>
-        <S.ProfileContainer>
-          <S.ChangeImg src={profile} alt="Profile" />
-          <S.Name>{userInfo?.name}</S.Name>
-        </S.ProfileContainer>
 
-        {/* <S.ChangeProfile
+      <S.InfoContainer>
+        <S.Section style={{ paddingBottom: '4.4rem' }}>
+          <S.ProfileContainer>
+            <S.ChangeImg
+              src={userInfo?.profileUrl ? userInfo.profileUrl : profile}
+              alt="Profile"
+              onClick={openFileInput}
+            />
+
+            <S.CameraIcom>
+              <IoCamera size={10} />
+            </S.CameraIcom>
+
+            <S.Name>{userInfo?.name}</S.Name>
+          </S.ProfileContainer>
+          <S.ChangeBtn onClick={() => onDeleteImg()}>삭제</S.ChangeBtn>
+        </S.Section>
+
+        <S.ChangeProfile
           id="Profile"
           type="file"
           accept="image/jpg,image/png,image/jpeg"
           name="profile_img"
-          onChange={onImgChange}
+          onChange={onChangeImg}
           ref={fileInput}
           style={{ display: 'none' }}
-        /> */}
+        />
 
         <S.Section>
           <div>
@@ -161,10 +183,10 @@ const EditInfo = () => {
           </div>
           <S.ChangeBtn onClick={() => openModal('email')}>변경</S.ChangeBtn>
         </S.Section>
+
         <S.Section>
           <div>
             <S.Title>비밀번호</S.Title>
-            {/* <S.InfoContent>{'******'}</S.InfoContent> */}
           </div>
           <S.ChangeBtn onClick={() => openModal('password')}>변경</S.ChangeBtn>
         </S.Section>
@@ -173,12 +195,12 @@ const EditInfo = () => {
           openModal={isOpenModal}
           type={currentModalType}
           onRequestClose={closeModal}
-          updateInfo={infoChangeHandler}
+          updateInfo={handleInfoChange}
         />
 
         <S.Section2>
-          <S.DelBtn onClick={logoutHandler}>로그아웃</S.DelBtn>
-          <S.DelBtn onClick={deleteUserHandler}>회원 탈퇴하기</S.DelBtn>
+          <S.DelBtn onClick={handleLogout}>로그아웃</S.DelBtn>
+          <S.DelBtn onClick={handleDeleteUser}>회원 탈퇴하기</S.DelBtn>
         </S.Section2>
       </S.InfoContainer>
     </>

@@ -13,40 +13,44 @@ const SalesList: React.FC = () => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  const tabClickHandler = (index: number) => {
+  const handleTabClick = (index: number) => {
     setActiveIndex(index);
   };
 
-  const { data: items, isLoading } = useQuery<Product[], AxiosError>(
-    ['saleslist'],
-    async () => {
+  const fetchSalesList = async () => {
+    try {
       const response = await restFetcher({
         method: 'GET',
         path: '/mypage/sell',
       });
-      return response.data;
-    },
-    {
-      onSuccess: async (data) => {
-        Promise.all(
-          data.map((product) => {
-            restFetcher({
-              method: 'GET',
-              path: `/chatroom/count/${product.productUuid}`,
-            }).then((response) => {
-              product.chatroomCount = response.data;
-            });
-          }),
-        );
-      },
-    },
+
+      const productsWithChatroomCounts = await Promise.all(
+        response.data.map(async (product: Product) => {
+          const chatroomResponse = await restFetcher({
+            method: 'GET',
+            path: `/chatroom/count/${product.productUuid}`,
+          });
+          return { ...product, chatroomCount: chatroomResponse.data };
+        }),
+      );
+
+      return productsWithChatroomCounts;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  const { data: items, isLoading } = useQuery<Product[], AxiosError>(['saleslist'], () =>
+    fetchSalesList(),
   );
 
   // 판매중, 거래 완료 상품 분류
-  const onSaleItems = items?.filter((item) => item.productState !== 'SOLD') || [];
-  const completedItems = items?.filter((item) => item.productState === 'SOLD') || [];
+  let onSaleItems = items?.filter((item) => item.productState !== 'SOLD') || [];
+  let completedItems = items?.filter((item) => item.productState === 'SOLD') || [];
 
-  let displayedItems = activeIndex === 0 ? onSaleItems : completedItems;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -62,23 +66,25 @@ const SalesList: React.FC = () => {
       </S.BtnDiv>
 
       <S.Tabs>
-        <S.Tab isActive={activeIndex === 0} onClick={() => tabClickHandler(0)}>
+        <S.Tab isActive={activeIndex === 0} onClick={() => handleTabClick(0)}>
           판매 중
         </S.Tab>
-        <S.Tab isActive={activeIndex === 1} onClick={() => tabClickHandler(1)}>
+        <S.Tab isActive={activeIndex === 1} onClick={() => handleTabClick(1)}>
           거래 완료
         </S.Tab>
       </S.Tabs>
 
       <S.TabContent>
-        {isLoading ? (
-          <Loading />
-        ) : displayedItems && displayedItems.length > 0 ? (
-          <ProductForm items={displayedItems} />
+        {activeIndex === 0 ? (
+          onSaleItems && onSaleItems.length > 0 ? (
+            <ProductForm items={onSaleItems} />
+          ) : (
+            <S.EmptyList>판매 중인 게시글이 없습니다.</S.EmptyList>
+          )
+        ) : completedItems && completedItems.length > 0 ? (
+          <ProductForm items={completedItems} />
         ) : (
-          <S.EmptyList>
-            {activeIndex === 0 ? '판매 중인 게시글이 없습니다.' : '거래 완료된 게시글이 없습니다.'}
-          </S.EmptyList>
+          <S.EmptyList>거래 완료된 게시글이 없습니다.</S.EmptyList>
         )}
       </S.TabContent>
     </>

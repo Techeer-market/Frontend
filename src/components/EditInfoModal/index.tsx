@@ -22,7 +22,6 @@ const EditInfoModal = ({ openModal, type, onRequestClose, updateInfo }: Props) =
     setIsCorrect(false);
   }, [onRequestClose]);
 
-  // 이메일 형식 체크
   const checkEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -35,18 +34,25 @@ const EditInfoModal = ({ openModal, type, onRequestClose, updateInfo }: Props) =
     }
   }, []);
 
-  // 비밀번호 형식 체크
-  // const checkPassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {}, []);
+  const checkPassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/;
+    if (!passwordRegex.test(e.target.value)) {
+      setTypeErrorMessage('비밀번호 형식이 아닙니다. 영문, 숫자 포함 8~15자로 입력해주세요.');
+      setIsCorrect(false);
+    } else {
+      setTypeErrorMessage('');
+      setIsCorrect(true);
+    }
+  }, []);
 
-  const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
 
-    if (type === 'email') {
-      checkEmail(e);
-    }
+    if (type === 'email') checkEmail(e);
+    if (type === 'password') checkPassword(e);
   };
 
-  const updateHandler = () => {
+  const handleUpdate = () => {
     if (updateInfo && type) {
       updateInfo(type, inputValue);
       onRequestClose && onRequestClose();
@@ -87,7 +93,7 @@ const EditInfoModal = ({ openModal, type, onRequestClose, updateInfo }: Props) =
       contentLabel="Modal"
     >
       <S.BtnArea onClick={onRequestClose}>
-        <IoClose style={{ width: '20px', height: '20px' }} />
+        <IoClose size={20} />
       </S.BtnArea>
 
       <S.Contaniner>
@@ -98,7 +104,7 @@ const EditInfoModal = ({ openModal, type, onRequestClose, updateInfo }: Props) =
             placeholder="이메일을 입력해주세요."
             type="text"
             value={inputValue}
-            onChange={inputChangeHandler}
+            onChange={handleChangeInput}
           />
         )}
         {type === 'password' && (
@@ -107,13 +113,13 @@ const EditInfoModal = ({ openModal, type, onRequestClose, updateInfo }: Props) =
             placeholder="비밀번호를 입력해주세요."
             type="password"
             value={inputValue}
-            onChange={inputChangeHandler}
+            onChange={handleChangeInput}
           />
         )}
         <S.ErrorMessage show={typeErrorMessage !== ''}>{typeErrorMessage}</S.ErrorMessage>
       </S.Contaniner>
 
-      <S.EditBtn onClick={updateHandler} disabled={!isCorrect}>
+      <S.EditBtn onClick={handleUpdate} disabled={!isCorrect}>
         변경하기
       </S.EditBtn>
     </Modal>

@@ -1,8 +1,6 @@
 // "test 부분에 배포된 api 주소 설정하기 "
-import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
-import { useAuth } from '@/hooks/useAuth';
 
 type AnyOBJ = {
   [key: string]: any;
@@ -35,31 +33,24 @@ export const api = axios.create({
   baseURL: BASE_URL,
 });
 
-export const useAxiosInterceptor = () => {
-  const { authTokens } = useAuth();
-
-  useEffect(() => {
-    // 토큰을 포함하는 인터셉터
-    const interceptor = api.interceptors.request.use(
-      (config) => {
-        const token = authTokens.accessToken;
-        if (token) {
-          config.headers.Authorization = `access_token:${token}`;
-          // config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      },
-    );
-    // 클린업 함수 (인터셉트 해제)
-    return () => {
-      api.interceptors.request.eject(interceptor);
-    };
-  }, [authTokens]);
-  return null;
-};
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access-token');
+    if (token) {
+      config.headers.Authorization = `${token}`; // 또는 `Bearer ${token}`
+    } else if (window.location.pathname === '/login' || window.location.pathname === '/signup') {
+      // 로그인, 회원가입 페이지에서는 토큰이 없어도 통과
+    } else {
+      alert('로그인 후 이용해주세요.');
+      window.location.href = '/login';
+      throw new Error('토큰이 없습니다.');
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 export const restFetcher = async ({
   method,

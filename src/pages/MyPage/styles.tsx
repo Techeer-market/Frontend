@@ -5,6 +5,7 @@ export const Div = styled.div`
 `;
 
 export const MyPageContainer = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 2.6rem;
@@ -12,19 +13,30 @@ export const MyPageContainer = styled.div`
 `;
 
 export const ChangImg = styled.img`
-  z-index: 2;
-  width: 5rem;
-  height: 5rem;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: none;
-  background-color: white;
-  background-color: rgba(255, 255, 255, 0);
+  border: 0.5px solid #d9d9d9;
 `;
 
 export const Name = styled.span`
   color: #000;
   font-size: 23px;
   font-weight: 700;
+`;
+
+export const CameraIcom = styled.div`
+  position: absolute;
+  left: 33px;
+  top: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border: 0.5px solid #d9d9d9;
+  border-radius: 50%;
 `;
 
 export const Title = styled.span`

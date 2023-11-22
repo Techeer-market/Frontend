@@ -71,13 +71,14 @@ export const LogInButton = styled.button`
   width: 36rem;
   height: 5.5rem;
   border-radius: 10px;
-  background: #000;
+  // background: #000;
+  background-color: ${(props) => (props.disabled ? '#ccc' : '#000')};
   color: white;
   border: none;
   margin-bottom: 12px;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   }
 `;
 export const KakaoButton = styled.button`

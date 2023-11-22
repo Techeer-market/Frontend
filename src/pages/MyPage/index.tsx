@@ -10,15 +10,16 @@ import { restFetcher } from '@/queryClient';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { UserInfo } from '@/types/userInfo';
+import { IoCamera } from 'react-icons/io5';
+
+const NAV_ITEMS = [
+  { path: '/wishlist', imgSrc: Heart, altText: 'heartIcon', label: '좋아요 목록' },
+  { path: '/saleslist', imgSrc: Store, altText: 'StoreIcon', label: '판매 내역' },
+  { path: '/purchaselist', imgSrc: Cart, altText: 'CartIcon', label: '구매 내역' },
+];
 
 const MyPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const navItems = [
-    { path: '/wishlist', imgSrc: Heart, altText: 'heartIcon', label: '좋아요 목록' },
-    { path: '/saleslist', imgSrc: Store, altText: 'StoreIcon', label: '판매 내역' },
-    { path: '/purchaselist', imgSrc: Cart, altText: 'CartIcon', label: '구매 내역' },
-  ];
 
   const { data: userInfo } = useQuery<UserInfo, AxiosError>(
     ['userInfo'],
@@ -44,13 +45,18 @@ const MyPage: React.FC = () => {
 
       <S.Div>
         <S.MyPageContainer>
-          <S.ChangImg src={profile} alt="Profile" />
+          <S.ChangImg src={userInfo?.profileUrl ? userInfo.profileUrl : profile} alt="Profile" />
+
+          <S.CameraIcom>
+            <IoCamera size={10} />
+          </S.CameraIcom>
+
           <S.Name>{userInfo?.name}</S.Name>
         </S.MyPageContainer>
 
         <S.Title>나의 거래</S.Title>
 
-        {navItems.map((item, index) => (
+        {NAV_ITEMS.map((item, index) => (
           <S.ItemBox key={index}>
             <S.ClickArea onClick={() => navigate(item.path)}>
               <img src={item.imgSrc} alt={item.altText} />

@@ -7,7 +7,7 @@ const salseResultHandler = [
     return res(ctx.status(200), ctx.json(salesResultData));
   }),
   // 상품 상태 수정
-  rest.put(`http://localhost:3000/api/products/:productId/state`, (req, res, ctx) => {
+  rest.put(`http://localhost:3000/api/products/state/:productId`, (req, res, ctx) => {
     const productId = req.params.productId;
     return res(ctx.status(200));
   }),
