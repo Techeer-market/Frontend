@@ -17,6 +17,8 @@ const Logo = () => {
     </LogoBackground>
   );
 };
+export default Logo;
+
 // 로고 이미지 사이즈 줄이기
 const LogoBackground = styled.div`
   display: flex;
@@ -28,4 +30,3 @@ const LogoBackground = styled.div`
   margin-top: 12rem;
   margin-bottom: 8rem;
 `;
-

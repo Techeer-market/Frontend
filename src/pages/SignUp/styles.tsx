@@ -13,7 +13,7 @@ export const Container = styled.div`
     margin: 0 auto;
   }
 `;
-export const Inputs = styled.div`
+export const Forms = styled.form`
   margin-top: 100px;
   align-items: center;
   flex-direction: column;
