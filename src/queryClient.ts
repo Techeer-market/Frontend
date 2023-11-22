@@ -84,4 +84,5 @@ export const restFetcher = async ({
 export const QueryKeys = {
   TEST: 'TEST',
   RESULT: 'RESULT',
+  SEARCH: 'SEARCH',
 };
