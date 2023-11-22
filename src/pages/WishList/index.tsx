@@ -14,7 +14,7 @@ const WishList: React.FC = () => {
       const response = await restFetcher({
         method: 'GET',
         path: '/mypage/like',
-        params: { pageNo: pageParam, pageSize: 5 },
+        params: { pageNo: pageParam, pageSize: 10 },
       });
 
       const productsWithChatroomCounts = await Promise.all(

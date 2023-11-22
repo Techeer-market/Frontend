@@ -28,8 +28,7 @@ const userResultHandler = [
         email: 'test@test.com',
         name: 'test',
         social: 'LOCAl',
-        profileUrl:
-          'https://res.cloudinary.com/dusavg0vn/image/upload/v1695805125/214244769_1_1678264995_w1100_10_1_uwaqdy.png',
+        profileUrl: null,
       }),
     );
   }),

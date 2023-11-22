@@ -17,18 +17,18 @@ export const ChangeImg = styled.img`
   border-radius: 50%;
   border: 0.5px solid #d9d9d9;
 
-  &:hover {
-    cursor: pointer;
-  }
+  // &:hover {
+  //   cursor: pointer;
+  // }
 `;
 
-export const ChangeProfile = styled.input`
-  display: none;
+// export const ChangeProfile = styled.input`
+//   display: none;
 
-  &:hover {
-    cursor: pointer;
-  }
-`;
+//   &:hover {
+//     cursor: pointer;
+//   }
+// `;
 
 export const CameraIcom = styled.div`
   position: absolute;
