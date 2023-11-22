@@ -13,32 +13,39 @@ const PurchaseList: React.FC = () => {
   const navigate = useNavigate();
 
   const fetchPurchase = async ({ pageParam = 1 }) => {
-    const response = await restFetcher({
-      method: 'GET',
-      path: '/mypage/purchase',
-      params: { pageNo: pageParam, pageSize: 5 },
-    });
+    try {
+      const response = await restFetcher({
+        method: 'GET',
+        path: '/mypage/purchase',
+        params: { pageNo: pageParam, pageSize: 10 },
+      });
 
-    await Promise.all(
-      response.data.map((product: Product) =>
-        restFetcher({
-          method: 'GET',
-          path: `/chatroom/count/${product.productUuid}`,
-        }).then((chatroomResponse) => ({
-          ...product,
-          chatroomCount: chatroomResponse.data,
-        })),
-      ),
-    );
+      const productsWithChatroomCounts = await Promise.all(
+        response.data.map(async (product: Product) => {
+          const chatroomResponse = await restFetcher({
+            method: 'GET',
+            path: `/chatroom/count/${product.productUuid}`,
+          });
+          return { ...product, chatroomCount: chatroomResponse.data };
+        }),
+      );
 
-    return { data: response.data, nextPage: response.data.length ? pageParam + 1 : undefined };
+      return {
+        data: productsWithChatroomCounts,
+        nextPage: response.data.length ? pageParam + 1 : undefined,
+      };
+    } catch (error) {
+      return { data: [], nextPage: undefined };
+    }
   };
 
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
     ['purchaselist'],
     ({ pageParam = 1 }) => fetchPurchase({ pageParam }),
     {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
+      getNextPageParam: (lastPage) => {
+        return lastPage?.data.length ? lastPage.nextPage : undefined;
+      },
     },
   );
 

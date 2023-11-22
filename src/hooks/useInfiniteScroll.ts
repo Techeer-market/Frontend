@@ -12,9 +12,9 @@ const useInfiniteScroll = ({ fetchCallback }: InfiniteScrollProps) => {
   const handleScroll = throttle(async () => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
+    const offsetHeight = document.documentElement.offsetHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + offsetHeight >= scrollHeight) {
       setIsFetching(true);
 
       try {

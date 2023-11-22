@@ -1,9 +1,6 @@
 // import styled from 'styled-components';
 // import { Link, useNavigate } from 'react-router-dom';
 
-
-
-
 // export const NavContainer = styled.div`
 // padding-top: 5px;
 // `;
@@ -258,4 +255,3 @@
 // `;
 
 // `;
-

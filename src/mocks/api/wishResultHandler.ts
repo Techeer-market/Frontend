@@ -9,8 +9,6 @@ const wishResultHandler = [
 
     if (idx === '1' || idx === '2' || idx === '3') {
       return res(ctx.status(200), ctx.json(wishResultData));
-    } else if (idx === '4') {
-      return res(ctx.status(200), ctx.json([]));
     }
   }),
 

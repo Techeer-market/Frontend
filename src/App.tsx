@@ -5,10 +5,13 @@ import { useRoutes } from 'react-router-dom';
 import { routes } from './Router';
 import React from 'react';
 import Loading from './components/Loading';
+import { useTokenRefreshTimer } from '@/hooks/useTokenRefreshTimer';
 
 function App() {
   const queryClient = getClient();
   const elem = useRoutes(routes);
+
+  useTokenRefreshTimer();
 
   return (
     <QueryClientProvider client={queryClient}>

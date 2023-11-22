@@ -9,14 +9,14 @@ import TopNavBar from '@/components/TopNavBar';
 import { restFetcher } from '@/queryClient';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { UserInfo } from '@/types/userInfo';
+import { IoCamera } from 'react-icons/io5';
 
-interface UserInfo {
-  email: string;
-  name: string;
-  barthday: string;
-  social: string;
-  profileUrl: string;
-}
+const NAV_ITEMS = [
+  { path: '/wishlist', imgSrc: Heart, altText: 'heartIcon', label: '좋아요 목록' },
+  { path: '/saleslist', imgSrc: Store, altText: 'StoreIcon', label: '판매 내역' },
+  { path: '/purchaselist', imgSrc: Cart, altText: 'CartIcon', label: '구매 내역' },
+];
 
 const MyPage: React.FC = () => {
   const navigate = useNavigate();
@@ -42,34 +42,28 @@ const MyPage: React.FC = () => {
   return (
     <>
       <TopNavBar page="마이페이지" />
-      <S.MyPageContainer>
-        <label htmlFor="Profile">
-          <S.ChangeName src={userInfo?.profileUrl || profile} alt="Profile" />
-        </label>
-        <S.Name>{userInfo?.name}</S.Name>
-      </S.MyPageContainer>
 
       <S.Div>
+        <S.MyPageContainer>
+          <S.ChangImg src={userInfo?.profileUrl ? userInfo.profileUrl : profile} alt="Profile" />
+
+          <S.CameraIcom>
+            <IoCamera size={10} />
+          </S.CameraIcom>
+
+          <S.Name>{userInfo?.name}</S.Name>
+        </S.MyPageContainer>
+
         <S.Title>나의 거래</S.Title>
 
-        <S.ItemBox>
-          <S.ClickArea onClick={() => navigate('/wishlist')}>
-            <img src={Heart} alt="heartIcon" />
-            <S.Item>좋아요 목록</S.Item>
-          </S.ClickArea>
-        </S.ItemBox>
-        <S.ItemBox>
-          <S.ClickArea onClick={() => navigate('/saleslist')}>
-            <img src={Store} alt="StoreIcon" />
-            <S.Item>판매 내역</S.Item>
-          </S.ClickArea>
-        </S.ItemBox>
-        <S.ItemBox>
-          <S.ClickArea onClick={() => navigate('/purchaselist')}>
-            <img src={Cart} alt="CartIcon" />
-            <S.Item>구매 내역</S.Item>
-          </S.ClickArea>
-        </S.ItemBox>
+        {NAV_ITEMS.map((item, index) => (
+          <S.ItemBox key={index}>
+            <S.ClickArea onClick={() => navigate(item.path)}>
+              <img src={item.imgSrc} alt={item.altText} />
+              <S.Item>{item.label}</S.Item>
+            </S.ClickArea>
+          </S.ItemBox>
+        ))}
 
         <S.NavBtn onClick={() => navigate('/edit_info')}>계정 / 정보 관리</S.NavBtn>
       </S.Div>

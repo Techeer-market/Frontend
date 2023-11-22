@@ -28,18 +28,22 @@ export const getClient = (() => {
 
 // const { VITE_BASE_URL } = import.meta.env;
 const BASE_URL = import.meta.env.DEV ? '/api' : 'test';
+// const BASE_URL = 'http://15.164.213.39:8080/api';
 
 export const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// 토큰을 포함하는 인터셉터
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('access-token');
     if (token) {
-      config.headers.Authorization = `access_token:${token}`;
-      // config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Access-Token'] = `${token}`;
+    } else if (!(window.location.pathname === '/login' || window.location.pathname === '/signup')) {
+      // 로그인, 회원가입 페이지에서는 토큰이 없어도 통과
+      alert('로그인 후 이용해주세요.');
+      window.location.href = '/login';
+      throw new Error('토큰이 없습니다.');
     }
     return config;
   },
