@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '../../assets/logo.svg';
+import logo from '@/assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 
 const Logo = () => {
@@ -17,6 +17,8 @@ const Logo = () => {
     </LogoBackground>
   );
 };
+export default Logo;
+
 // 로고 이미지 사이즈 줄이기
 const LogoBackground = styled.div`
   display: flex;
@@ -28,5 +30,3 @@ const LogoBackground = styled.div`
   margin-top: 12rem;
   margin-bottom: 8rem;
 `;
-
-export default Logo;

@@ -26,7 +26,7 @@ export const getClient = (() => {
   };
 })();
 
-//const { VITE_BASE_URL } = import.meta.env;
+// const { VITE_BASE_URL } = import.meta.env;
 const BASE_URL = import.meta.env.DEV ? '/api' : 'test';
 // const BASE_URL = 'http://15.164.213.39:8080/api';
 
