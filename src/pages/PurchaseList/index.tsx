@@ -24,7 +24,7 @@ const PurchaseList: React.FC = () => {
         response.data.map(async (product: Product) => {
           const chatroomResponse = await restFetcher({
             method: 'GET',
-            path: `/chatroom/count/${product.productUuid}`,
+            path: `/chatroom/count/${product.productId}`,
           });
           return { ...product, chatroomCount: chatroomResponse.data };
         }),
