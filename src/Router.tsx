@@ -1,11 +1,11 @@
 import { lazy } from 'react';
 
-// const Main = lazy(() => import('./pages/Main'));
+const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
 const KakaoLogin = lazy(() => import('./pages/KakaoLogin'));
 const SignUp = lazy(() => import('@/pages/SignUp'));
 const WritePost = lazy(() => import('./pages/WritePost'));
-const Post = lazy(() => import('./pages/Post'));
+// const Post = lazy(() => import('./pages/Post'));
 // const EditPost = lazy(() => import('./pages/EditPost'));
 const Chatting = lazy(() => import('./pages/Chatting'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
@@ -16,14 +16,15 @@ const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
 const Detail = lazy(() => import('@/pages/Detail'));
+const ItemDetail = lazy(() => import('./pages/ItemDetail'));
 
 export const routes = [
-  // { path: '/', element: <Main /> },
+  { path: '/', element: <Main /> },
   { path: '/login', element: <Login /> },
   { path: '/auth/kakao', element: <KakaoLogin /> },
   { path: '/signup', element: <SignUp /> },
   { path: '/write', element: <WritePost /> },
-  { path: '/post/:productUuid', element: <Post /> },
+  // { path: '/post/:productUuid', element: <Post /> },
   { path: '/wishlist', element: <WishList /> },
   { path: '/saleslist', element: <SalesList /> },
   { path: '/purchaselist', element: <PurchaseList /> },
@@ -33,4 +34,5 @@ export const routes = [
   { path: `/category/:category`, element: <Detail /> },
   { path: '/search', element: <SearchPage /> },
   { path: '/detail', element: <Detail /> },
+  { path: '/item', element: <ItemDetail /> },
 ];

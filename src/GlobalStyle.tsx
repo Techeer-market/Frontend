@@ -27,12 +27,16 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 	font-size: 62.5%;
-	font-family: 'Inria Sans';
+	font-family: 'Inria Sans'; 
 }
 body {
 	margin: 0 auto;
 	width: 50rem;
 	height: 100vh;
+}
+
+#root {
+	height:100%;
 }`;
 
 // @media (max-width: 1023px) {//데스크탑
