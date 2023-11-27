@@ -33,6 +33,10 @@ body {
 	margin: 0 auto;
 	width: 50rem;
 	height: 100vh;
+}
+
+#root {
+	height:100%;
 }`;
 
 // @media (max-width: 1023px) {//데스크탑
