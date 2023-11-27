@@ -76,6 +76,8 @@ export const InfoDiv = styled.div`
 
 export const InfoContent = styled.span`
   padding-right: 8px;
+  font-size: 10px;
+  font-weight: 400;
 `;
 
 export const PriceDiv = styled.div`
@@ -103,7 +105,6 @@ export const Image = styled.svg`
   background-position: 50% 50%;
   background-size: contain;
 
-  // transform: scale(1);
   transition: transform 0.3s ease-out;
   cursor: pointer;
 

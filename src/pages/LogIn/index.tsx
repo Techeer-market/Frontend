@@ -23,34 +23,40 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const emailRegex =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    const emailCurrent = e.target.value;
-    setLoginInfo((prevState) => ({ ...prevState, email: emailCurrent }));
+  const onChangeEmail = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const emailRegex =
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+      const emailCurrent = e.target.value;
+      setLoginInfo((prevState) => ({ ...prevState, email: emailCurrent }));
 
-    if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage('이메일 형식이 아닙니다.');
-      setIsEmail(false);
-    } else {
-      setEmailMessage('');
-      setIsEmail(true);
-    }
-  }, []);
+      if (!emailRegex.test(emailCurrent)) {
+        setEmailMessage('이메일 형식이 아닙니다.');
+        setIsEmail(false);
+      } else {
+        setEmailMessage('');
+        setIsEmail(true);
+      }
+    },
+    [loginInfo],
+  );
 
-  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/;
-    const passwordCurrent = e.target.value;
-    setLoginInfo((prevState) => ({ ...prevState, password: passwordCurrent }));
+  const onChangePassword = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/;
+      const passwordCurrent = e.target.value;
+      setLoginInfo((prevState) => ({ ...prevState, password: passwordCurrent }));
 
-    if (!passwordRegex.test(passwordCurrent)) {
-      setPasswordMessage('비밀번호 형식이 아닙니다. 영문, 숫자 포함 8~15자로 입력해주세요.');
-      setIsPassword(false);
-    } else {
-      setPasswordMessage('');
-      setIsPassword(true);
-    }
-  }, []);
+      if (!passwordRegex.test(passwordCurrent)) {
+        setPasswordMessage('비밀번호 형식이 아닙니다. 영문, 숫자 포함 8~15자로 입력해주세요.');
+        setIsPassword(false);
+      } else {
+        setPasswordMessage('');
+        setIsPassword(true);
+      }
+    },
+    [loginInfo],
+  );
 
   const loginMutation = useMutation(async (loginInfo: LoginInfo) => {
     const response = await restFetcher({
