@@ -1,21 +1,35 @@
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const JWT_EXPIRY_TIME = 1000 * 60 * 60 * 3 - 1000 * 60 * 10; // 3시간 - 10분
 
 // 액세스 토큰 만료 시간이 지나면 리프레쉬 토큰으로 재발급
 export const useTokenRefreshTimer = () => {
+  const location = useLocation();
+
   useEffect(() => {
-    const time = localStorage.getItem('expirationTime');
-    if (time) {
-      const remainingTime = calculateRemainingTime(time);
-      const timer = setTimeout(() => refreshTokens(), remainingTime);
-      return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+    if (location.pathname === '/login') {
+      return;
     }
-  }, []);
+
+    let time = localStorage.getItem('expirationTime') ?? '';
+
+    if (!time) {
+      let expirationTime = new Date(new Date().getTime() + JWT_EXPIRY_TIME).toISOString();
+      localStorage.setItem('expirationTime', expirationTime);
+      time = expirationTime;
+    }
+
+    const remainingTime = calculateRemainingTime(time);
+    const timer = setTimeout(() => refreshTokens(), remainingTime);
+    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+  });
 
   const refreshTokens = async () => {
     try {
+      // http://techeermarket.ap-northeast-2.elasticbeanstalk.com/api/users/authorize
+      // http://localhost:3000/api/users/authorize
       const response = await axios.get('http://localhost:3000/api/users/authorize', {
         headers: { 'Refresh-Token': `${localStorage.getItem('refresh-token')}` },
       });
