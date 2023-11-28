@@ -1,21 +1,8 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 export const Div = styled.div`
   width: 100%;
   padding-bottom: 1rem;
-`;
-
-const fadeOutAnimation = keyframes`
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(30%);
-    padding-top: -12rem;
-    display: none;
-  }
 `;
 
 export const Container = styled.div`
@@ -25,10 +12,6 @@ export const Container = styled.div`
   border-radius: 10px;
   background-color: rgba(217, 217, 217, 0.15);
   margin-bottom: 1.6rem;
-
-  &.fade-out {
-    animation: ${fadeOutAnimation} 300ms forwards;
-  }
 
   &:hover {
     cursor: pointer;
@@ -160,7 +143,7 @@ export const Dropdown = styled.div`
   top: 100%;
   left: 0;
   width: 10rem;
-  height: 11rem;
+  height: 7rem;
   display: flex;
   flex-direction: column;
   align-items: start;

@@ -21,6 +21,10 @@ export const WriteBtn = styled.button`
   }
 `;
 
+export const ProductContainer = styled.div`
+  padding: 3rem 2rem 0;
+`;
+
 export const Tabs = styled.ul`
   display: flex;
   padding: 6.2rem 2rem 0;
