@@ -6,9 +6,9 @@ const mainResultHandler = [
     const idx = req.url.searchParams.get('pageNo');
     const limit = req.url.searchParams.get('pageSize');
 
-    if (idx === '1') {
-      return res(ctx.status(200), ctx.json(salesResultData));
-    }
+    // if (idx === '1') {
+    return res(ctx.status(200), ctx.json(salesResultData));
+    // }
   }),
 ];
 
