@@ -17,6 +17,7 @@ const wishResultHandler = [
     const productId = req.params.productId;
     return res(ctx.status(200), ctx.json(5));
   }),
+
   // 좋아요 누르기
   rest.post(`http://localhost:3000/api/products/like/:productId`, (req, res, ctx) => {
     const productId = req.params.productId;

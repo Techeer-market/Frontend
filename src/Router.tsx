@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 
-// const Main = lazy(() => import('./pages/Main'));
+const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
 const KakaoLogin = lazy(() => import('./pages/KakaoLogin'));
 const SignUp = lazy(() => import('@/pages/SignUp'));
@@ -18,7 +18,7 @@ const EditInfo = lazy(() => import('@/pages/EditInfo'));
 const Detail = lazy(() => import('@/pages/Detail'));
 
 export const routes = [
-  // { path: '/', element: <Main /> },
+  { path: '/', element: <Main /> },
   { path: '/login', element: <Login /> },
   { path: '/auth/kakao', element: <KakaoLogin /> },
   { path: '/signup', element: <SignUp /> },
