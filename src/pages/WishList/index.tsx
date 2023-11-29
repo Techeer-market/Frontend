@@ -2,57 +2,16 @@ import React from 'react';
 import ProductForm from '@/components/ProductForm';
 import TopNavBar from '@/components/TopNavBar';
 import * as S from './styles';
-import { Product } from '@/types/product';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Loading from '@/components/Loading';
-import { restFetcher } from '@/queryClient';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import useFetchProductList from '@/hooks/useFetchProductList';
 
 const WishList: React.FC = () => {
-  const fetchWishList = async ({ pageParam = 1 }) => {
-    try {
-      const response = await restFetcher({
-        method: 'GET',
-        path: '/mypage/like',
-        params: { pageNo: pageParam, pageSize: 10 },
-      });
+  const path = '/mypage/like',
+    queryKey = 'wishlist';
+  const { data, isLoading, hasNextPage, fetchNextPage } = useFetchProductList({ path, queryKey });
 
-      const productsWithChatroomCounts = await Promise.all(
-        response.data.map(async (product: Product) => {
-          const chatroomResponse = await restFetcher({
-            method: 'GET',
-            path: `/chatroom/count/${product.productId}`,
-          });
-          return { ...product, chatroomCount: chatroomResponse.data };
-        }),
-      );
-
-      return {
-        data: productsWithChatroomCounts,
-        nextPage: response.data.length ? pageParam + 1 : undefined,
-      };
-    } catch (error) {
-      return { data: [], nextPage: undefined };
-    }
-  };
-
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['wishlist'],
-    ({ pageParam = 1 }) => fetchWishList({ pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage?.data.length ? lastPage.nextPage : undefined;
-      },
-    },
-  );
-
-  const loadMore = async () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  useInfiniteScroll({ fetchCallback: loadMore });
+  useInfiniteScroll({ fetchCallback: fetchNextPage });
 
   return (
     <>
