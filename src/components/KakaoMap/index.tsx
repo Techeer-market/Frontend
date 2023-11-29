@@ -38,9 +38,7 @@ const KakaoMap = ({ location }: KakaoMapProps) => {
     <div
       id="map"
       style={{ width: '95%', height: '360px', borderRadius: '10px', marginTop: '1rem' }}
-    >
-      {/* <div id="clickLatlng"></div> */}
-    </div>
+    ></div>
   );
 };
 
