@@ -25,6 +25,7 @@
     "react-hook-form": "^7.43.5",
     "react-icons": "^4.8.0",
     "react-intersection-observer": "^9.4.3",
+    "react-kakao-maps-sdk": "^1.1.24",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
     "react-redux": "^8.0.5",

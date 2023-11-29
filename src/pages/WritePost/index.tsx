@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TopNavBar from '@/components/TopNavBar';
 import * as S from './styles';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,8 @@ import uploadimage from '../../assets/uploadimage.svg';
 import axios from 'axios';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
+import KakaoMap from '@/components/KakaoMap';
+import { debounce } from 'lodash';
 
 const WritePost = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
@@ -17,17 +19,8 @@ const WritePost = () => {
   // const [displayPrice, setDisplayPrice] = useState(""); // price 쉼표 및 "원" 기호 표기용
   const [description, setDescription] = useState('');
   const [userUuid, setUserUuid] = useState('');
+  const [location, setLocation] = useState<string>('');
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
-
-  useEffect(() => {
-    const productUuid = localStorage.getItem('productUuid');
-    console.log({ productUuid });
-    if (productUuid) {
-      setUserUuid(productUuid);
-    } else {
-      console.log('uuid 가 없습니다.');
-    }
-  }, []);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -107,6 +100,15 @@ const WritePost = () => {
     let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
     setPrice(parseInt(value)); // 실제로 서버에 전달될 값
   };
+
+  const debouncedSetLocation = useCallback(
+    debounce((value) => setLocation(value), 1000),
+    [],
+  );
+
+  useEffect(() => {
+    console.log('검색 위치:', location);
+  }, [location]);
 
   return (
     <S.Writepost>
@@ -211,7 +213,11 @@ const WritePost = () => {
           <S.Row>
             <S.Label>
               가격
-              <S.Input name="price" value={price} onChange={handlePriceChange} />
+              <S.Input
+                name="price"
+                value={`${price.toLocaleString()}원`}
+                onChange={handlePriceChange}
+              />
             </S.Label>
           </S.Row>
         </S.Form>
@@ -229,18 +235,14 @@ const WritePost = () => {
         <S.Row>
           <S.Label>
             거래 희망 장소
-            <S.Select
-              name="categoryUuid"
-              value={categoryUuid}
-              onChange={(e) => setCategoryUuid(e.target.value)}
-            >
-              <S.Option value="">장소 선택</S.Option>
-              <S.Option value="c3314dca-327b-4187-b0ab-6f67def9fa51">여기 어때</S.Option>
-              <S.Option value="339884f8-50de-429a-9f3b-543342609b21">저기 어때</S.Option>
-              <S.Option value="7d2d94b9-c79f-4ce9-9904-28cc7e78df5a">요긴 어때</S.Option>
-              <S.Option value="d0daf4dc-89c8-41bf-8ec1-339d6e037b26">너는 어때</S.Option>
-              <S.Option value="5e342c92-75fa-41fd-af0f-867e5c83b831">나는 어때</S.Option>
-            </S.Select>
+            <S.Input
+              type="search"
+              name="location"
+              placeholder="거래 희망 장소를 입력해주세요."
+              // value={location}
+              onChange={(e) => debouncedSetLocation(e.target.value)}
+            ></S.Input>
+            <KakaoMap location={location} />
           </S.Label>
         </S.Row>
 
