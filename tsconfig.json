@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["kakao.maps.d.ts"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

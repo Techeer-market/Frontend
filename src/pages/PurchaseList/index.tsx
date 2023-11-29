@@ -3,59 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
 import ProductForm from '../../components/ProductForm';
-import { Product } from '@/types/product';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import { restFetcher } from '@/queryClient';
 import Loading from '@/components/Loading';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import useFetchProductList from '@/hooks/useFetchProductList';
 
 const PurchaseList: React.FC = () => {
   const navigate = useNavigate();
+  const path = '/mypage/purchase',
+    queryKey = 'purchaselist';
+  const { data, isLoading, hasNextPage, fetchNextPage } = useFetchProductList({ path, queryKey });
 
-  const fetchPurchase = async ({ pageParam = 1 }) => {
-    try {
-      const response = await restFetcher({
-        method: 'GET',
-        path: '/mypage/purchase',
-        params: { pageNo: pageParam, pageSize: 10 },
-      });
-
-      const productsWithChatroomCounts = await Promise.all(
-        response.data.map(async (product: Product) => {
-          const chatroomResponse = await restFetcher({
-            method: 'GET',
-            path: `/chatroom/count/${product.productId}`,
-          });
-          return { ...product, chatroomCount: chatroomResponse.data };
-        }),
-      );
-
-      return {
-        data: productsWithChatroomCounts,
-        nextPage: response.data.length ? pageParam + 1 : undefined,
-      };
-    } catch (error) {
-      return { data: [], nextPage: undefined };
-    }
-  };
-
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['purchaselist'],
-    ({ pageParam = 1 }) => fetchPurchase({ pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage?.data.length ? lastPage.nextPage : undefined;
-      },
-    },
-  );
-
-  const loadMore = async () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  useInfiniteScroll({ fetchCallback: loadMore });
+  useInfiniteScroll({ fetchCallback: fetchNextPage });
 
   return (
     <>

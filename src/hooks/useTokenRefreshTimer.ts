@@ -53,6 +53,7 @@ export const clearLocalStorage = () => {
   localStorage.removeItem('expirationTime');
   localStorage.removeItem('access-token');
   localStorage.removeItem('refresh-token');
+  localStorage.removeItem('userId');
 };
 
 // 남은 시간 유효 시간 계산

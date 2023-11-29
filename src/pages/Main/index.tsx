@@ -2,63 +2,21 @@ import NavBar from '@/components/NavBar';
 import React from 'react';
 import ProductForm from '@/components/ProductForm';
 import Loading from '@/components/Loading';
-// import ProductList from '@/components/ProductList';
 import * as S from './styles';
 import logo from '../../assets/logo.svg';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
 import plusImage from '../../assets/plus.png';
-import { Product } from '@/types/product';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { Link } from 'react-router-dom';
-import { restFetcher } from '@/queryClient';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import useFetchProductList from '@/hooks/useFetchProductList';
 
 const index: React.FC = () => {
-  const fetchWishList = async ({ pageParam = 1 }) => {
-    try {
-      const response = await restFetcher({
-        method: 'GET',
-        path: '/products/list',
-        params: { pageNo: pageParam, pageSize: 10 },
-      });
+  const path = '/products/list',
+    queryKey = 'main';
+  const { data, isLoading, hasNextPage, fetchNextPage } = useFetchProductList({ path, queryKey });
 
-      const productsWithChatroomCounts = await Promise.all(
-        response.data.map(async (product: Product) => {
-          const chatroomResponse = await restFetcher({
-            method: 'GET',
-            path: `/chatroom/count/${product.productId}`,
-          });
-          return { ...product, chatroomCount: chatroomResponse.data };
-        }),
-      );
-
-      return {
-        data: productsWithChatroomCounts,
-        nextPage: response.data.length ? pageParam + 1 : undefined,
-      };
-    } catch (error) {
-      return { data: [], nextPage: undefined };
-    }
-  };
-
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ['main'],
-    ({ pageParam = 1 }) => fetchWishList({ pageParam }),
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage?.data.length ? lastPage.nextPage : undefined;
-      },
-    },
-  );
-
-  const loadMore = async () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  useInfiniteScroll({ fetchCallback: loadMore });
+  useInfiniteScroll({ fetchCallback: fetchNextPage });
 
   return (
     <S.MainDiv>
@@ -87,7 +45,7 @@ const index: React.FC = () => {
             ) : data ? (
               <ProductForm items={data?.pages.flatMap((page) => page?.data)} />
             ) : (
-              <S.EmptyList>목록이 없습니다 </S.EmptyList>
+              <S.EmptyList>목록이 없습니다.</S.EmptyList>
             )}
           </S.ProductContainer>
         </S.scroll>

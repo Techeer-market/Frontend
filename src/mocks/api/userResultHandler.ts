@@ -13,7 +13,7 @@ const userResultHandler = [
         ctx.status(200),
         ctx.set('Access-Token', '1111'),
         ctx.set('Refresh-Token', '2222'),
-        ctx.json({ success: true }),
+        ctx.json({ userId: 1 }),
       );
     } else {
       return res(ctx.status(401), ctx.json({ error: 'Invalid credentials' }));
