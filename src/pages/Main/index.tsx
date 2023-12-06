@@ -42,10 +42,10 @@ const index: React.FC = () => {
           <S.ProductContainer>
             {isLoading ? (
               <Loading />
-            ) : data ? (
+            ) : data && data?.pages.flatMap((page) => page.data).length > 0 ? (
               <ProductForm items={data?.pages.flatMap((page) => page?.data)} />
             ) : (
-              <S.EmptyList>목록이 없습니다.</S.EmptyList>
+              <S.EmptyList>상품 목록이 없습니다.</S.EmptyList>
             )}
           </S.ProductContainer>
         </S.scroll>
