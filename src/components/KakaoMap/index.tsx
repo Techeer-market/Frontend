@@ -1,44 +1,79 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import './styles.css';
+import mapMarker from '../../assets/mapMarker.svg';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 interface KakaoMapProps {
   location: string;
 }
 
+interface PlaceData {
+  y: string;
+  x: string;
+}
+
 const KakaoMap = ({ location }: KakaoMapProps) => {
-  useEffect(() => {
-    var mapContainer = document.getElementById('map'),
-      mapOption = {
-        center: new kakao.maps.LatLng(37.5665, 126.978), // 서울시청
-        level: 3, // 지도의 확대 레벨
-      };
-    var map = new kakao.maps.Map(mapContainer as HTMLElement, mapOption);
-    var marker = new kakao.maps.Marker({
-      position: map.getCenter(),
+  var mapContainer = document.getElementById('map'),
+    mapOption = {
+      center: new kakao.maps.LatLng(37.5665, 126.978), // 서울시청
+      level: 3, // 지도의 확대 레벨
+    };
+  var map = new kakao.maps.Map(mapContainer as HTMLElement, mapOption);
+
+  location ? location : (location = '서울시청');
+  // 커스텀오버레이
+  var content = `<div class="custom-marker">
+        <div class="wrap"><img src=${mapMarker} alt="MapMarker"/></div>
+        <div class="location">${location}</div>
+      </div>`;
+  var customOverlay = new kakao.maps.CustomOverlay({
+    position: map.getCenter(),
+    content: content,
+  });
+
+  if (location) {
+    // 키워드로 장소를 검색
+    const placeSearchCB = (
+      data: PlaceData[],
+      status: kakao.maps.services.Status,
+      pagination: any,
+    ) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const firstPlace = data[0];
+        const coords = new kakao.maps.LatLng(parseFloat(firstPlace.y), parseFloat(firstPlace.x));
+        customOverlay.setPosition(coords);
+        map.setCenter(coords);
+      }
+    };
+
+    // 장소 검색 객체를 생성
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(location, placeSearchCB);
+
+    // 지도 확대/축소 시에도 마커 위치를 유지하기 위한 이벤트 리스너
+    kakao.maps.event.addListener(map, 'zoom_changed', () => {
+      if (location) {
+        ps.keywordSearch(location, placeSearchCB);
+      }
     });
+  }
 
-    if (location) {
-      // 장소 검색 객체를 생성
-      const ps = new kakao.maps.services.Places();
-
-      // 키워드로 장소를 검색
-      ps.keywordSearch(location, (data, status, _pagination) => {
-        if (status === kakao.maps.services.Status.OK) {
-          const firstPlace = data[0];
-          const coords = new kakao.maps.LatLng(parseFloat(firstPlace.y), parseFloat(firstPlace.x));
-          map.setCenter(coords);
-          marker.setPosition(coords);
-        }
-      });
-    }
-
-    marker.setMap(map);
+  useEffect(() => {
+    customOverlay.setMap(map);
   }, [location]);
 
   return (
-    <div
-      id="map"
-      style={{ width: '95%', height: '360px', borderRadius: '10px', marginTop: '1rem' }}
-    ></div>
+    <>
+      <div
+        id="map"
+        style={{ width: '95%', height: '360px', borderRadius: '10px', marginTop: '1rem' }}
+      />
+    </>
   );
 };
 
