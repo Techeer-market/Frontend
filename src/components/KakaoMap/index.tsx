@@ -30,7 +30,7 @@ const KakaoMap = ({ location }: KakaoMapProps) => {
     // 커스텀오버레이
     var content = `<div class="custom-marker">
         <div class="wrap"><img src=${mapMarker} alt="MapMarker"/></div>
-        <div class="location">${location}</div>
+        <span class="location">${location}</span>
       </div>`;
     var customOverlay = new kakao.maps.CustomOverlay({
       position: map.getCenter(),
