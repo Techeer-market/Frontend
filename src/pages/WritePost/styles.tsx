@@ -32,7 +32,7 @@ export const Nav = styled.div`
   }
 `;
 export const Wrap = styled.div`
-  flex-grow: 1;
+  flex-grow: 2;
   display: flex;
   flex-direction: column;
   align-items: center;

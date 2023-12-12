@@ -33,4 +33,5 @@ export const routes = [
   { path: `/category/:category`, element: <Detail /> },
   { path: '/search', element: <SearchPage /> },
   { path: '/detail', element: <Detail /> },
+  { path: '/itemdetail', element: <ItemDetail /> },
 ];
