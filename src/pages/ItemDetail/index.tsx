@@ -10,9 +10,9 @@ import FilledHeart from '../../assets/likedHeart.svg';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { getClient, restFetcher } from '@/queryClient';
-import phone from '../../assets/phone.png';
 import Loading from '@/components/Loading';
 import { formatDateToNow } from '@/utils/formatDateToNow';
+import Carousel from '@/components/Carousel';
 
 interface ItemDetailProps {
   categoryName: string;
@@ -115,17 +115,20 @@ const ItemDetail: React.FC = () => {
     }
   };
 
+  const images = [
+    data?.image_url_1,
+    data?.image_url_2,
+    data?.image_url_3,
+    data?.image_url_4,
+  ].filter((url) => url != null) as string[];
+
   if (isLoading) return <Loading />;
 
   return (
     <S.Container>
       <TopNavBar page="" />
       <S.Maincontainer>
-        <img
-          src={data?.image_url_1 ? data.image_url_1 : phone}
-          alt="Product"
-          style={{ width: '100%', height: '30rem', backgroundSize: 'cover' }}
-        />
+        <Carousel images={images} />
         <S.Details>
           <S.TypeWrapper>
             <S.NameAndDateWrapper>

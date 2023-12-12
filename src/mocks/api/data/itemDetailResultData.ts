@@ -9,7 +9,8 @@ export const itemDetailResultData = {
   productState: 'SALE',
   image_url_1:
     'https://res.cloudinary.com/dusavg0vn/image/upload/v1702382144/214244769_1_1678264995_w1100_3_vsxe3p.png',
-  image_url_2: null,
+  image_url_2:
+    'https://res.cloudinary.com/dusavg0vn/image/upload/v1702382144/214244769_1_1678264995_w1100_3_vsxe3p.png',
   image_url_3: null,
   image_url_4: null,
   views: 150,
