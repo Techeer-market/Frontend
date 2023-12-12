@@ -6,7 +6,8 @@ import NavBar from '@/components/NavBar';
 import uploadimage from '../../assets/uploadimage.svg';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
-
+import KakaoMap from '@/components/KakaoMap';
+import { debounce } from 'lodash';
 import { restFetcher } from '@/queryClient';
 
 interface WriteProps {
@@ -21,22 +22,15 @@ interface WriteProps {
   location: string;
 }
 
-import KakaoMap from '@/components/KakaoMap';
-import { debounce } from 'lodash';
-
-
 const WritePost = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [title, setTitle] = useState('');
   const [categoryName, setCategoryName] = useState('');
   const [description, setDescription] = useState('');
-
   const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
   const [location, setLocation] = useState('');
-
   const [userUuid, setUserUuid] = useState('');
   const [location, setLocation] = useState<string>('');
-
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,10 +111,6 @@ const WritePost = () => {
     debounce((value) => setLocation(value), 1000),
     [],
   );
-
-  useEffect(() => {
-    console.log('검색 위치:', location);
-  }, [location]);
 
   return (
     <S.Writepost>
@@ -271,8 +261,10 @@ const WritePost = () => {
               // value={location}
               onChange={(e) => debouncedSetLocation(e.target.value)}
             ></S.Input>
-            <KakaoMap location={location} />
 
+            <S.Map>
+              <KakaoMap location={location} />
+            </S.Map>
           </S.Label>
         </S.Row>
 

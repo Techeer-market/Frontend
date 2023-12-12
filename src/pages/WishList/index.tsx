@@ -20,7 +20,7 @@ const WishList: React.FC = () => {
       <S.ProductContainer>
         {isLoading ? (
           <Loading />
-        ) : data ? (
+        ) : data && data?.pages.flatMap((page) => page.data).length > 0 ? (
           <ProductForm items={data?.pages.flatMap((page) => page?.data)} />
         ) : (
           <S.EmptyList>좋아요 목록이 없습니다.</S.EmptyList>

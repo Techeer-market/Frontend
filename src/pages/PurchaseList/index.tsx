@@ -31,7 +31,7 @@ const PurchaseList: React.FC = () => {
       <S.ProductContainer>
         {isLoading ? (
           <Loading />
-        ) : data ? (
+        ) : data && data?.pages.flatMap((page) => page.data).length > 0 ? (
           <ProductForm items={data?.pages.flatMap((page) => page.data)} />
         ) : (
           <S.EmptyListMessage>구매 내역이 없습니다.</S.EmptyListMessage>

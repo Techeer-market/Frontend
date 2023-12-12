@@ -23,6 +23,7 @@ export const routes = [
   { path: '/auth/kakao', element: <KakaoLogin /> },
   { path: '/signup', element: <SignUp /> },
   { path: '/write', element: <WritePost /> },
+  { path: '/item/:productId', element: <ItemDetail /> },
   { path: '/wishlist', element: <WishList /> },
   { path: '/saleslist', element: <SalesList /> },
   { path: '/purchaselist', element: <PurchaseList /> },
