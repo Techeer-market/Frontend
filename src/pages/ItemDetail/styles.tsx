@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import heartImage from '../../assets/Heart.svg'; // heartImage 파일 경로로 변경해주세요
+import heartImage from '../../assets/grayHeartIcon.svg';
 
 export const Container = styled.div`
   display: flex;
-
+  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -37,7 +37,7 @@ export const Wrapper = styled.div`
 `;
 export const Image = styled.div`
   width: 40rem;
-  height: 40rem;
+  height: 20rem;
 `;
 export const Details = styled.div`
   display: flex;
@@ -70,6 +70,27 @@ export const NameAndDateWrapper = styled.div`
   gap: 1rem;
 `;
 
+export const ChangImg = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 0.5px solid #d9d9d9;
+`;
+
+export const CameraIcom = styled.div`
+  position: absolute;
+  left: 33px;
+  top: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border: 0.5px solid #d9d9d9;
+  border-radius: 50%;
+`;
+
 export const ChangeName = styled.img`
   z-index: 2;
   width: 5rem;
@@ -92,10 +113,10 @@ export const Name = styled.span`
 `;
 
 export const Category = styled.h3`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #646464;
-  margin-top: 1rem;
+  margin-top: 3rem;
   margin-right: 1rem;
 `;
 export const TradeType = styled.h3`
@@ -150,11 +171,15 @@ export const WishlistButton = styled.button`
   background-image: url(${heartImage});
   background-repeat: no-repeat;
   background-size: contain;
-  padding-left: 30px; /* 이미지와 버튼 사이의 간격을 조절할 수 있는 값으로 변경해주세요 */
-  &:hover {
-    background-color: #fc8600;
-    color: #fff;
-  }
+  padding-left: 50px; /* 이미지와 버튼 사이의 간격을 조절할 수 있는 값으로 변경해주세요 */
+  background-color: transparent;
+`;
+
+export const Value = styled.span`
+  padding-left: 3px;
+  color: #7e7e7e;
+  font-size: 10px;
+  font-weight: 400;
 `;
 export const Description = styled.p`
   width: 100%;

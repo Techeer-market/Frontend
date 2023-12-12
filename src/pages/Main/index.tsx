@@ -7,7 +7,7 @@ import * as S from './styles';
 import logo from '../../assets/logo.svg';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
-import plusImage from '../../assets/plus.png';
+import plusImage from '../../assets/PlusBtn.svg';
 import { Product } from '@/types/product';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { Link } from 'react-router-dom';

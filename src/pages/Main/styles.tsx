@@ -12,7 +12,7 @@ export const MainDiv = styled.div`
 `;
 
 export const NavContainer = styled.div`
-  padding-top: 5px;
+  padding-top: 15px;
   height: 5rem;
   position: sticky;
   top: 0;
@@ -235,8 +235,8 @@ export const Style = styled(Link)`
 export const Button = styled.button`
   z-index: 1;
   display: flex;
-  width: 120px; // 원하는 너비로 조정
-  height: 100px; // 원하는 높이로 조정
+  width: 95px; // 원하는 너비로 조정
+  height: 105px; // 원하는 높이로 조정
   border: none;
   cursor: pointer;
   position: absolute;
