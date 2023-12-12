@@ -14,7 +14,11 @@ export const NavbarContainer = styled.div`
 `;
 
 export const User = styled.div`
+
+  border-bottom: 0.07rem solid #ffffff;
+
   // border-bottom: 0.07rem solid #000000;
+
   position: fixed; /* 화면에 고정하는 값 */
   bottom: 0%; /* 아래에 배치 */
   left: 49%; /* 가운데 정렬을 위해 왼쪽 여백을 50%로 설정 */
@@ -27,6 +31,7 @@ export const User = styled.div`
   font-size: 2rem; /* 글씨 크기 조정 */
   flex-grow: 1;
   background-color: #ffffff;
+  padding-bottom: 2rem;
 `;
 
 export const Button = styled.button`

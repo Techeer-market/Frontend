@@ -15,6 +15,7 @@ const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
 const Detail = lazy(() => import('@/pages/Detail'));
+const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
 
 export const routes = [
   { path: '/', element: <Main /> },
@@ -31,4 +32,5 @@ export const routes = [
   { path: `/category/:category`, element: <Detail /> },
   { path: '/search', element: <SearchPage /> },
   { path: '/detail', element: <Detail /> },
+  { path: '/itemdetail', element: <ItemDetail /> },
 ];
