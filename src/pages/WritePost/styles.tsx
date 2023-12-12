@@ -190,7 +190,9 @@ export const ReturnButton = styled.button`
   font-size: 2.5rem;
   line-height: 4.1rem;
 `;
-
+export const Map = styled.div`
+  width: 95%;
+`;
 export const OptionButton = styled.button<{
   buttonType: string;
   isSelected: boolean;

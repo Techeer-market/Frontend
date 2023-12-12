@@ -98,7 +98,7 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
   return (
     <S.Div>
       {products?.map((item, index) => (
-        <S.Container key={item.productId}>
+        <S.Container key={item.productId} onClick={() => navigate(`/item/${item.productId}`)}>
           <S.ProductContent>
             <S.ImageDiv style={{ backgroundImage: `url(${item.thumbnailURL})` }} />
             <S.TextDiv>

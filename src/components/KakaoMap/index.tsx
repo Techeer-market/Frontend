@@ -70,7 +70,7 @@ const KakaoMap = ({ location }: KakaoMapProps) => {
   return (
     <div
       id="map"
-      style={{ width: '95%', height: '360px', borderRadius: '10px', marginTop: '1rem' }}
+      style={{ width: '100%', height: '360px', borderRadius: '10px', marginTop: '1rem' }}
     />
   );
 };

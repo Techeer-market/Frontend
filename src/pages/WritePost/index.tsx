@@ -106,10 +106,6 @@ const WritePost = () => {
     [],
   );
 
-  useEffect(() => {
-    console.log('검색 위치:', location);
-  }, [location]);
-
   return (
     <S.Writepost>
       <S.Nav>
@@ -242,7 +238,9 @@ const WritePost = () => {
               // value={location}
               onChange={(e) => debouncedSetLocation(e.target.value)}
             ></S.Input>
-            <KakaoMap location={location} />
+            <S.Map>
+              <KakaoMap location={location} />
+            </S.Map>
           </S.Label>
         </S.Row>
 
