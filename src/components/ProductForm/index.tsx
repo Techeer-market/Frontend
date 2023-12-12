@@ -6,9 +6,8 @@ import { useState, useEffect } from 'react';
 import { Product } from '@/types/product';
 import * as S from './styles';
 import { getClient, restFetcher } from '@/queryClient';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import ko from 'date-fns/locale/ko';
 import { useMutation } from '@tanstack/react-query';
+import { formatDateToNow } from '@/utils/formatDateToNow';
 
 interface ProductProps {
   items: Product[];
@@ -85,14 +84,6 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     await mutateDeleteProduct.mutateAsync(productId);
     const updatedItems = products.filter((item) => item.productId !== productId);
     setProducts(updatedItems);
-  };
-
-  // 날짜 포매팅
-  const formatDateToNow = (createdAt: string) => {
-    const date = new Date(createdAt);
-    let formattedDate = formatDistanceToNow(date, { addSuffix: true, locale: ko });
-    formattedDate = formattedDate.replace('약 ', '');
-    return formattedDate;
   };
 
   return (

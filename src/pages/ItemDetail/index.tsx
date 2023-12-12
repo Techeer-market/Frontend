@@ -12,8 +12,7 @@ import { AxiosError } from 'axios';
 import { getClient, restFetcher } from '@/queryClient';
 import phone from '../../assets/phone.png';
 import Loading from '@/components/Loading';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import ko from 'date-fns/locale/ko';
+import { formatDateToNow } from '@/utils/formatDateToNow';
 
 interface ItemDetailProps {
   categoryName: string;
@@ -114,14 +113,6 @@ const ItemDetail: React.FC = () => {
     } else {
       changeLikeMutation.mutate(productId);
     }
-  };
-
-  // 날짜 포매팅
-  const formatDateToNow = (createdAt: string) => {
-    const date = new Date(createdAt);
-    let formattedDate = formatDistanceToNow(date, { addSuffix: true, locale: ko });
-    formattedDate = formattedDate.replace('약 ', '');
-    return formattedDate;
   };
 
   if (isLoading) return <Loading />;
