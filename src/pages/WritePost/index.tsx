@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TopNavBar from '@/components/TopNavBar';
 import * as S from './styles';
 import { Link } from 'react-router-dom';
@@ -6,6 +6,7 @@ import NavBar from '@/components/NavBar';
 import uploadimage from '../../assets/uploadimage.svg';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
+
 import { restFetcher } from '@/queryClient';
 
 interface WriteProps {
@@ -20,13 +21,22 @@ interface WriteProps {
   location: string;
 }
 
+import KakaoMap from '@/components/KakaoMap';
+import { debounce } from 'lodash';
+
+
 const WritePost = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [title, setTitle] = useState('');
   const [categoryName, setCategoryName] = useState('');
   const [description, setDescription] = useState('');
+
   const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
   const [location, setLocation] = useState('');
+
+  const [userUuid, setUserUuid] = useState('');
+  const [location, setLocation] = useState<string>('');
+
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +112,15 @@ const WritePost = () => {
     let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
     setPrice(parseInt(value)); // 실제로 서버에 전달될 값
   };
+
+  const debouncedSetLocation = useCallback(
+    debounce((value) => setLocation(value), 1000),
+    [],
+  );
+
+  useEffect(() => {
+    console.log('검색 위치:', location);
+  }, [location]);
 
   return (
     <S.Writepost>
@@ -236,7 +255,7 @@ const WritePost = () => {
               name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-            >
+            
               <S.Option value="">장소 선택</S.Option>
               <S.Option value="11">여기 어때</S.Option>
               <S.Option value="2">저기 어때</S.Option>
@@ -244,6 +263,16 @@ const WritePost = () => {
               <S.Option value="4">너는 어때</S.Option>
               <S.Option value="5">나는 어때</S.Option>
             </S.Select>
+
+            <S.Input
+              type="search"
+              name="location"
+              placeholder="거래 희망 장소를 입력해주세요."
+              // value={location}
+              onChange={(e) => debouncedSetLocation(e.target.value)}
+            ></S.Input>
+            <KakaoMap location={location} />
+
           </S.Label>
         </S.Row>
 

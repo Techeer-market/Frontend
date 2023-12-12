@@ -74,10 +74,12 @@ const Login = () => {
       if (response && response.headers) {
         const accessToken = response.headers['access-token'];
         const refreshToken = response.headers['refresh-token'];
+        const userId = response.data.userId;
 
         if (accessToken && refreshToken) {
           localStorage.setItem('access-token', accessToken);
           localStorage.setItem('refresh-token', refreshToken);
+          localStorage.setItem('userId', userId);
 
           // 토큰 만료 시간 저장
           let expirationTime = new Date(new Date().getTime() + JWT_EXPIRY_TIME).toISOString();

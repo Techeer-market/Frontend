@@ -85,19 +85,19 @@ const index = () => {
         <S.PasswordInput
           id="password"
           type="password"
-          placeholder="8~15자리 영문, 숫자, 특수문자 포함"
+          placeholder="8~15자리 영문, 숫자 포함"
           {...register('password', {
             required: '비밀번호는 필수 입력사항입니다.',
             pattern: {
-              value: /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,15}$/,
-              message: '8~15자리 영문, 숫자, 특수문자를 포함하여야합니다.',
+              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/,
+              message: '8~15자리 영문, 숫자를 포함하여야합니다.',
             },
           })}
         />
         <S.PasswordCorrectInput
           id="password_check"
           type="password"
-          placeholder="8~15자리 영문, 숫자, 특수문자 포함"
+          placeholder="8~15자리 영문, 숫자 포함"
           {...register('password_check', {
             required: '비밀번호를 확인해주세요',
             validate: (validate: string) => {

@@ -5,7 +5,6 @@ const Login = lazy(() => import('./pages/LogIn'));
 const KakaoLogin = lazy(() => import('./pages/KakaoLogin'));
 const SignUp = lazy(() => import('@/pages/SignUp'));
 const WritePost = lazy(() => import('./pages/WritePost'));
-const Post = lazy(() => import('./pages/Post'));
 // const EditPost = lazy(() => import('./pages/EditPost'));
 const Chatting = lazy(() => import('./pages/Chatting'));
 const CategoryPage = lazy(() => import('@/pages/CategoryPage'));
@@ -24,7 +23,6 @@ export const routes = [
   { path: '/auth/kakao', element: <KakaoLogin /> },
   { path: '/signup', element: <SignUp /> },
   { path: '/write', element: <WritePost /> },
-  { path: '/post/:productUuid', element: <Post /> },
   { path: '/wishlist', element: <WishList /> },
   { path: '/saleslist', element: <SalesList /> },
   { path: '/purchaselist', element: <PurchaseList /> },
