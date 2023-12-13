@@ -30,7 +30,6 @@ const WritePost = () => {
   const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
   const [location, setLocation] = useState('');
   const [userUuid, setUserUuid] = useState('');
-  const [location, setLocation] = useState<string>('');
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +121,7 @@ const WritePost = () => {
           <img id="search" alt="To search" src={searchBtn}></img>
         </Link>
       </S.Nav>
+
       <TopNavBar page="게시물 작성"></TopNavBar>
 
       <S.Wrap>
@@ -245,7 +245,7 @@ const WritePost = () => {
               name="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-            
+            >
               <S.Option value="">장소 선택</S.Option>
               <S.Option value="11">여기 어때</S.Option>
               <S.Option value="2">저기 어때</S.Option>
@@ -253,7 +253,6 @@ const WritePost = () => {
               <S.Option value="4">너는 어때</S.Option>
               <S.Option value="5">나는 어때</S.Option>
             </S.Select>
-
             <S.Input
               type="search"
               name="location"
@@ -261,7 +260,6 @@ const WritePost = () => {
               // value={location}
               onChange={(e) => debouncedSetLocation(e.target.value)}
             ></S.Input>
-
             <S.Map>
               <KakaoMap location={location} />
             </S.Map>
