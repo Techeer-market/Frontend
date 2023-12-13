@@ -241,18 +241,6 @@ const WritePost = () => {
         <S.Row>
           <S.Label>
             거래 희망 장소
-            <S.Select
-              name="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            >
-              <S.Option value="">장소 선택</S.Option>
-              <S.Option value="11">여기 어때</S.Option>
-              <S.Option value="2">저기 어때</S.Option>
-              <S.Option value="3">요긴 어때</S.Option>
-              <S.Option value="4">너는 어때</S.Option>
-              <S.Option value="5">나는 어때</S.Option>
-            </S.Select>
             <S.Input
               type="search"
               name="location"
