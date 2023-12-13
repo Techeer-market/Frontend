@@ -29,7 +29,6 @@ const WritePost = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
   const [location, setLocation] = useState('');
-  const [userUuid, setUserUuid] = useState('');
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
