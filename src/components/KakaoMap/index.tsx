@@ -29,7 +29,7 @@ const KakaoMap = ({ location }: KakaoMapProps) => {
     location ? location : (location = '서울시청');
     // 커스텀오버레이
     var content = `<div class="custom-marker">
-        <div class="wrap"><img src=${mapMarker} alt="MapMarker"/></div>
+        <div class="wrap"><img class="marker" src=${mapMarker} alt="MapMarker"/></div>
         <span class="location">${location}</span>
       </div>`;
     var customOverlay = new kakao.maps.CustomOverlay({
