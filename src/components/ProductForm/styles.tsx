@@ -143,7 +143,7 @@ export const Dropdown = styled.div`
   top: 100%;
   left: 0;
   width: 10rem;
-  height: 7rem;
+  height: 10rem;
   display: flex;
   flex-direction: column;
   align-items: start;

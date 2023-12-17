@@ -11,11 +11,11 @@ import { AxiosError } from 'axios';
 
 const SalesList: React.FC = () => {
   const navigate = useNavigate();
-  // const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  // const handleTabClick = (index: number) => {
-  //   setActiveIndex(index);
-  // };
+  const handleTabClick = (index: number) => {
+    setActiveIndex(index);
+  };
 
   const fetchSalesList = async () => {
     try {
@@ -45,8 +45,8 @@ const SalesList: React.FC = () => {
   );
 
   // 판매중, 거래 완료 상품 분류
-  // let onSaleItems = items?.filter((item) => item.productState !== 'SOLD') || [];
-  // let completedItems = items?.filter((item) => item.productState === 'SOLD') || [];
+  let onSaleItems = data?.filter((item) => item.productState !== 'SOLD') || [];
+  let completedItems = data?.filter((item) => item.productState === 'SOLD') || [];
 
   if (isLoading) {
     return <Loading />;
@@ -65,24 +65,16 @@ const SalesList: React.FC = () => {
         </S.WriteBtn>
       </S.BtnDiv>
 
-      <S.ProductContainer>
-        {data && data.length > 0 ? (
-          <ProductForm items={data} />
-        ) : (
-          <S.EmptyList>판매 중인 게시글이 없습니다.</S.EmptyList>
-        )}
-      </S.ProductContainer>
-
-      {/* <S.Tabs>
+      <S.Tabs>
         <S.Tab isActive={activeIndex === 0} onClick={() => handleTabClick(0)}>
           판매 중
         </S.Tab>
         <S.Tab isActive={activeIndex === 1} onClick={() => handleTabClick(1)}>
           거래 완료
         </S.Tab>
-      </S.Tabs> */}
+      </S.Tabs>
 
-      {/* <S.TabContent>
+      <S.TabContent>
         {activeIndex === 0 ? (
           onSaleItems && onSaleItems.length > 0 ? (
             <ProductForm items={onSaleItems} />
@@ -94,7 +86,7 @@ const SalesList: React.FC = () => {
         ) : (
           <S.EmptyList>거래 완료된 게시글이 없습니다.</S.EmptyList>
         )}
-      </S.TabContent> */}
+      </S.TabContent>
     </>
   );
 };

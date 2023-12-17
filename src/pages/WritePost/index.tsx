@@ -4,22 +4,31 @@ import * as S from './styles';
 import { Link } from 'react-router-dom';
 import NavBar from '@/components/NavBar';
 import uploadimage from '../../assets/uploadimage.svg';
-import axios from 'axios';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
 import KakaoMap from '@/components/KakaoMap';
 import { debounce } from 'lodash';
+import { restFetcher } from '@/queryClient';
+
+interface WriteProps {
+  title: string;
+  categoryName: string;
+  description: string;
+  price: number;
+  image_url_1: string | null;
+  image_url_2: string | null;
+  image_url_3: string | null;
+  image_url_4: string | null;
+  location: string;
+}
 
 const WritePost = () => {
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [title, setTitle] = useState('');
-  const [categoryUuid, setCategoryUuid] = useState('');
-  const [type, setType] = useState('GeneralDeal');
-  const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
-  // const [displayPrice, setDisplayPrice] = useState(""); // price 쉼표 및 "원" 기호 표기용
+  const [categoryName, setCategoryName] = useState('');
   const [description, setDescription] = useState('');
-  const [userUuid, setUserUuid] = useState('');
-  const [location, setLocation] = useState<string>('');
+  const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
+  const [location, setLocation] = useState('');
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,25 +59,24 @@ const WritePost = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // 유효성 검사
     if (
       !title ||
-      !categoryUuid ||
-      !type ||
+      !categoryName ||
       price === 0 ||
       !description ||
-      uploadedImages.length === 0
+      uploadedImages.length === 0 ||
+      !location
     ) {
       alert('모든 항목을 입력해주세요.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('userUuid', userUuid);
+
     formData.append('title', title);
-    formData.append('categoryUuid', categoryUuid);
-    formData.append('tradeType', type);
+    formData.append('categoryName', categoryName);
     formData.append('price', price.toString());
     formData.append('description', description);
 
@@ -77,22 +85,18 @@ const WritePost = () => {
       formData.append(fieldName, imageFile);
     });
 
-    console.log({ formData });
-    axios
-      .post('/api/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        alert('게시물이 등록되었습니다.');
-        window.location.href = '/'; // 메인 페이지로 리다이렉트
-      })
-      .catch((error) => {
-        console.error(error);
-        alert('게시물 등록에 실패했습니다.');
+    try {
+      await restFetcher({
+        method: 'POST',
+        path: '/products',
+        body: formData,
       });
+      alert('게시물이 등록되었습니다.');
+      window.location.href = '/'; // 메인 페이지로 리다이렉트
+    } catch (error) {
+      alert('게시물 등록에 실패했습니다.');
+      console.log(error);
+    }
   };
 
   // 금액 입력 함수 수정
@@ -106,10 +110,6 @@ const WritePost = () => {
     [],
   );
 
-  useEffect(() => {
-    console.log('검색 위치:', location);
-  }, [location]);
-
   return (
     <S.Writepost>
       <S.Nav>
@@ -120,7 +120,8 @@ const WritePost = () => {
           <img id="search" alt="To search" src={searchBtn}></img>
         </Link>
       </S.Nav>
-      <TopNavBar page="게시물 작성" />
+
+      <TopNavBar page="게시물 작성"></TopNavBar>
 
       <S.Wrap>
         <S.Img>
@@ -196,16 +197,20 @@ const WritePost = () => {
               카테고리:
               <S.Select
                 name="categoryUuid"
-                value={categoryUuid}
-                onChange={(e) => setCategoryUuid(e.target.value)}
+                value={categoryName}
+                onChange={(e) => setCategoryName(e.target.value)}
                 placeholder={`제목`}
               >
                 <S.Option value="">카테고리 선택</S.Option>
-                <S.Option value="c3314dca-327b-4187-b0ab-6f67def9fa51">1</S.Option>
-                <S.Option value="339884f8-50de-429a-9f3b-543342609b21">2</S.Option>
-                <S.Option value="7d2d94b9-c79f-4ce9-9904-28cc7e78df5a">3</S.Option>
-                <S.Option value="d0daf4dc-89c8-41bf-8ec1-339d6e037b26">4</S.Option>
-                <S.Option value="5e342c92-75fa-41fd-af0f-867e5c83b831">5</S.Option>
+                <S.Option value="디지털기기">디지털기기</S.Option>
+                <S.Option value="여성의류">여성의류</S.Option>
+                <S.Option value="남성의류/잡화">남성의류/잡화</S.Option>
+                <S.Option value="뷰티/미용">뷰티/미용</S.Option>
+                <S.Option value="여성잡화">여성잡화</S.Option>
+                <S.Option value="생활가전">생활가전</S.Option>
+                <S.Option value="생활/주방">생활/주방 </S.Option>
+                <S.Option value="취미/게임/음반">취미/게임/음반</S.Option>
+                <S.Option value="도서">도서</S.Option>
               </S.Select>
             </S.Label>
           </S.Row>
@@ -242,7 +247,9 @@ const WritePost = () => {
               // value={location}
               onChange={(e) => debouncedSetLocation(e.target.value)}
             ></S.Input>
-            <KakaoMap location={location} />
+            <S.Map>
+              <KakaoMap location={location} />
+            </S.Map>
           </S.Label>
         </S.Row>
 

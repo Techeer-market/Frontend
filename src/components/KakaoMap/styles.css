@@ -1,0 +1,61 @@
+.custom-marker {
+  position: absolute;
+  width: 120px;
+  height: 30px;
+  background: #ffffff;
+  border: 1px solid #0c5bf1;
+  border-radius: 20px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translate(-20%, -120%);
+  top: 50%;
+  left: 50%;
+}
+
+.custom-marker:after {
+  content: '';
+  position: absolute;
+  bottom: -4.2px;
+  left: 20%;
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  transform: translateX(-50%) rotate(135deg);
+  border: 1px solid #0c5bf1;
+  border-bottom: none;
+  border-left: none;
+}
+
+.wrap {
+  position: absolute;
+  width: 22.5px;
+  height: 22.5px;
+  left: 3.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #0c5bf1;
+  z-index: 2;
+}
+
+.marker {
+  width: 14.5px;
+  height: 14.5px;
+}
+
+.location {
+  width: 80px;
+  margin-left: 20px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: normal;
+  /* 제목 넘칠 경우 ... 표시 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

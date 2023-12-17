@@ -7,6 +7,7 @@ import logo from '../../assets/logo.svg';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
 import plusImage from '../../assets/plus.png';
+import { Product } from '@/types/product';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { Link } from 'react-router-dom';
 import useFetchProductList from '@/hooks/useFetchProductList';
@@ -41,10 +42,10 @@ const index: React.FC = () => {
           <S.ProductContainer>
             {isLoading ? (
               <Loading />
-            ) : data ? (
+            ) : data && data?.pages.flatMap((page) => page.data).length > 0 ? (
               <ProductForm items={data?.pages.flatMap((page) => page?.data)} />
             ) : (
-              <S.EmptyList>목록이 없습니다.</S.EmptyList>
+              <S.EmptyList>상품 목록이 없습니다.</S.EmptyList>
             )}
           </S.ProductContainer>
         </S.scroll>

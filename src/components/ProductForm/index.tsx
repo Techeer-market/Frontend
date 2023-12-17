@@ -6,9 +6,8 @@ import { useState, useEffect } from 'react';
 import { Product } from '@/types/product';
 import * as S from './styles';
 import { getClient, restFetcher } from '@/queryClient';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import ko from 'date-fns/locale/ko';
 import { useMutation } from '@tanstack/react-query';
+import { formatDateToNow } from '@/utils/formatDateToNow';
 
 interface ProductProps {
   items: Product[];
@@ -29,38 +28,38 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     setProducts(items);
   }, [items]);
 
-  // const mutateChangeProductState = useMutation(
-  //   (product: Product) => {
-  //     let newState = product.productState !== 'SOLD' ? 'SOLD' : 'SALE';
-  //     return restFetcher({
-  //       method: 'PUT',
-  //       path: `/products/state/${product.productUuid}`,
-  //       body: { state: newState },
-  //     });
-  //   },
-  //   {
-  //     onSuccess: (_, product) => {
-  //       queryClient.invalidateQueries(['saleslist']);
-  //     },
-  //     onError: (error: any) => {
-  //       alert('상품 상태 변경에 실패했습니다. 다시 시도해주세요.');
-  //     },
-  //   },
-  // );
+  const mutateChangeProductState = useMutation(
+    (product: Product) => {
+      let newState = product.productState !== 'SOLD' ? 'SOLD' : 'SALE';
+      return restFetcher({
+        method: 'PUT',
+        path: `/products/state/${product.productId}`,
+        body: { state: newState },
+      });
+    },
+    {
+      onSuccess: (_, product) => {
+        queryClient.invalidateQueries(['saleslist']);
+      },
+      onError: (error: any) => {
+        alert('상품 상태 변경에 실패했습니다. 다시 시도해주세요.');
+      },
+    },
+  );
 
-  // // 상품 상태 변경 핸들러 (판매 내역 페이지)
-  // const handleChangeState = async (product: Product) => {
-  //   await mutateChangeProductState.mutateAsync(product);
-  //   setProducts((currentProducts) => {
-  //     return currentProducts.map((item) => {
-  //       if (item.productUuid === product.productUuid) {
-  //         return { ...item, productState: product.productState !== 'SOLD' ? 'SOLD' : 'SALE' };
-  //       } else {
-  //         return item;
-  //       }
-  //     });
-  //   });
-  // };
+  // 상품 상태 변경 핸들러 (판매 내역 페이지)
+  const handleChangeState = async (product: Product) => {
+    await mutateChangeProductState.mutateAsync(product);
+    setProducts((currentProducts) => {
+      return currentProducts.map((item) => {
+        if (item.productId === product.productId) {
+          return { ...item, productState: product.productState !== 'SOLD' ? 'SOLD' : 'SALE' };
+        } else {
+          return item;
+        }
+      });
+    });
+  };
 
   const mutateDeleteProduct = useMutation(
     (productId: string) =>
@@ -87,18 +86,10 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
     setProducts(updatedItems);
   };
 
-  // 날짜 포매팅
-  const formatDateToNow = (createdAt: string) => {
-    const date = new Date(createdAt);
-    let formattedDate = formatDistanceToNow(date, { addSuffix: true, locale: ko });
-    formattedDate = formattedDate.replace('약 ', '');
-    return formattedDate;
-  };
-
   return (
     <S.Div>
       {products?.map((item, index) => (
-        <S.Container key={item.productId}>
+        <S.Container key={item.productId} onClick={() => navigate(`/item/${item.productId}`)}>
           <S.ProductContent>
             <S.ImageDiv style={{ backgroundImage: `url(${item.thumbnailURL})` }} />
             <S.TextDiv>
@@ -117,7 +108,8 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
                 <S.Image style={{ backgroundImage: `url(${isWishPage ? FilledHeart : Heart})` }} />
                 <S.Value>{item.likes}</S.Value>
               </S.Part>
-              <S.Part>
+              {/* 채팅방 개수 */}
+              {/* <S.Part>
                 <S.Image style={{ backgroundImage: `url(${Chat})` }} />
                 {/* <S.Value>{item.chatroomCount}</S.Value> */}
               </S.Part>
@@ -133,13 +125,13 @@ const ProductForm: React.FC<ProductProps> = ({ items }) => {
               )}
               {dropDown === item.productId && (
                 <S.Dropdown>
-                  {/* <S.DropdownItem
-                  onClick={() => {
-                    handleChangeState(item);
-                  }}
-                  > */}
-                  {/* {item.productState !== 'SOLD' ? '거래 완료로 변경' : '판매 중으로 변경'} */}
-                  {/* </S.DropdownItem> */}
+                  <S.DropdownItem
+                    onClick={() => {
+                      handleChangeState(item);
+                    }}
+                  >
+                    {item.productState !== 'SOLD' ? '거래 완료로 변경' : '판매 중으로 변경'}
+                  </S.DropdownItem>
                   <S.DropdownItem
                     onClick={() => {
                       navigate('/edit_post'); // 게시글 수정 페이지 (url 수정 필요)

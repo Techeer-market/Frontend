@@ -32,7 +32,7 @@ export const Nav = styled.div`
   }
 `;
 export const Wrap = styled.div`
-  flex-grow: 1;
+  flex-grow: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -190,7 +190,9 @@ export const ReturnButton = styled.button`
   font-size: 2.5rem;
   line-height: 4.1rem;
 `;
-
+export const Map = styled.div`
+  width: 95%;
+`;
 export const OptionButton = styled.button<{
   buttonType: string;
   isSelected: boolean;
