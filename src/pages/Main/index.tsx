@@ -10,7 +10,6 @@ import plusImage from '../../assets/plus.png';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { Link } from 'react-router-dom';
 import useFetchProductList from '@/hooks/useFetchProductList';
-
 const index: React.FC = () => {
   const path = '/products/list',
     queryKey = 'main';

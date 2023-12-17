@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
 const KakaoLogin = lazy(() => import('./pages/KakaoLogin'));
@@ -15,7 +14,6 @@ const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
 const Detail = lazy(() => import('@/pages/Detail'));
-
 export const routes = [
   { path: '/', element: <Main /> },
   { path: '/login', element: <Login /> },
@@ -30,5 +28,4 @@ export const routes = [
   { path: '/category', element: <CategoryPage /> },
   { path: `/category/:category`, element: <Detail /> },
   { path: '/search', element: <SearchPage /> },
-  { path: '/detail', element: <Detail /> },
 ];

@@ -1,4 +1,5 @@
 export type Product = {
+  id: Key | null | undefined;
   productId: string;
   title: string;
   thumbnailURL: string;
