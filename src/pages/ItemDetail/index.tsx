@@ -32,7 +32,7 @@ interface ItemDetailProps {
   heart: boolean; // 좋아요 여부, 이름 수정 필요
   createdDate: string;
   modifiedDate: string;
-  chatroomCount: number;
+  // chatroomCount: number;
 }
 
 const ItemDetail: React.FC = () => {
@@ -49,12 +49,13 @@ const ItemDetail: React.FC = () => {
       });
 
       // 채팅방 개수 가져오기
-      const chatroomResponse = await restFetcher({
-        method: 'GET',
-        path: `/chatroom/count/${productId}`,
-      });
+      // const chatroomResponse = await restFetcher({
+      //   method: 'GET',
+      //   path: `/chatroom/count/${productId}`,
+      // });
 
-      return { ...response.data, chatroomCount: chatroomResponse.data };
+      // return { ...response.data, chatroomCount: chatroomResponse.data };
+      return response.data;
     },
     {
       onError: (error) => {
@@ -65,10 +66,15 @@ const ItemDetail: React.FC = () => {
     },
   );
 
+  // 좋아요 상태 업데이트 (heart: 현재 좋아요 상태)
   const updateLike = (productId: string) => {
     queryClient.setQueryData([`itemDetail`, productId], (prev: any) => {
       if (!prev) return;
-      const updatedItem = { ...prev, heart: !prev.heart };
+      const updatedItem = {
+        ...prev,
+        heart: !prev.heart,
+        likes: prev.heart ? prev.likes - 1 : prev.likes + 1,
+      };
       return updatedItem;
     });
   };
@@ -149,8 +155,9 @@ const ItemDetail: React.FC = () => {
 
             <S.DetailWrapper>
               <S.DetailName>좋아요</S.DetailName>
-              <S.DetailValue>{data?.likes}</S.DetailValue>•<S.DetailName>채팅</S.DetailName>
-              <S.DetailValue>{data?.chatroomCount}</S.DetailValue>•<S.DetailName>조회</S.DetailName>
+              <S.DetailValue>{data?.likes}</S.DetailValue>•
+              {/* <S.DetailName>채팅</S.DetailName><S.DetailValue>{data?.chatroomCount}</S.DetailValue>• */}
+              <S.DetailName>조회</S.DetailName>
               <S.DetailValue>{data?.views}</S.DetailValue>
             </S.DetailWrapper>
 
