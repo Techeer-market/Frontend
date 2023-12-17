@@ -1,7 +1,7 @@
 import { Key } from 'react';
 
-export type Product = {
-  id?: number;
+export type SearchData = {
+  id: number;
   productId: string;
   title: string;
   thumbnailURL: string;
@@ -13,4 +13,12 @@ export type Product = {
   views: number;
   // userHasLiked: boolean; // 사용자가 좋아요 누른지 여부
   // chatroomCount: number; // 채팅방 개수
+};
+
+export type SearchResponse = {
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  nextPage: null | string;
+  prevPage: null | string;
+  data: SearchData[];
 };
