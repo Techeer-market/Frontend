@@ -15,7 +15,8 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <React.Suspense fallback={<Loading />}>{elem}</React.Suspense>
+      {/* <React.Suspense fallback={<Loading />}>{elem}</React.Suspense> */}
+      {elem}
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

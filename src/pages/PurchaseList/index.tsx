@@ -24,7 +24,7 @@ const PurchaseList: React.FC = () => {
             navigate('/write');
           }}
         >
-          글쓰기
+          글쓰기 
         </S.WriteBtn>
       </S.BtnDiv>
 
