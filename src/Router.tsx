@@ -10,6 +10,7 @@ const PurchaseList = lazy(() => import('@/pages/PurchaseList'));
 const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
+const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
 
 export const routes = [
@@ -27,5 +28,5 @@ export const routes = [
   { path: '/category', element: <CategoryPage /> },
   { path: `/category/:category`, element: <CategoryPage /> },
   { path: '/search', element: <SearchPage /> },
-  { path: '/detail', element: <Detail /> },
+  // { path: '/detail', element: <Detail /> },
 ];
