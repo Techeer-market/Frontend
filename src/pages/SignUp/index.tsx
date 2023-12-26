@@ -29,7 +29,7 @@ const index = () => {
   const { mutate: signUpAPI } = useMutation((form: SubmitForm) =>
     restFetcher({
       method: 'POST',
-      path: '/signup',
+      path: '/users/signup',
       body: form,
     }),
   );

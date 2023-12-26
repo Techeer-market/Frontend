@@ -83,12 +83,11 @@ const SearchPage = () => {
                       createdAt: searchItem.createdAt,
                       likes: searchItem.likes,
                       views: searchItem.views,
-                      // 추가로 필요한 속성들
                     })),
                   )
                   .flat()
                   .map((item, index) => (
-                    <ProductForm key={index} items={[item]} />
+                    <ProductForm key={index} items={[]} />
                   ))}
               </InfiniteScroll>
             )
