@@ -1,5 +1,3 @@
-import { Key } from 'react';
-
 export type Product = {
   id?: number;
   productId: string;
