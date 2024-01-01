@@ -63,3 +63,8 @@ export const Div = styled.div`
   }
 `;
 export const Foot = styled.div``;
+export const EmptyList = styled.div`
+  padding-top: 2rem;
+  text-align: center;
+  color: #828385;
+`;

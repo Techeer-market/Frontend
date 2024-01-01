@@ -20,7 +20,7 @@ const ProductList = () => {
           {page.data.map((product: Product) => (
             <div key={product.id}>
               {product.title}
-              {product.chatroomCount}
+              {/* {product.chatroomCount} */}
             </div>
           ))}
         </React.Fragment>

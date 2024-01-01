@@ -3,7 +3,7 @@ import backBtn from '@/assets/backBtn.jpg';
 import { useNavigate } from 'react-router-dom';
 import { mainCategory, Category } from '@/constants/mainCategory';
 
-const index = () => {
+const CategoryList = () => {
   const navigate = useNavigate();
   const handleCategory = (mainCategory: Category) => {
     navigate(`/category/${mainCategory.id}`);
@@ -44,4 +44,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default CategoryList;

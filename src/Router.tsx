@@ -11,6 +11,7 @@ const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
+const CategoryList = lazy(() => import('@/components/CategoryList'));
 
 export const routes = [
   { path: '/', element: <Main /> },
@@ -24,8 +25,8 @@ export const routes = [
   { path: '/purchaselist', element: <PurchaseList /> },
   { path: '/mypage', element: <MyPage /> },
   { path: '/edit_info', element: <EditInfo /> },
-  { path: '/category', element: <CategoryPage /> },
-  { path: `/category/:category`, element: <CategoryPage /> },
+  { path: '/category', element: <CategoryList /> },
+  { path: `/category/:categoryId`, element: <CategoryPage /> },
   { path: '/search', element: <SearchPage /> },
   // { path: '/detail', element: <Detail /> },
 ];
