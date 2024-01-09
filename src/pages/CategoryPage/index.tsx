@@ -9,8 +9,8 @@ import * as S from './styles';
 
 const index: React.FC = () => {
   const { categoryId } = useParams();
-  const path = `/list/category/${categoryId}`,
-    queryKey = 'categoryId';
+  const path = `/category/list/${categoryId}`,
+    queryKey = `${categoryId}`;
   const { data, isLoading, hasNextPage, fetchNextPage } = useFetchProductList({ path, queryKey });
 
   useInfiniteScroll({ fetchCallback: fetchNextPage });

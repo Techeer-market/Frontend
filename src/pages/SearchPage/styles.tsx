@@ -42,3 +42,8 @@ export const Input = styled.input`
 export const Div = styled.div`
   display: flex;
 `;
+export const EmptyList = styled.div`
+  padding-top: 2rem;
+  text-align: center;
+  color: #828385;
+`;
