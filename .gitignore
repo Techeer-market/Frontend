@@ -32,3 +32,4 @@ dist-ssr
 # Api Keys
 .env
 src/Router.tsx
+node_modules/vite/bin/vite.js
