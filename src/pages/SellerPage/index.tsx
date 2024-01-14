@@ -1,42 +1,43 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
-import ProductForm from '@/components/ProductForm';
 import { Product } from '@/types/product';
+import * as S from './styles';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import ProductForm from '@/components/ProductForm';
 import { restFetcher } from '@/queryClient';
 import Loading from '@/components/Loading';
-import { useQuery } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useLocation } from 'react-router-dom';
 
 interface ApiResponse {
   판매중: Product[];
   거래완료: Product[];
 }
 
-const SalesList: React.FC = () => {
-  const navigate = useNavigate();
-  const userId = localStorage.getItem('userId');
+const SellerPage = () => {
+  const location = useLocation();
+  const { userId, name } = location.state;
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const handleTabClick = (index: number) => {
     setActiveIndex(index);
   };
 
-  const fetchSalesList = async () => {
+  const fetchSellerProductList = async () => {
     try {
       const response = await restFetcher({
         method: 'GET',
         path: `/mypage/sell/${userId}`,
       });
+
       return response.data;
     } catch (error) {
       return [];
     }
   };
 
-  const { data, isLoading } = useQuery<ApiResponse, AxiosError>(['saleslist'], () =>
-    fetchSalesList(),
+  const { data, isLoading } = useQuery<ApiResponse, AxiosError>(['seller', userId], () =>
+    fetchSellerProductList(),
   );
 
   const onSaleItems = data?.판매중 || [];
@@ -48,16 +49,7 @@ const SalesList: React.FC = () => {
 
   return (
     <>
-      <TopNavBar page="나의 판매 내역" />
-      <S.BtnDiv>
-        <S.WriteBtn
-          onClick={() => {
-            navigate('/write');
-          }}
-        >
-          글쓰기
-        </S.WriteBtn>
-      </S.BtnDiv>
+      <TopNavBar page={`${name}의 판매 내역`} />
 
       <S.Tabs>
         <S.Tab isActive={activeIndex === 0} onClick={() => handleTabClick(0)}>
@@ -71,12 +63,12 @@ const SalesList: React.FC = () => {
       <S.TabContent>
         {activeIndex === 0 ? (
           onSaleItems && onSaleItems.length > 0 ? (
-            <ProductForm items={onSaleItems} state="SALE" />
+            <ProductForm items={onSaleItems} />
           ) : (
             <S.EmptyList>판매 중인 게시글이 없습니다.</S.EmptyList>
           )
         ) : completedItems && completedItems.length > 0 ? (
-          <ProductForm items={completedItems} state="SOLD" />
+          <ProductForm items={completedItems} />
         ) : (
           <S.EmptyList>거래 완료된 게시글이 없습니다.</S.EmptyList>
         )}
@@ -85,4 +77,4 @@ const SalesList: React.FC = () => {
   );
 };
 
-export default SalesList;
+export default SellerPage;

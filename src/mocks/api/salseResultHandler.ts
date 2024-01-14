@@ -3,7 +3,7 @@ import { salesResultData } from './data/salesResultData';
 
 const salseResultHandler = [
   // 판매 내역 조회
-  rest.get(`http://localhost:3000/api/mypage/sell`, (req, res, ctx) => {
+  rest.get(`http://localhost:3000/api/mypage/sell/:userId`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(salesResultData));
   }),
   // 상품 상태 수정
