@@ -28,11 +28,12 @@ export const useTokenRefreshTimer = () => {
 
   const refreshTokens = async () => {
     try {
-      // http://techeermarket.ap-northeast-2.elasticbeanstalk.com/api/users/authorize
-      // http://localhost:3000/api/users/authorize
-      const response = await axios.get('http://localhost:3000/api/users/authorize', {
-        headers: { 'Refresh-Token': `${localStorage.getItem('refresh-token')}` },
-      });
+      const response = await axios.get(
+        'http://techeermarket.ap-northeast-2.elasticbeanstalk.com/api/users/authorize',
+        {
+          headers: { 'Refresh-Token': `${localStorage.getItem('refresh-token')}` },
+        },
+      );
       const newAuthTokens = response.headers['access-token'];
       localStorage.setItem('access-token', newAuthTokens);
 

@@ -47,14 +47,6 @@ const ItemDetail: React.FC = () => {
         method: 'GET',
         path: `/products/list/${productId}`,
       });
-
-      // 채팅방 개수 가져오기
-      // const chatroomResponse = await restFetcher({
-      //   method: 'GET',
-      //   path: `/chatroom/count/${productId}`,
-      // });
-
-      // return { ...response.data, chatroomCount: chatroomResponse.data };
       return response.data;
     },
     {
@@ -130,6 +122,10 @@ const ItemDetail: React.FC = () => {
 
   if (isLoading) return <Loading />;
 
+  // 임시 데이터
+  let userId = 1;
+  let name = '조은주';
+
   return (
     <S.Container>
       <TopNavBar page="" />
@@ -137,7 +133,9 @@ const ItemDetail: React.FC = () => {
         <Carousel images={images} />
         <S.Details>
           <S.TypeWrapper>
-            <S.NameAndDateWrapper>
+            <S.NameAndDateWrapper
+              onClick={() => navigate('/seller', { state: { userId: userId, name: name } })}
+            >
               <S.Profile src={profile} alt="Profile" />
               <S.NameWrapper>
                 <S.Name>{data?.writer}</S.Name>

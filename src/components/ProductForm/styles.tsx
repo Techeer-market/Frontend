@@ -74,6 +74,7 @@ export const Section = styled.div`
   bottom: 16px;
   display: flex;
   align-items: center;
+  z-index: 10;
 `;
 export const Part = styled.div`
   display: flex;
@@ -122,7 +123,7 @@ export const Circle = styled.div`
 
   ::before,
   ::after {
-    left: -100%;
+    left: -80%;
     content: '';
     position: absolute;
     width: 100%;
@@ -151,7 +152,7 @@ export const Dropdown = styled.div`
   border-radius: 10px;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   background-color: #fff;
-  z-index: 1;
+  z-index: 10;
 `;
 
 export const DropdownItem = styled.span`
