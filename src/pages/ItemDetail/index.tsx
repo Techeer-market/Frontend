@@ -17,7 +17,6 @@ import Carousel from '@/components/Carousel';
 interface ItemDetailProps {
   productId: string;
   productImages: string[];
-
   name: string; //writer
   userId: string;
   categoryName: string;
@@ -30,7 +29,6 @@ interface ItemDetailProps {
   views: number;
   createdAt: string;
   location: string;
-
   updatedAt: string;
   // chatroomCount: number;
 }
@@ -46,9 +44,6 @@ const ItemDetail: React.FC = () => {
         method: 'GET',
         path: `/products/list/${productId}`,
       });
-
-      console.log(response);
-
       return response.data;
     },
     {
@@ -62,15 +57,7 @@ const ItemDetail: React.FC = () => {
 
   // 좋아요 상태 업데이트 (heart: 현재 좋아요 상태)
   const updateLike = (productId: string) => {
-    queryClient.setQueryData([`itemDetail`, productId], (prev: any) => {
-      if (!prev) return;
-      const updatedItem = {
-        ...prev,
-        myheart: !prev.myheart,
-        likes: prev.heart ? prev.likes - 1 : prev.likes + 1,
-      };
-      return updatedItem;
-    });
+    queryClient.invalidateQueries(['itemDetail', productId]);
   };
   // 좋아요 취소 mutation
   const deleteLikeMutation = useMutation(
@@ -111,12 +98,6 @@ const ItemDetail: React.FC = () => {
       changeLikeMutation.mutate(productId);
     }
   };
-  // const images = [
-  //   data?.productImages[0],  배열을 이렇게 씀
-  //   data?.image_url_2,
-  //   data?.image_url_3,
-  //   data?.image_url_4,
-  // ].filter((url) => url != null) as string[];
 
   if (isLoading) return <Loading />;
 
@@ -127,7 +108,11 @@ const ItemDetail: React.FC = () => {
         <Carousel images={data?.productImages} />
         <S.Details>
           <S.TypeWrapper>
-            <S.NameAndDateWrapper>
+            <S.NameAndDateWrapper
+              onClick={() =>
+                navigate('/seller', { state: { userId: data?.userId, name: data?.name } })
+              }
+            >
               <S.Profile src={profile} alt="Profile" />
               <S.NameWrapper>
                 <S.Name>{data?.name}</S.Name>

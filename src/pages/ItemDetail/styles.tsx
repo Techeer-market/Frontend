@@ -24,6 +24,11 @@ export const NameAndDateWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  cursor: pointer;
+  transition: scale 0.3s ease-in-out;
+  &:hover {
+    scale: 1.05;
+  }
 `;
 export const Profile = styled.img`
   width: 50px;
@@ -115,6 +120,7 @@ export const WishlistButton = styled.button`
   background-repeat: no-repeat;
   background-size: contain;
   background-color: transparent;
+  cursor: pointer;
 `;
 export const ChatButton = styled.button`
   font-size: 2rem;
