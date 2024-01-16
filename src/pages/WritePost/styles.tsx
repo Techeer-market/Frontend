@@ -10,6 +10,10 @@ export const Writepost = styled.div`
   justify-content: space-around;
   margin: 0 auto;
   width: 50rem;
+
+  .navContainer {
+    display: flex;
+  }
 `;
 
 export const Nav = styled.div`
@@ -21,12 +25,12 @@ export const Nav = styled.div`
     margin-left: 5%;
   }
   #category {
-    margin-left: 1800%;
+    margin-left: -200%;
     width: 100%; /* 이미지의 너비를 설정하세요 */
     height: 100%; /* 이미지의 높이를 설정하세요 */
   }
   #search {
-    margin-left: 1900%;
+    margin-left: -120%;
     width: 100%; /* 이미지의 너비를 설정하세요 */
     height: 100%; /* 이미지의 높이를 설정하세요 */
   }
@@ -44,6 +48,21 @@ export const ImagesContainer = styled.div`
   overflow-x: auto; /* 가로 스크롤을 가능하게 함 */
   gap: 10px; /* 이미지 간의 간격을 조절 */
   padding: 10px; /* 좌우 여백 추가 */
+
+  .upload-label {
+    position: relative;
+    display: inline-block;
+  }
+
+  .image-count {
+    position: absolute;
+    bottom: 21px;
+    right: 47.5px;
+    color: black;
+    padding: 2px 5px;
+    font-size: 16px;
+    font-weight: lighter;
+  }
 `;
 
 export const Img = styled.div`
@@ -51,7 +70,7 @@ export const Img = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   padding-bottom: 2rem;
-  margin-left: 4rem;
+  margin-left: 3rem;
   width: 50rem;
   gap: 2rem;
 `;
@@ -63,7 +82,7 @@ export const Form = styled.form`
   padding-top: 2rem;
   padding-bottom: 2rem;
   width: 50rem;
-  margin-bottom: 3rem;
+
   gap: 1rem;
 `;
 export const Row = styled.div`
@@ -81,6 +100,7 @@ export const Label = styled.label`
   color: #000000;
   width: 50rem;
   margin-left: 2rem;
+  margin-top: 1rem;
 `;
 export const Input = styled.input`
   display: flex;
@@ -93,6 +113,7 @@ export const Input = styled.input`
   font-size: 1.5rem;
   padding-left: 1rem;
   margin-top: 1rem;
+  padding: 2rem;
 `;
 export const Select = styled.select`
   display: flex;
@@ -102,7 +123,7 @@ export const Select = styled.select`
   border-radius: 10px;
   border: 1px solid #828385;
   font-size: 1.5rem;
-  padding-left: 0.5rem;
+  padding-left: 1rem;
   margin-top: 1rem;
   &:focus {
     outline: none;
@@ -110,7 +131,7 @@ export const Select = styled.select`
   }
 `;
 export const Option = styled.option`
-  color: black;
+  color: #a5a5a5;
   font-size: 1.5rem;
 `;
 
@@ -141,7 +162,7 @@ export const TextArea = styled.textarea`
   justify-content: center;
   align-items: center;
   width: 90%;
-  height: 40rem;
+  height: 20rem;
   left: 29.3rem;
   top: 73.7rem;
   background: #ffffff;

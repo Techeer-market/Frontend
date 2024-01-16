@@ -11,21 +11,26 @@ import { formatDateToNow } from '@/utils/formatDateToNow';
 
 interface ProductProps {
   items: Product[];
-  state?: string;
 }
 
-const ProductForm = ({ items, state }: ProductProps) => {
+const ProductForm: React.FC<ProductProps> = ({ items }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = getClient();
+
+  const [products, setProducts] = useState<Product[]>(items);
   const [dropDown, setDropDown] = useState<string>('');
 
   const isWishPage = location.pathname === '/wishlist';
   const isSalsePage = location.pathname === '/saleslist';
 
+  useEffect(() => {
+    setProducts(items);
+  }, [items]);
+
   const mutateChangeProductState = useMutation(
     (product: Product) => {
-      let newState = state === 'SOLD' ? 'SALE' : 'SOLD';
+      let newState = product.productState !== 'SOLD' ? 'SOLD' : 'SALE';
       return restFetcher({
         method: 'PUT',
         path: `/products/state/${product.productId}`,
@@ -45,6 +50,15 @@ const ProductForm = ({ items, state }: ProductProps) => {
   // 상품 상태 변경 핸들러 (판매 내역 페이지)
   const handleChangeState = async (product: Product) => {
     await mutateChangeProductState.mutateAsync(product);
+    setProducts((currentProducts) => {
+      return currentProducts.map((item) => {
+        if (item.productId === product.productId) {
+          return { ...item, productState: product.productState !== 'SOLD' ? 'SOLD' : 'SALE' };
+        } else {
+          return item;
+        }
+      });
+    });
   };
 
   const mutateDeleteProduct = useMutation(
@@ -55,7 +69,9 @@ const ProductForm = ({ items, state }: ProductProps) => {
       }),
     {
       onSuccess: (_, productId) => {
-        queryClient.invalidateQueries(['saleslist']);
+        queryClient.setQueryData(['saleslist'], (prev: any) => {
+          return prev.filter((item: Product) => item.productId !== productId);
+        });
       },
       onError: (error) => {
         alert('상품 삭제에 실패했습니다. 다시 시도해주세요.');
@@ -66,11 +82,13 @@ const ProductForm = ({ items, state }: ProductProps) => {
   // 삭제 버튼 핸들러 (판매 내역 페이지)
   const handleDelete = async (productId: string) => {
     await mutateDeleteProduct.mutateAsync(productId);
+    const updatedItems = products.filter((item) => item.productId !== productId);
+    setProducts(updatedItems);
   };
 
   return (
     <S.Div>
-      {items?.map((item) => (
+      {products?.map((item, index) => (
         <S.Container key={item.productId} onClick={() => navigate(`/item/${item.productId}`)}>
           <S.ProductContent>
             <S.ImageDiv style={{ backgroundImage: `url(${item.thumbnailURL})` }} />
@@ -90,15 +108,14 @@ const ProductForm = ({ items, state }: ProductProps) => {
                 <S.Image style={{ backgroundImage: `url(${isWishPage ? FilledHeart : Heart})` }} />
                 <S.Value>{item.likes}</S.Value>
               </S.Part>
-              <S.Part>
+              {/* <S.Part>
                 <S.Image style={{ backgroundImage: `url(${Chat})` }} />
-                <S.Value>{item.views}</S.Value>
-              </S.Part>
+                <S.Value>{item.chatroomCount}</S.Value>
+              </S.Part> */}
               {/* 판매 내역 페이지일 경우에만 보이도록 함 */}
               {isSalsePage && (
                 <S.MenuBar
-                  onClick={(event) => {
-                    event.stopPropagation(); // 이벤트 버블링 방지
+                  onClick={() => {
                     setDropDown(dropDown === item.productId ? '' : item.productId);
                   }}
                 >
@@ -108,29 +125,20 @@ const ProductForm = ({ items, state }: ProductProps) => {
               {dropDown === item.productId && (
                 <S.Dropdown>
                   <S.DropdownItem
-                    onClick={(event) => {
-                      event.stopPropagation(); // 이벤트 버블링 방지
+                    onClick={() => {
                       handleChangeState(item);
                     }}
                   >
-                    {state !== 'SOLD' ? '거래 완료로 변경' : '판매 중으로 변경'}
+                    {item.productState !== 'SOLD' ? '거래 완료로 변경' : '판매 중으로 변경'}
                   </S.DropdownItem>
                   <S.DropdownItem
-                    onClick={(event) => {
-                      event.stopPropagation();
+                    onClick={() => {
                       navigate('/edit_post'); // 게시글 수정 페이지 (url 수정 필요)
                     }}
                   >
                     게시글 수정
                   </S.DropdownItem>
-                  <S.DropdownItem
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleDelete(item.productId);
-                    }}
-                  >
-                    삭제
-                  </S.DropdownItem>
+                  <S.DropdownItem onClick={() => handleDelete(item.productId)}>삭제</S.DropdownItem>
                 </S.Dropdown>
               )}
             </S.Section>

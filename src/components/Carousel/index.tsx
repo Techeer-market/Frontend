@@ -2,7 +2,7 @@ import * as S from './styles';
 import { useState } from 'react';
 
 interface CarouselProps {
-  images: string[];
+  images: string[] | undefined;
 }
 
 const Carousel = ({ images }: CarouselProps) => {
@@ -15,10 +15,10 @@ const Carousel = ({ images }: CarouselProps) => {
   return (
     <S.Container>
       <S.CarouselContainer
-        length={images.length}
+        length={images?.length || 0}
         style={{ transform: `translateX(-${current * 100}%` }}
       >
-        {images.map((url, index) => (
+        {images?.map((url, index) => (
           <S.ImageWrapper key={index}>
             {index === current && <S.Image src={url} alt="Product" />}
           </S.ImageWrapper>
@@ -26,7 +26,7 @@ const Carousel = ({ images }: CarouselProps) => {
       </S.CarouselContainer>
 
       <S.ButtonWrapper>
-        {images.map((_, index) => (
+        {images?.map((_, index) => (
           <S.Button
             key={index}
             onClick={() => handleClick(index)}
