@@ -64,6 +64,7 @@ export const Description = styled.p`
 `;
 export const Content = styled.span`
   font-size: 1.6rem;
+  margin-bottom: 20rem;
 `;
 export const DetailWrapper = styled.div`
   display: flex;
@@ -80,6 +81,7 @@ export const DetailValue = styled.span``;
 
 export const MapWrapper = styled.div`
   padding: 5rem 0 2rem;
+  margin-top: 20rem;
 `;
 export const MapTitle = styled.div`
   display: flex;
