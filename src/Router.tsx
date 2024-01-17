@@ -13,6 +13,7 @@ const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
 const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
+const CategoryList = lazy(() => import('@/components/CategoryList'));
 const SellerPage = lazy(() => import('@/pages/SellerPage'));
 
 export const routes = [
@@ -21,14 +22,14 @@ export const routes = [
   { path: '/auth/kakao', element: <KakaoLogin /> },
   { path: '/signup', element: <SignUp /> },
   { path: '/write', element: <WritePost /> },
-  { path: '/item/:productId', element: <ItemDetail /> },
   { path: '/wishlist', element: <WishList /> },
   { path: '/saleslist', element: <SalesList /> },
   { path: '/purchaselist', element: <PurchaseList /> },
   { path: '/mypage', element: <MyPage /> },
   { path: '/edit_info', element: <EditInfo /> },
-  { path: '/category', element: <CategoryPage /> },
-  { path: `/category/:category`, element: <CategoryPage /> },
+  { path: '/category', element: <CategoryList /> },
+  { path: `/category/:categoryId`, element: <CategoryPage /> },
   { path: '/search', element: <SearchPage /> },
+  { path: `/search/:thingName`, element: <SearchPage /> },
   { path: '/seller', element: <SellerPage /> },
 ];
