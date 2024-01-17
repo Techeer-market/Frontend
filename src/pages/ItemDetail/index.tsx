@@ -15,23 +15,21 @@ import { formatDateToNow } from '@/utils/formatDateToNow';
 import Carousel from '@/components/Carousel';
 
 interface ItemDetailProps {
-  categoryName: string;
   productId: string;
+  productImages: string[];
+  name: string; //writer
+  userId: string;
+  categoryName: string;
   title: string;
-  writer: string;
-  description: string;
+  content: string;
   price: number;
   productState: 'SALE' | 'RESERVED' | 'SOLD';
-  image_url_1: string | null;
-  image_url_2: string | null;
-  image_url_3: string | null;
-  image_url_4: string | null;
-  views: number;
   likes: number;
+  myheart: boolean; // 좋아요 여부, 이름 수정 필요
+  views: number;
+  createdAt: string;
   location: string;
-  heart: boolean; // 좋아요 여부, 이름 수정 필요
-  createdDate: string;
-  modifiedDate: string;
+  updatedAt: string;
   // chatroomCount: number;
 }
 
@@ -39,7 +37,6 @@ const ItemDetail: React.FC = () => {
   const { productId } = useParams();
   const queryClient = getClient();
   const navigate = useNavigate();
-
   const { data, isLoading } = useQuery<ItemDetailProps, AxiosError>(
     ['itemDetail', productId],
     async () => {
@@ -47,14 +44,6 @@ const ItemDetail: React.FC = () => {
         method: 'GET',
         path: `/products/list/${productId}`,
       });
-
-      // 채팅방 개수 가져오기
-      // const chatroomResponse = await restFetcher({
-      //   method: 'GET',
-      //   path: `/chatroom/count/${productId}`,
-      // });
-
-      // return { ...response.data, chatroomCount: chatroomResponse.data };
       return response.data;
     },
     {
@@ -68,17 +57,8 @@ const ItemDetail: React.FC = () => {
 
   // 좋아요 상태 업데이트 (heart: 현재 좋아요 상태)
   const updateLike = (productId: string) => {
-    queryClient.setQueryData([`itemDetail`, productId], (prev: any) => {
-      if (!prev) return;
-      const updatedItem = {
-        ...prev,
-        heart: !prev.heart,
-        likes: prev.heart ? prev.likes - 1 : prev.likes + 1,
-      };
-      return updatedItem;
-    });
+    queryClient.invalidateQueries(['itemDetail', productId]);
   };
-
   // 좋아요 취소 mutation
   const deleteLikeMutation = useMutation(
     (productId: string) =>
@@ -95,7 +75,6 @@ const ItemDetail: React.FC = () => {
       },
     },
   );
-
   // 좋아요 누르기 mutation
   const changeLikeMutation = useMutation(
     (productId: string) =>
@@ -112,21 +91,13 @@ const ItemDetail: React.FC = () => {
       },
     },
   );
-
   const handleLike = (productId: string) => {
-    if (data?.heart) {
+    if (data?.myheart) {
       deleteLikeMutation.mutate(productId);
     } else {
       changeLikeMutation.mutate(productId);
     }
   };
-
-  const images = [
-    data?.image_url_1,
-    data?.image_url_2,
-    data?.image_url_3,
-    data?.image_url_4,
-  ].filter((url) => url != null) as string[];
 
   if (isLoading) return <Loading />;
 
@@ -134,22 +105,24 @@ const ItemDetail: React.FC = () => {
     <S.Container>
       <TopNavBar page="" />
       <S.Maincontainer>
-        <Carousel images={images} />
+        <Carousel images={data?.productImages} />
         <S.Details>
           <S.TypeWrapper>
-            <S.NameAndDateWrapper>
+            <S.NameAndDateWrapper
+              onClick={() =>
+                navigate('/seller', { state: { userId: data?.userId, name: data?.name } })
+              }
+            >
               <S.Profile src={profile} alt="Profile" />
               <S.NameWrapper>
-                <S.Name>{data?.writer}</S.Name>
-                <S.Date>{formatDateToNow(data?.createdDate as string)}</S.Date>
+                <S.Name>{data?.name}</S.Name>
+                <S.Date>{formatDateToNow(data?.createdAt as string)}</S.Date>
               </S.NameWrapper>
             </S.NameAndDateWrapper>
-
             <Link to="/category">
               <S.Category>{data?.categoryName}</S.Category>
             </Link>
           </S.TypeWrapper>
-
           <S.ContentWrapper>
             <S.ProductTitle>{data?.title}</S.ProductTitle>
 
@@ -162,8 +135,7 @@ const ItemDetail: React.FC = () => {
             </S.DetailWrapper>
 
             <S.Description>
-              <S.Content>{data?.description}</S.Content>
-
+              <S.Content>{data?.content}</S.Content>
               <S.MapWrapper>
                 <S.MapTitle>
                   <div>거래 희망 장소</div>
@@ -174,11 +146,10 @@ const ItemDetail: React.FC = () => {
             </S.Description>
           </S.ContentWrapper>
         </S.Details>
-
         <S.Buttons>
           <S.ButtonsBox>
             <S.WishlistButton
-              style={{ backgroundImage: `url(${data?.heart ? FilledHeart : Heart})` }}
+              style={{ backgroundImage: `url(${data?.myheart ? FilledHeart : Heart})` }}
               onClick={() => handleLike(productId as string)}
             />
             <S.Price> {`${data?.price?.toLocaleString()}원`} </S.Price>

@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
 const KakaoLogin = lazy(() => import('./pages/KakaoLogin'));
@@ -10,8 +11,10 @@ const PurchaseList = lazy(() => import('@/pages/PurchaseList'));
 const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
+const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
 const CategoryList = lazy(() => import('@/components/CategoryList'));
+const SellerPage = lazy(() => import('@/pages/SellerPage'));
 
 export const routes = [
   { path: '/', element: <Main /> },
@@ -28,4 +31,5 @@ export const routes = [
   { path: `/category/:categoryId`, element: <CategoryPage /> },
   { path: '/search', element: <SearchPage /> },
   { path: `/search/:thingName`, element: <SearchPage /> },
+  { path: '/seller', element: <SellerPage /> },
 ];

@@ -24,6 +24,11 @@ export const NameAndDateWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  cursor: pointer;
+  transition: scale 0.3s ease-in-out;
+  &:hover {
+    scale: 1.05;
+  }
 `;
 export const Profile = styled.img`
   width: 50px;
@@ -64,6 +69,7 @@ export const Description = styled.p`
 `;
 export const Content = styled.span`
   font-size: 1.6rem;
+  margin-bottom: 20rem;
 `;
 export const DetailWrapper = styled.div`
   display: flex;
@@ -80,6 +86,7 @@ export const DetailValue = styled.span``;
 
 export const MapWrapper = styled.div`
   padding: 5rem 0 2rem;
+  margin-top: 20rem;
 `;
 export const MapTitle = styled.div`
   display: flex;
@@ -113,6 +120,7 @@ export const WishlistButton = styled.button`
   background-repeat: no-repeat;
   background-size: contain;
   background-color: transparent;
+  cursor: pointer;
 `;
 export const ChatButton = styled.button`
   font-size: 2rem;
