@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
@@ -30,6 +31,10 @@ export const routes = [
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },
   { path: '/search', element: <SearchPage /> },
-  { path: `/search/:thingName`, element: <SearchPage /> },
+  {
+    path: '/products',
+    element: <SearchPage />,
+    children: [{ path: '', element: <SearchPage /> }],
+  },
   { path: '/seller', element: <SellerPage /> },
 ];
