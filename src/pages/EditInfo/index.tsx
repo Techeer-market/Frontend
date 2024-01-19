@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import profile from '../../assets/profile.png';
+import profile from '../../assets/profile.svg';
 import * as S from './styles';
 import { AxiosError } from 'axios';
 import EditInfoModal from '@/components/EditInfoModal';
@@ -157,9 +157,9 @@ const EditInfo = () => {
               // onClick={openFileInput}
             />
 
-            <S.CameraIcom>
-              <IoCamera size={10} />
-            </S.CameraIcom>
+            {/* <S.CameraIcom> */}
+              {/* <IoCamera size={10} /> */}
+            {/* </S.CameraIcom> */}
 
             <S.Name>{userInfo?.name}</S.Name>
           </S.ProfileContainer>

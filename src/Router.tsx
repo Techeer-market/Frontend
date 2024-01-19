@@ -12,10 +12,11 @@ const PurchaseList = lazy(() => import('@/pages/PurchaseList'));
 const SalesList = lazy(() => import('@/pages/SalesList'));
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const EditInfo = lazy(() => import('@/pages/EditInfo'));
-const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
 const CategoryList = lazy(() => import('@/components/CategoryList'));
 const SellerPage = lazy(() => import('@/pages/SellerPage'));
+const ChatList = lazy(() => import('@/pages/ChatList'));
+// const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
 
 export const routes = [
   { path: '/', element: <Main /> },
@@ -28,6 +29,8 @@ export const routes = [
   { path: '/purchaselist', element: <PurchaseList /> },
   { path: '/mypage', element: <MyPage /> },
   { path: '/edit_info', element: <EditInfo /> },
+  { path: '/chat', element: <ChatList /> },
+  // { path: '/item/:id', element: <ItemDetail /> },
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },
   { path: '/search', element: <SearchPage /> },
