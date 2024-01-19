@@ -90,10 +90,10 @@ const ProductForm = ({ items, state }: ProductProps) => {
                 <S.Image style={{ backgroundImage: `url(${isWishPage ? FilledHeart : Heart})` }} />
                 <S.Value>{item.likes}</S.Value>
               </S.Part>
-              {/* <S.Part> */}
-              <S.Image style={{ backgroundImage: `url(${Chat})` }} />
-              {/* <S.Value>{item.chatroomCount}</S.Value> */}
-              {/* </S.Part> */}
+              <S.Part>
+                <S.Image style={{ backgroundImage: `url(${Chat})` }} />
+                <S.Value>{item.views}</S.Value>
+              </S.Part>
               {/* 판매 내역 페이지일 경우에만 보이도록 함 */}
               {isSalsePage && (
                 <S.MenuBar

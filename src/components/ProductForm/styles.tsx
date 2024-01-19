@@ -74,7 +74,6 @@ export const Section = styled.div`
   bottom: 16px;
   display: flex;
   align-items: center;
-  z-index: 10;
 `;
 export const Part = styled.div`
   display: flex;
