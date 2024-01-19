@@ -17,3 +17,4 @@ const categoryListHandler = (mainCategory: CategoryData) => [
 ];
 
 export default categoryListHandler;
+ 
