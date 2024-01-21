@@ -1,8 +1,9 @@
 import Heart from '../../assets/grayHeartIcon.svg';
 import FilledHeart from '../../assets/likedHeart.svg';
 import Chat from '../../assets/chatIcon.svg';
+import Circle from '@/assets/circle.svg';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Product } from '@/types/product';
 import * as S from './styles';
 import { getClient, restFetcher } from '@/queryClient';
@@ -102,7 +103,7 @@ const ProductForm = ({ items, state }: ProductProps) => {
                     setDropDown(dropDown === item.productId ? '' : item.productId);
                   }}
                 >
-                  <S.Circle />
+                  <S.Image style={{ backgroundImage: `url(${Circle})` }} />
                 </S.MenuBar>
               )}
               {dropDown === item.productId && (

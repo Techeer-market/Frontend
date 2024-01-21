@@ -70,8 +70,8 @@ export const PriceDiv = styled.div`
 
 export const Section = styled.div`
   position: absolute;
-  right: 20px;
-  bottom: 16px;
+  right: 2rem;
+  bottom: 1.6rem;
   display: flex;
   align-items: center;
 `;
@@ -111,31 +111,6 @@ export const MenuBar = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-`;
-
-export const Circle = styled.div`
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  border: solid 1px #000;
-  position: relative;
-
-  ::before,
-  ::after {
-    left: -80%;
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: solid 1px #000;
-  }
-  ::before {
-    margin-top: -5px;
-  }
-  ::after {
-    bottom: -5px;
-  }
 `;
 
 export const Dropdown = styled.div`
