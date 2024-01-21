@@ -26,6 +26,7 @@ export const routes = [
   { path: '/saleslist', element: <SalesList /> },
   { path: '/purchaselist', element: <PurchaseList /> },
   { path: '/mypage', element: <MyPage /> },
+  { path: '/item/:productId', element: <ItemDetail /> },
   { path: '/edit_info', element: <EditInfo /> },
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },
