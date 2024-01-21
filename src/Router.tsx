@@ -30,6 +30,8 @@ export const routes = [
   { path: '/mypage', element: <MyPage /> },
   { path: '/edit_info', element: <EditInfo /> },
   { path: '/chat', element: <ChatList /> },
+  { path: '/chat/room', element: <ChatList /> },
+  { path: '/chat/room?', element: <ChatList /> },
   // { path: '/item/:id', element: <ItemDetail /> },
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },

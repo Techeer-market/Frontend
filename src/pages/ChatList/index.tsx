@@ -8,7 +8,7 @@ const index = () => {
     <>
       <TopNavBar page="채팅 목록" />
       <NavBar />
-      <ChatForm />
+      <ChatForm productId={18} roomName={''} />
     </>
   );
 };
