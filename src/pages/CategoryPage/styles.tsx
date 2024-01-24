@@ -22,11 +22,14 @@ export const Grid = styled.div`
   grid-template-columns: 120px 120px 120px;
   grid-template-rows: 160px 160px 160px;
   gap: 5px;
-  margin-top: 170px;
   align-items: center;
   place-content: center;
   img {
     cursor: pointer;
+  }
+  margin-top: 8vw;
+  @media (min-width: 1024px) {
+    margin-top: 120px;
   }
 `;
 export const Item = styled.div`
