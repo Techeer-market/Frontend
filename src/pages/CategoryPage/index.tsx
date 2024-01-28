@@ -1,13 +1,13 @@
 // CategoryPage 컴포넌트
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import * as S from './styles';
 import useFetchProductList from '@/hooks/useFetchProductList';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import ProductForm from '@/components/ProductForm';
 import Loading from '@/components/Loading';
-import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
-import { Category, mainCategory } from '@/constants/mainCategory';
+import { useParams } from 'react-router-dom';
+import { mainCategory } from '@/constants/mainCategory';
 
 const index: React.FC = () => {
   const { categoryId } = useParams();
