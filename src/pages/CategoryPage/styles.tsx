@@ -8,6 +8,9 @@ export const Container = styled.div`
     cursor: pointer;
   }
 `;
+export const ProductContainer = styled.div`
+  padding: 3rem 2rem 0;
+`;
 export const Nav = styled.div`
   padding-top: 40px;
 `;
