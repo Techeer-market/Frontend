@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import profile from '../../assets/profile.png';
+import profile from '../../assets/profile.svg';
 import * as S from './styles';
 import { useParams } from 'react-router-dom';
 import NavBar from '@/components/NavBar';

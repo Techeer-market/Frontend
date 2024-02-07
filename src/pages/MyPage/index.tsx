@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
-import profile from '../../assets/profile.png';
+import profile from '../../assets/profile.svg';
 import Heart from '../../assets/HeartIcon.svg';
 import Store from '../../assets/StoreIcon.svg';
 import Cart from '../../assets/CartIcon.svg';
@@ -10,7 +10,7 @@ import { restFetcher } from '@/queryClient';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { UserInfo } from '@/types/userInfo';
-import { IoCamera } from 'react-icons/io5';
+// import { IoCamera } from 'react-icons/io5';
 
 const NAV_ITEMS = [
   { path: '/wishlist', imgSrc: Heart, altText: 'heartIcon', label: '좋아요 목록' },
@@ -47,9 +47,9 @@ const MyPage: React.FC = () => {
         <S.MyPageContainer>
           <S.ChangImg src={userInfo?.profileUrl ? userInfo.profileUrl : profile} alt="Profile" />
 
-          <S.CameraIcom>
-            <IoCamera size={10} />
-          </S.CameraIcom>
+          {/* <S.CameraIcom> */}
+          {/* <IoCamera size={10} /> */}
+          {/* </S.CameraIcom> */}
 
           <S.Name>{userInfo?.name}</S.Name>
         </S.MyPageContainer>
