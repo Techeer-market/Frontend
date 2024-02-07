@@ -157,9 +157,9 @@ const EditInfo = () => {
               // onClick={openFileInput}
             />
 
-            <S.CameraIcom>
-              <IoCamera size={10} />
-            </S.CameraIcom>
+            {/* <S.CameraIcom> */}
+              {/* <IoCamera size={10} /> */}
+            {/* </S.CameraIcom> */}
 
             <S.Name>{userInfo?.name}</S.Name>
           </S.ProfileContainer>

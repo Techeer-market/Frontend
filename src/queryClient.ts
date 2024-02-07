@@ -63,11 +63,13 @@ export const restFetcher = async ({
   path,
   body,
   params,
+  headers,
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   path: string;
   body?: AnyOBJ;
   params?: AnyOBJ;
+  headers?: AnyOBJ;
 }) => {
   try {
     let url = `${path}`;
