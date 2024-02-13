@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
-  width: 100%;
   height: 30rem;
   overflow: hidden;
   display: flex;
+  margin-bottom: 1rem;
 `;
 
 export const CarouselContainer = styled.div<{ length: number }>`

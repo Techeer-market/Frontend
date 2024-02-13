@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNavBar from '@/components/TopNavBar';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/BottomNavBar';
 import ChatForm from '@/components/ChatForm';
 import Chat from '@/components/Chat';
 const index = () => {

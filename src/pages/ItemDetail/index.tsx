@@ -123,6 +123,7 @@ const ItemDetail: React.FC = () => {
               <S.Category>{data?.categoryName}</S.Category>
             </Link>
           </S.TypeWrapper>
+
           <S.ContentWrapper>
             <S.ProductTitle>{data?.title}</S.ProductTitle>
 
@@ -146,6 +147,7 @@ const ItemDetail: React.FC = () => {
             </S.Description>
           </S.ContentWrapper>
         </S.Details>
+
         <S.Buttons>
           <S.ButtonsBox>
             <S.WishlistButton
@@ -157,6 +159,7 @@ const ItemDetail: React.FC = () => {
           <S.ChatButton onClick={() => navigate('/chat')}>채팅하기</S.ChatButton>
         </S.Buttons>
       </S.Maincontainer>
+
       <NavBar />
     </S.Container>
   );
