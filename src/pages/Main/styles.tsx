@@ -50,7 +50,7 @@ export const NavLink = styled.div`
 export const scroll = styled.div`
   /*무제한 스크롤를 위해 동적으로 계산해야함*/
   overflow-y: scroll;
-  max-height: 900px;
+  max-height: 800px;
 `;
 
 export const MainContainer = styled.div`
