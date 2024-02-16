@@ -2,38 +2,35 @@ import React, { useEffect, useState } from 'react';
 import * as S from '@/pages/SearchPage/styles';
 import useSearchThing from '@/hooks/useSearchThing';
 import { Product } from '@/types/product';
-import useFetchProductList from '@/hooks/useFetchProductList';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import ProductForm from '@/components/ProductForm';
 import Loading from '@/components/Loading';
-import { restFetcher } from '@/queryClient';
-import { useSearchParams } from 'react-router-dom';
+import { QueryKeys, restFetcher } from '@/queryClient';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { SearchResponse } from '@/types/search';
+import SearchBar from '@/components/SearchBar';
 
-const SearchPage = () => {
-  const [thingName, handleThingName, _, onKeyDown] = useSearchThing('');
+type LocationState = {
+  thingName: string;
+} | null;
+
+export default function SearchPage() {
+  const location = useLocation();
+  const [handleThingName, onKeyDown] = useSearchThing('');
+  const thingName = (location.state as LocationState)?.thingName || null;
   const [isSearch, setIsSearch] = useState(false);
   const [searchParams] = useSearchParams();
   const searchValue = searchParams.get('search');
-  const {
-    data: productListData,
-    isLoading: productListIsLoading,
-    hasNextPage,
-    fetchNextPage,
-  } = useFetchProductList({
-    path: '/products',
-    queryKey: searchValue || '',
-  });
 
-  const { isFetching } = useInfiniteScroll({
-    fetchCallback: async () => {
-      if (hasNextPage) {
-        await fetchNextPage();
-      }
-    },
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError, error } =
+    useInfiniteQuery<SearchResponse, Error>(
+      [QueryKeys.RESULT],
+      ({ pageParam = '/products/list' }) => restFetcher({ method: 'GET', path: pageParam }),
+      {
+        getNextPageParam: (lastPage) => lastPage.nextPage || undefined,
+      },
+    );
 
-  console.log('thingName for search:', thingName); // Add this line
   const {
     data: searchData,
     fetchNextPage: searchFetchNextPage,
@@ -42,74 +39,33 @@ const SearchPage = () => {
     isFetching: searchIsFetching,
     isError: searchIsError,
     refetch: searchRefetch,
-  } = useInfiniteQuery(['search', searchValue], ({ pageParam = 1 }) =>
-    restFetcher({
-      method: 'GET',
-      path: `/products`,
-      params: {
-        pageNo: pageParam,
-        pageSize: 5,
-        search: encodeURIComponent(thingName),
-      },
-    })
-      .then((res) => (res ? res.data : null))
-      .catch((err) => {
-        console.log(err);
+  } = useInfiniteQuery<SearchResponse, Error>(
+    [QueryKeys.SEARCH],
+    ({ pageParam = `/products?pageNo=1&pageSize=5&search=${thingName}` }) =>
+      restFetcher({
+        method: 'GET',
+        path: pageParam,
       }),
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage || undefined,
+      staleTime: 0,
+      cacheTime: 0,
+    },
   );
   useEffect(() => {
     if (thingName) {
       setIsSearch(true);
       searchRefetch();
     }
-    if (!thingName) {
-      setIsSearch(false);
-    }
+    if (!thingName) setIsSearch(false);
   }, [thingName]);
 
-  return (
-    <S.Container>
-      <S.Nav>
-        <S.Div>
-          <S.Input
-            placeholder="통합 검색"
-            type="text"
-            id="search"
-            onChange={handleThingName}
-            onKeyDown={onKeyDown}
-            value={thingName}
-          ></S.Input>
-          <div>
-            {searchData?.pages
-              ?.map((pageData) =>
-                pageData?.data
-                  ? pageData.data.map((searchItem: Product) => (
-                      <ProductForm
-                        key={searchItem.productId}
-                        items={[
-                          {
-                            productId: searchItem.productId,
-                            title: searchItem.title,
-                            thumbnailURL: searchItem.thumbnailURL,
-                            name: searchItem.name,
-                            price: searchItem.price,
-                            createdAt: searchItem.createdAt,
-                            productState: searchItem.productState,
-                            likes: searchItem.likes,
-                            views: searchItem.views,
-                          },
-                        ]}
-                      />
-                    ))
-                  : [],
-              )
-              .flat()}
-          </div>
-        </S.Div>
-      </S.Nav>
-      {isFetching && <Loading />} {/* Show loading indicator during infinite scroll */}
-    </S.Container>
-  );
-};
+  if (isLoading || searchIsLoading) return <Loading />;
+  if (isError || searchIsError) return <div>{error?.toString()}</div>;
 
-export default SearchPage;
+  return (
+    <>
+      <SearchBar />
+    </>
+  );
+}
