@@ -1,6 +1,6 @@
-import Heart from '../../assets/grayHeartIcon.svg';
-import FilledHeart from '../../assets/likedHeart.svg';
-import Chat from '../../assets/chatIcon.svg';
+import Heart from '@/assets/grayHeartIcon.svg';
+import FilledHeart from '@/assets/likedHeart.svg';
+import Chat from '@/assets/chatIcon.svg';
 import Circle from '@/assets/circle.svg';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -19,7 +19,7 @@ const ProductForm = ({ items, state }: ProductProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = getClient();
-  const [dropDown, setDropDown] = useState<string>('');
+  const [dropDown, setDropDown] = useState<number>(0);
 
   const isWishPage = location.pathname === '/wishlist';
   const isSalsePage = location.pathname === '/saleslist';
@@ -49,7 +49,7 @@ const ProductForm = ({ items, state }: ProductProps) => {
   };
 
   const mutateDeleteProduct = useMutation(
-    (productId: string) =>
+    (productId: number) =>
       restFetcher({
         method: 'DELETE',
         path: `/products/${productId}`,
@@ -65,7 +65,7 @@ const ProductForm = ({ items, state }: ProductProps) => {
   );
 
   // 삭제 버튼 핸들러 (판매 내역 페이지)
-  const handleDelete = async (productId: string) => {
+  const handleDelete = async (productId: number) => {
     await mutateDeleteProduct.mutateAsync(productId);
   };
 
@@ -100,7 +100,7 @@ const ProductForm = ({ items, state }: ProductProps) => {
                 <S.MenuBar
                   onClick={(event) => {
                     event.stopPropagation(); // 이벤트 버블링 방지
-                    setDropDown(dropDown === item.productId ? '' : item.productId);
+                    setDropDown(dropDown === item.productId ? 0 : item.productId);
                   }}
                 >
                   <S.Image style={{ backgroundImage: `url(${Circle})` }} />

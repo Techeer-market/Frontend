@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as S from './styles';
 import TopNavBar from '@/components/TopNavBar';
-import ProductForm from '../../components/ProductForm';
+import ProductForm from '@/components/ProductForm';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import Loading from '@/components/Loading';
 import useFetchProductList from '@/hooks/useFetchProductList';
@@ -24,7 +24,7 @@ const PurchaseList: React.FC = () => {
             navigate('/write');
           }}
         >
-          글쓰기 
+          글쓰기
         </S.WriteBtn>
       </S.BtnDiv>
 
