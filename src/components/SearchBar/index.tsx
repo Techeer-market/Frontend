@@ -1,5 +1,3 @@
-// 네비게이션 바
-
 import * as S from '@/components/SearchBar/styles';
 import { SlArrowLeft } from 'react-icons/sl';
 import useSearchThing from '@/hooks/useSearchThing';
@@ -21,6 +19,7 @@ export default function SearchBar() {
             onChange={handleThingName}
             onKeyDown={onKeyDown}
             value={thingName}
+            type="text"
           />
         </S.Div>
       </S.Nav>

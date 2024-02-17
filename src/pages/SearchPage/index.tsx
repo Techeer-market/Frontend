@@ -16,18 +16,18 @@ type LocationState = {
 
 export default function SearchPage() {
   const location = useLocation();
-  const [handleThingName, onKeyDown] = useSearchThing('');
   const thingName = (location.state as LocationState)?.thingName || null;
+  const [handleThingName, onKeyDown] = useSearchThing('');
   const [isSearch, setIsSearch] = useState(false);
-  const [searchParams] = useSearchParams();
-  const searchValue = searchParams.get('search');
+  // const [searchParams] = useSearchParams();
+  // const searchValue = searchParams.get('search');
 
   const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError, error } =
-    useInfiniteQuery<SearchResponse, Error>(
+    useInfiniteQuery<SearchResponse,Error>(
       [QueryKeys.RESULT],
       ({ pageParam = '/products/list' }) => restFetcher({ method: 'GET', path: pageParam }),
       {
-        getNextPageParam: (lastPage) => lastPage.nextPage || undefined,
+        getNextPageParam: (lastPage) => lastPage. || undefined,
       },
     );
 
