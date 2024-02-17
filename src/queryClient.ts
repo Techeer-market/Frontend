@@ -87,7 +87,7 @@ export const restFetcher = async ({
       url += '?' + searchParams.toString();
     }
     const res = await api(url, axiosConfig);
-    return res.data;
+    return res;
   } catch (err) {
     // console.error(err);
     throw err;

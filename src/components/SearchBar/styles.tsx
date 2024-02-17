@@ -30,7 +30,7 @@ export const Input = styled.input`
   font-size: 13px;
   line-height: 12px;
   border: none;
-  color: rgba(0, 0, 0, 0.47);
+  color: rgba(0, 0, 0, 0.7);
   padding-left: 15px;
   background-image: url('src/assets/searchBtn.jpg');
   background-repeat: no-repeat;
@@ -41,4 +41,13 @@ export const Input = styled.input`
 
 export const Div = styled.div`
   display: flex;
+`;
+
+export const ClickArea = styled.div`
+  width: 25px;
+  height: 25px;
+  &:hover {
+    cursor: pointer;
+    color: #828385;
+  }
 `;

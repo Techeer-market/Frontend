@@ -63,9 +63,5 @@ export default function SearchPage() {
   if (isLoading || searchIsLoading) return <Loading />;
   if (isError || searchIsError) return <div>{error?.toString()}</div>;
 
-  return (
-    <>
-      <SearchBar />
-    </>
-  );
+  return <SearchBar />;
 }
