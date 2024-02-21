@@ -3,13 +3,13 @@ import styled from 'styled-components';
 export const Container = styled.div`
   margin: 0 auto;
   width: 50rem;
-  height: 100vh;
+  /* height: 100vh; */
 `;
 export const Nav = styled.div`
   padding-top: 40px;
   display: flex;
   align-items: center;
-  margin-left: 15px;
+  margin-left: 35px;
   padding-top: 40px;
   img {
     margin-left: 15px;
@@ -18,10 +18,10 @@ export const Nav = styled.div`
   }
 `;
 export const Input = styled.input`
-  width: 360px;
+  margin: 0 auto;
+  width: 420px;
   height: 40px;
   background-color: #ececec;
-  align-items: center;
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -31,7 +31,6 @@ export const Input = styled.input`
   line-height: 12px;
   border: none;
   color: rgba(0, 0, 0, 0.7);
-  padding-left: 15px;
   background-image: url('src/assets/searchBtn.jpg');
   background-repeat: no-repeat;
   background-size: 20px;
