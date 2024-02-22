@@ -13,8 +13,12 @@ const useSearchThing = (initialData: string): ReturnTypes => {
   const navigate = useNavigate();
   const [thingName, handleThingName, setThingName] = useInput(initialData);
   const goToMain = async () => {
+    const pageNo = 1;
+    const pageSize = 5;
     // 주소
-    const searchPath = `/products?search=${thingName}`;
+    const searchPath = `/products?pageNo=${pageNo}&pageSize=${pageSize}&search=${encodeURIComponent(
+      thingName,
+    )}`;
     navigate(searchPath, {
       state: { thingName },
     });

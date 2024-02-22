@@ -41,9 +41,13 @@ api.interceptors.request.use(
       config.headers['access-token'] = `${token}`;
     } else if (
       !(
-        window.location.pathname === '/login' ||
-        window.location.pathname === '/signup' ||
-        window.location.pathname === '/'
+        (
+          window.location.pathname === '/login' ||
+          window.location.pathname === '/signup' ||
+          window.location.pathname === '/'
+        )
+        // window.location.pathname === '/search' ||
+        // window.location.pathname === '/products?search=*'
       )
     ) {
       // 로그인, 회원가입 페이지에서는 토큰이 없어도 통과
@@ -85,7 +89,7 @@ export const restFetcher = async ({
     const res = await api(url, axiosConfig);
     return res;
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     throw err;
   }
 };
