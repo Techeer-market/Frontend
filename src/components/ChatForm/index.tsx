@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './style';
 import userIcon from '../../assets/profile.svg';
 import { restFetcher } from '@/queryClient';
@@ -8,12 +8,22 @@ import { UserInfo } from '@/types/userInfo';
 import phone from '../../assets/phone.png';
 import { useNavigate } from 'react-router-dom';
 
-interface ChatFormProps {
+// interface ChatFormProps {
+//   productId: number;
+//   roomName?: string | '';
+// }
+export interface ResChatMessage {
+  id: number;
   productId: number;
-  roomName?: string | '';
+  productTitle: string;
+  productLocation: string;
+  productPrice: number;
+  productThumbnail: string;
+  chatPartnerName: string;
 }
 
-const ChatForm: React.FC<ChatFormProps> = ({ productId, roomName = '' }) => {
+const [messages, setMessages] = useState<ResChatMessage[]>([]);
+const ChatForm = async () => {
   const navigate = useNavigate();
   const { data: userInfo } = useQuery<UserInfo, AxiosError>(
     ['userInfo'],
@@ -32,29 +42,27 @@ const ChatForm: React.FC<ChatFormProps> = ({ productId, roomName = '' }) => {
       refetchOnWindowFocus: false,
     },
   );
-  const goToChatRoom = async () => {
-    const queryParams: { [key: string]: number | string } = {
-      productId: productId,
-      roomName: roomName,
-    };
-
-    const queryString = Object.entries(queryParams)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-      .join('&');
-
-    const response = await restFetcher({
-      method: 'GET',
-      path: `/chat/room?${queryString}`,
-      headers: {
-        'Access-Token':
-          'access_token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYXlvbjAzMjVAZ21haWwuY29tIiwiZXhwIjoxNzA5MzA5NDY2fQ.E_5fybbkvcpaSEeQJI6uDGB37-g6EK8ie6msNPnQ1UE',
-      },
-    });
-
-    console.log(response);
-
-    navigate(`/chat/room?${queryString}`);
+  const goToChatRoom = () => {
+    navigate('/chat/room');
+    //   const queryParams: { [key: string]: number | string } = {
+    //     productId: productId,
+    //     roomName: roomName,
   };
+
+  // const queryString = Object.entries(queryParams)
+  //   .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+  //   .join('&');
+
+  const response = restFetcher({
+    method: 'GET',
+    path: '/chat/room',
+    headers: {
+      'Access-Token':
+        'access_token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiZXhwIjoxNzE5NTkzMjg5fQ.bWrT2SrHqwJD9w8_eX5ujA4FI6AQ151Ubwh5kvMIuMI',
+    },
+  });
+
+  console.log();
 
   return (
     <S.Container>
@@ -64,7 +72,7 @@ const ChatForm: React.FC<ChatFormProps> = ({ productId, roomName = '' }) => {
         </S.Icon>
         <S.Texts>
           <S.TopText>
-            <S.NameText>김유라</S.NameText>
+            <S.NameText>ㅌ</S.NameText>
             <S.DayText>3일전</S.DayText>
           </S.TopText>
           <S.Chat>넵 수고염</S.Chat>
