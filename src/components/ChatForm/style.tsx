@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   /* 컴포넌트 높이 지정 */
-  margin-top: -70px;
 `;
 export const Div = styled.div`
   position: relative;
@@ -54,4 +53,9 @@ export const Icon = styled.div`
 export const IconImage = styled.img``;
 export const ProductImage = styled.img`
   margin-right: 20px;
+  width: 9rem;
+  height: 9rem;
+  border-radius: 10px;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
