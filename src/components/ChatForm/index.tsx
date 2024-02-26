@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as S from './style';
 import profile from '../../assets/profile.svg';
-import { restFetcher } from '@/queryClient';
 import { useNavigate } from 'react-router-dom';
 import { ResChatMessage } from '@/types/chatList';
 

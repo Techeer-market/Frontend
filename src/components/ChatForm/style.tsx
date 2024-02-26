@@ -55,7 +55,6 @@ export const ProductImage = styled.img`
   margin-right: 20px;
   width: 9rem;
   height: 9rem;
-  border-radius: 10px;
   background-size: cover;
   background-repeat: no-repeat;
 `;

@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
 export const BarContainer = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 7.4rem;
-    background: #FFF;
-`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 7.4rem;
+  background: #fff;
+`;
 
 export const ClickArea = styled.div`
-    width: 25px;
-    heigth: 25px;
-    &:hover {
-        cursor: pointer;
-        color: #828385;
-    }
-`
+  width: 25px;
+  height: 25px;
+  &:hover {
+    cursor: pointer;
+    color: #828385;
+  }
+`;
 
 export const NavText = styled.h1`
   font-style: normal;
