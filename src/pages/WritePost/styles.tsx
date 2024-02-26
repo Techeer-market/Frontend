@@ -114,6 +114,11 @@ export const Input = styled.input`
   padding-left: 1rem;
   margin-top: 1rem;
   padding: 2rem;
+
+  outline: none;
+  &:focus {
+    border-color: orange;
+  }
 `;
 export const Select = styled.select`
   display: flex;
@@ -172,10 +177,12 @@ export const TextArea = styled.textarea`
   border: 1px solid #828385;
   font-size: 2rem;
   padding: 2rem 0 0 2rem;
+  outline: none;
+  &:focus {
+    border-color: orange;
+  }
 `;
-export const Buttons = styled.div`
-  margin-bottom: 20rem;
-`;
+
 export const UploadButton = styled.button`
   display: flex;
   flex-direction: column;
@@ -193,7 +200,7 @@ export const UploadButton = styled.button`
   cursor: pointer;
   font-size: 2.5rem;
   line-height: 4.1rem;
-  margin-top: 15rem;
+  margin-top: 5rem;
 `;
 export const ReturnButton = styled.button`
   display: flex;

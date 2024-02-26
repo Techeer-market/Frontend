@@ -1,4 +1,4 @@
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/BottomNavBar';
 import React from 'react';
 import ProductForm from '@/components/ProductForm';
 import Loading from '@/components/Loading';
@@ -26,15 +26,19 @@ const index: React.FC = () => {
           <img src={plusImage} alt="" />
         </S.Button>
       </Link>
-      <S.NavContainer>
+
+      <S.NavContainer className="Nav">
         <S.Nav>
           <img id="main_logo" alt="To Main" loading="lazy" src={logo} />
-          <Link to="/category">
-            <img id="category" alt="To category" src={categoryBar} />
-          </Link>
-          <Link to="/search">
-            <img id="search" alt="To search" src={searchBtn}></img>
-          </Link>
+
+          <S.NavLink>
+            <Link to="/category">
+              <img id="category" alt="To category" src={categoryBar} />
+            </Link>
+            <Link to="/search">
+              <img id="search" alt="To search" src={searchBtn}></img>
+            </Link>
+          </S.NavLink>
         </S.Nav>
       </S.NavContainer>
 

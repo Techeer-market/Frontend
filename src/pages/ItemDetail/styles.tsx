@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  position: relative;
   width: 100%;
 `;
 export const Maincontainer = styled.div`
@@ -17,7 +18,7 @@ export const TypeWrapper = styled.div`
   justify-content: space-between;
   font-size: 1.6rem;
   padding: 1rem 0;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid #d3d3d3;
 `;
 export const NameAndDateWrapper = styled.div`
   display: flex;
@@ -51,11 +52,13 @@ export const Date = styled.span`
   text-align: right;
   color: #222;
 `;
+
 export const Category = styled.span`
   font-size: 1.5rem;
   font-weight: bold;
-  color: #646464;
+  color: #959595;
 `;
+
 export const ContentWrapper = styled.div`
   padding: 2.4rem 1rem 0;
 `;
@@ -98,12 +101,18 @@ export const MapTitle = styled.div`
 `;
 
 export const Buttons = styled.div`
+  background-color: #fff;
+  z-index: 1;
+  height: 8rem;
   display: flex;
+  position: sticky;
+  bottom: 0;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.4rem;
+  padding: 2rem;
 `;
 export const Price = styled.span`
+  margin-left: 1rem;
   font-size: 20px;
   font-weight: bold;
 `;

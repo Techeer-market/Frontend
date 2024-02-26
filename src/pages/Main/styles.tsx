@@ -6,42 +6,51 @@ export const MainDiv = styled.div`
   display: flex;
   margin: 0 auto;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: relative;
 `;
 
 export const NavContainer = styled.div`
-  padding-top: 15px;
-  height: 5rem;
-  position: sticky;
-  top: 0;
+  width: 48rem;
+  height: 8rem;
   background-color: white;
   z-index: 50;
-`;
-export const Nav = styled.div`
-  padding-top: 2px;
+
   display: flex;
   align-items: center;
+  justify-content: center;
+`;
+export const Nav = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
   img {
     width: 20%;
     margin-left: 5%;
   }
+`;
+
+export const NavLink = styled.div`
+  display: flex;
+  width: 7rem;
+  justify-content: space-between;
+  align-items: end;
   #category {
-    margin-left: 1200%;
-    width: 100%; /* 이미지의 너비를 설정하세요 */
-    height: 100%; /* 이미지의 높이를 설정하세요 */
+    width: 2.5rem;
+    height: 2.5rem;
   }
   #search {
-    margin-left: 1300%;
-    width: 100%; /* 이미지의 너비를 설정하세요 */
-    height: 100%; /* 이미지의 높이를 설정하세요 */
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `;
 
 export const scroll = styled.div`
   /*무제한 스크롤를 위해 동적으로 계산해야함*/
-  overflow-y: scroll; /* 세로 스크롤을 활성화. */
-  max-height: 800px; /* 스크롤 컨테이너의 최대 높이를 설정. */
+  overflow-y: scroll;
+  max-height: 800px;
 `;
 
 export const MainContainer = styled.div`
@@ -246,7 +255,7 @@ export const Button = styled.button`
 `;
 
 export const ProductContainer = styled.div`
-  padding: 3rem 1.6rem 0;
+  padding: 1rem 1.6rem 0 1.6rem;
 `;
 
 export const EmptyList = styled.div`

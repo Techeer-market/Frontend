@@ -1,41 +1,34 @@
 import React, { useState, useEffect, useCallback } from 'react';
+// import imageCompression from 'browser-image-compression';
 import TopNavBar from '@/components/TopNavBar';
 import * as S from './styles';
 import { Link } from 'react-router-dom';
-import NavBar from '@/components/NavBar';
-import uploadimage from '../../assets/uploadimage.svg';
+import NavBar from '@/components/BottomNavBar';
+import uploadimage from '../../assets/uploadimg.svg';
 import categoryBar from '../../assets/categoryBar.svg';
 import searchBtn from '../../assets/Search.svg';
 import KakaoMap from '@/components/KakaoMap';
 import { debounce } from 'lodash';
 import { restFetcher } from '@/queryClient';
 
-interface WriteProps {
-  title: string;
-  categoryName: string;
-  description: string;
-  price: number;
-  image_url_1: string | null;
-  image_url_2: string | null;
-  image_url_3: string | null;
-  image_url_4: string | null;
-  location: string;
-}
-
 const WritePost = () => {
-  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [categoryName, setCategoryName] = useState('');
-  const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0); // 실제 서버에 전달될 price
+  const [productImages, setProductImages] = useState<File[]>([]);
   const [location, setLocation] = useState('');
   const [representativeImage, setRepresentativeImage] = useState<File | null>(null); //대표이미지 선택
 
+  const [files, setFiles] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState('');
+
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+
     if (files && files.length > 0) {
       const file = files[0];
-      if (uploadedImages.length >= 4) {
+      if (productImages.length >= 4) {
         alert('사진은 최대 4장까지 업로드 가능합니다.');
         return;
       }
@@ -44,10 +37,10 @@ const WritePost = () => {
         setRepresentativeImage(null);
       }
 
-      if (uploadedImages.length === 0) {
+      if (productImages.length === 0) {
         setRepresentativeImage(file);
       }
-      setUploadedImages((prevState) => [...prevState, file]);
+      setProductImages((prevState) => [...prevState, file]);
     }
   };
 
@@ -65,8 +58,8 @@ const WritePost = () => {
       !title ||
       !categoryName ||
       price === 0 ||
-      !description ||
-      uploadedImages.length === 0 ||
+      !content ||
+      productImages.length === 0 ||
       !location
     ) {
       alert('모든 항목을 입력해주세요.');
@@ -76,11 +69,17 @@ const WritePost = () => {
     const formData = new FormData();
 
     formData.append('title', title);
+    formData.append('content', content);
     formData.append('categoryName', categoryName);
     formData.append('price', price.toString());
-    formData.append('description', description);
 
-    uploadedImages.forEach((imageFile, index) => {
+    productImages.forEach((imageFile, index) => {
+      formData.append('productImages', imageFile);
+    });
+
+    formData.append('location', location);
+
+    productImages.forEach((imageFile, index) => {
       const fieldName = `image_${index + 1}`;
       formData.append(fieldName, imageFile);
     });
@@ -112,16 +111,17 @@ const WritePost = () => {
 
   return (
     <S.Writepost>
-      <S.Nav>
-        <Link to="/category">
-          <img id="category" alt="To category" src={categoryBar}></img>
-        </Link>
-        <Link to="/search">
-          <img id="search" alt="To search" src={searchBtn}></img>
-        </Link>
-      </S.Nav>
-
-      <TopNavBar page="게시물 작성"></TopNavBar>
+      <div className="navContainer">
+        <TopNavBar page="게시물 작성"></TopNavBar>
+        <S.Nav>
+          <Link to="/category">
+            <img id="category" alt="To category" src={categoryBar}></img>
+          </Link>
+          <Link to="/search">
+            <img id="search" alt="To search" src={searchBtn}></img>
+          </Link>
+        </S.Nav>
+      </div>
 
       <S.Wrap>
         <S.Img>
@@ -131,18 +131,34 @@ const WritePost = () => {
             <input
               id="file-upload"
               type="file"
-              accept="image/*"
+              accept="image/jpg,image/png,image/jpeg,image/gif"
               onChange={handleFileInputChange}
               style={{ display: 'none' }}
             />
-            <label htmlFor="file-upload">
-              <img src={uploadimage} alt="Upload Image" style={{ cursor: 'pointer' }} />
+            <label htmlFor="file-upload" className="upload-label" style={{ position: 'relative' }}>
+              <span
+                className="image-count"
+                style={{
+                  color: 'orange',
+                  fontSize: '16px',
+                }}
+              >
+                <>
+                  {productImages.length}
+                  <span style={{ fontSize: '16px', color: 'black' }}>/4</span>
+                </>
+              </span>
+              <img
+                src={uploadimage}
+                alt="Upload Image"
+                style={{ cursor: 'pointer', width: '130px', height: '130px' }}
+              />
             </label>
-            {uploadedImages.map((imageFile, index) => (
-              <div key={index} style={{ position: 'relative' }}>
+            {productImages.map((imageFile, index) => (
+              <div key={index} style={{ position: 'relative', width: '130px', height: '130px' }}>
                 <S.DeleteButton
                   onClick={() =>
-                    setUploadedImages((prevState) => prevState.filter((file) => file !== imageFile))
+                    setProductImages((prevState) => prevState.filter((file) => file !== imageFile))
                   }
                 >
                   X
@@ -151,6 +167,7 @@ const WritePost = () => {
                   key={index}
                   src={URL.createObjectURL(imageFile)}
                   alt="Uploaded Image"
+                  style={{ cursor: 'pointer', width: '130px', height: '130px' }}
                   onClick={() => handleSetRepresentativeImage(imageFile)} // 이미지 클릭 시 대표 이미지로 설정
                 />
                 <button
@@ -174,8 +191,6 @@ const WritePost = () => {
                 >
                   {representativeImage === imageFile ? '대표 이미지' : ''}
                 </button>
-
-                {/* {index > 0 && <span>{`${index + 1}/5`}</span>} n/갯수를 표현한 방식*/}
               </div>
             ))}
           </S.ImagesContainer>
@@ -194,14 +209,15 @@ const WritePost = () => {
           </S.Row>
           <S.Row>
             <S.Label>
-              카테고리:
+              카테고리
               <S.Select
                 name="categoryUuid"
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
-                placeholder={`제목`}
               >
-                <S.Option value="">카테고리 선택</S.Option>
+                <S.Option disabled value="">
+                  카테고리 선택
+                </S.Option>
                 <S.Option value="디지털기기">디지털기기</S.Option>
                 <S.Option value="여성의류">여성의류</S.Option>
                 <S.Option value="남성의류/잡화">남성의류/잡화</S.Option>
@@ -220,7 +236,7 @@ const WritePost = () => {
               가격
               <S.Input
                 name="price"
-                value={`${price.toLocaleString()}원`}
+                value={`${price.toLocaleString()}`}
                 onChange={handlePriceChange}
               />
             </S.Label>
@@ -231,9 +247,10 @@ const WritePost = () => {
             자세한 설명
             <S.TextArea
               name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               placeholder={`신뢰할 수 있는 거래를 위해 자세히 적어주세요`}
+              style={{ color: 'black', fontSize: '15px' }}
             />
           </S.Label>
         </S.Form>
@@ -253,11 +270,9 @@ const WritePost = () => {
           </S.Label>
         </S.Row>
 
-        <S.Buttons>
-          <S.UploadButton type="submit" onClick={handleSubmit}>
-            작성 완료
-          </S.UploadButton>
-        </S.Buttons>
+        <S.UploadButton type="submit" onClick={handleSubmit}>
+          작성 완료
+        </S.UploadButton>
       </S.Wrap>
       <NavBar />
     </S.Writepost>
