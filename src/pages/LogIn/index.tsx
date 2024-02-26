@@ -6,6 +6,7 @@ import { KAKAO_AUTH_URL } from '@/utils/OAuth.js';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { restFetcher } from '@/queryClient';
 import { useMutation } from '@tanstack/react-query';
+import Loading from '@/components/Loading';
 
 const JWT_EXPIRY_TIME = 1000 * 60 * 60 * 3 - 1000 * 60 * 10; // 3시간 - 10분
 
@@ -58,7 +59,7 @@ const Login = () => {
     [loginInfo],
   );
 
-  const loginMutation = useMutation(async (loginInfo: LoginInfo) => {
+  const { mutateAsync, isLoading } = useMutation(async (loginInfo: LoginInfo) => {
     const response = await restFetcher({
       method: 'POST',
       path: '/users/login',
@@ -69,7 +70,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await loginMutation.mutateAsync(loginInfo);
+      const response = await mutateAsync(loginInfo);
 
       if (response && response.headers) {
         const accessToken = response.headers['access-token'];
@@ -102,6 +103,7 @@ const Login = () => {
   return (
     <S.LoginForm>
       <Logo />
+      {isLoading && <Loading />}
       <S.Form>
         <S.Input
           name="email"
@@ -126,6 +128,7 @@ const Login = () => {
           </S.Message>
         )}
       </S.Form>
+
       <S.Etc>
         <S.Check>
           <S.Checkbox type="checkbox" />
