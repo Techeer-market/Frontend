@@ -99,6 +99,17 @@ const ItemDetail: React.FC = () => {
     }
   };
 
+  const goToChat = async () => {
+    const chatPath = `/chat/create/${productId}`;
+    restFetcher({
+      method: 'POST',
+      path: chatPath,
+    });
+    navigate(chatPath, {
+      state: { productId },
+    });
+  };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -128,9 +139,8 @@ const ItemDetail: React.FC = () => {
 
             <S.DetailWrapper>
               <S.DetailName>좋아요</S.DetailName>
-              <S.DetailValue>{data?.likes}</S.DetailValue>•
-              {/* <S.DetailName>채팅</S.DetailName><S.DetailValue>{data?.chatroomCount}</S.DetailValue>• */}
-              <S.DetailName>조회</S.DetailName>
+              <S.DetailValue>{data?.likes}</S.DetailValue>•<S.DetailName>채팅</S.DetailName>
+              {/* <S.DetailValue>{data?.chatroomCount}</S.DetailValue>•<S.DetailName>조회</S.DetailName> */}
               <S.DetailValue>{data?.views}</S.DetailValue>
             </S.DetailWrapper>
 
@@ -154,7 +164,13 @@ const ItemDetail: React.FC = () => {
             />
             <S.Price> {`${data?.price?.toLocaleString()}원`} </S.Price>
           </S.ButtonsBox>
-          <S.ChatButton onClick={() => navigate('/chat')}>채팅하기</S.ChatButton>
+          <S.ChatButton
+            onClick={() => {
+              goToChat();
+            }}
+          >
+            채팅하기
+          </S.ChatButton>
         </S.Buttons>
       </S.Maincontainer>
       <NavBar />

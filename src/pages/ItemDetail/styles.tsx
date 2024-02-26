@@ -71,7 +71,7 @@ export const Content = styled.span`
   font-size: 1.6rem;
   margin-bottom: 20rem;
 `;
-export const DetailWrapper = styled.div`
+export const DetailWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: flex-end;

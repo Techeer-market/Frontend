@@ -31,6 +31,7 @@ export const routes = [
   { path: '/item/:productId', element: <ItemDetail /> },
   { path: '/edit_info', element: <EditInfo /> },
   { path: '/chat', element: <ChatList /> },
+  { path: '/chat/*', element: <ChatList /> },
   { path: '/item/:id', element: <ItemDetail /> },
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },
