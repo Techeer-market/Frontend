@@ -82,7 +82,6 @@ export const restFetcher = async ({
     };
     if (body) axiosConfig.data = body;
     if (params) {
-      console.log(params);
       const searchParams = new URLSearchParams(params);
       url += '?' + searchParams.toString();
     }
