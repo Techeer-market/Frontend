@@ -4,7 +4,6 @@ import ChatForm from '@/components/ChatForm';
 import Loading from '@/components/Loading';
 import useFetchProductList from '@/hooks/useFetchProductList';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-// import Chat from '@/components/Chat';
 
 export default function ChatList() {
   const path = '/chat/room',
@@ -23,7 +22,6 @@ export default function ChatList() {
       ) : (
         <S.EmptyList>채팅 목록이 없습니다.</S.EmptyList>
       )}
-      {/* <Chat /> */}
     </>
   );
 }

@@ -14,7 +14,6 @@ export const NavbarContainer = styled.div`
 `;
 
 export const User = styled.div`
-
   border-bottom: 0.07rem solid #ffffff;
 
   // border-bottom: 0.07rem solid #000000;
