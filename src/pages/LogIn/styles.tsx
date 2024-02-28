@@ -9,7 +9,7 @@ export const LoginForm = styled.div`
     justify-content: center;
   }
 `;
-export const Form = styled.div`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
