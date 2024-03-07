@@ -6,7 +6,7 @@ import heartImage from '../../assets/Heart.svg';
 import chatImage from '../../assets/Chat.svg';
 import mypageImage from '../../assets/mypage.svg';
 
-const NavBar = () => {
+const BottomNavBar = () => {
   const navigate = useNavigate();
 
   const [showSearchModule, setShowSearchModule] = useState(false);
@@ -43,4 +43,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default BottomNavBar;
