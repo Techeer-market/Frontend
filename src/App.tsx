@@ -6,7 +6,6 @@ import { routes } from './Router';
 import React from 'react';
 import Loading from './components/Loading';
 import { useTokenRefreshTimer } from '@/hooks/useTokenRefreshTimer';
-import { useInfiniteQuery } from 'react-query';
 
 function App() {
   const queryClient = getClient();
