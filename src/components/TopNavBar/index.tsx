@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { SlArrowLeft } from 'react-icons/sl';
 
 interface TopNavBarProps {
-  page: React.ReactNode;
+  page: string;
 }
 
 const TopNavBar: React.FC<TopNavBarProps> = ({ page }) => {
