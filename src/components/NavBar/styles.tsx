@@ -41,6 +41,7 @@ export const Button = styled.button`
   text-decoration: none;
   flex-direction: column;
   align-items: center; // 홈 글자와 로고 이미지를 세로로 중앙 정렬
+  
 `;
 
 // 이미지를 담은 컴포넌트 생성

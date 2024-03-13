@@ -17,8 +17,11 @@ const CategoryList = lazy(() => import('@/components/CategoryList'));
 const SellerPage = lazy(() => import('@/pages/SellerPage'));
 const ChatList = lazy(() => import('@/pages/ChatList'));
 const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
-// const ChattingPage = lazy(() => import('@/pages/ChattingPage'));
-const Chat = lazy(() => import('@/components/Chat'));
+const ChattingPage = lazy(() =>
+  import('@/pages/ChattingPage').then((module) => ({
+    default: module.default as React.ComponentType<any>,
+  })),
+);
 
 export const routes = [
   { path: '/', element: <Main /> },
@@ -33,8 +36,7 @@ export const routes = [
   { path: '/item/:productId', element: <ItemDetail /> },
   { path: '/edit_info', element: <EditInfo /> },
   { path: '/chat', element: <ChatList /> },
-  // { path: '/chat/*', element: <ChattingPage /> },
-  { path: '/chat/*', element: <Chat /> },
+  { path: '/chat/create/:id', element: <ChattingPage /> },
   { path: '/item/:id', element: <ItemDetail /> },
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },

@@ -41,13 +41,9 @@ api.interceptors.request.use(
       config.headers['access-token'] = `${token}`;
     } else if (
       !(
-        (
-          window.location.pathname === '/login' ||
-          window.location.pathname === '/signup' ||
-          window.location.pathname === '/'
-        )
-        // window.location.pathname === '/search' ||
-        // window.location.pathname === '/products?search=*'
+        window.location.pathname === '/login' ||
+        window.location.pathname === '/signup' ||
+        window.location.pathname === '/'
       )
     ) {
       // 로그인, 회원가입 페이지에서는 토큰이 없어도 통과
@@ -67,13 +63,11 @@ export const restFetcher = async ({
   path,
   body,
   params,
-  headers,
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   path: string;
   body?: AnyOBJ;
   params?: AnyOBJ;
-  headers?: AnyOBJ;
 }) => {
   try {
     let url = `${path}`;

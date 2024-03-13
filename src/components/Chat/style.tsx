@@ -6,7 +6,7 @@ export const Container = styled.div`
   height: 10rem;
   border-radius: 10px;
   background-color: rgba(217, 217, 217, 0.15);
-  margin-bottom: 1.6rem;
+  margin-bottom: 1rem;
   align-items: center;
 `;
 export const Div = styled.div`
@@ -72,7 +72,7 @@ export const Input = styled.input`
   color: rgba(0, 0, 0, 0.7);
   padding-left: 10px;
 `;
-export const Button = styled.img`
+export const Button = styled.button`
   margin: 0 auto;
   width: 25px;
   height: 25px;
@@ -81,4 +81,12 @@ export const Button = styled.img`
 export const ChatContent = styled.div`
   width: 100%;
   height: 60rem;
+`;
+export const Time = styled.div`
+  justify-content: center;
+  display: flex;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  color: #878787;
 `;
