@@ -47,7 +47,7 @@ const index = () => {
       },
       onError: (err) => {
         const error = err as AxiosError<ApiResponseType>;
-        alert(error.response?.data.message);
+        alert(error.response?.data.errorMessage);
       },
     });
   };

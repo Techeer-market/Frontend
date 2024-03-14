@@ -1,6 +1,7 @@
 export type ApiResponseType = {
   code: string;
-  message: string;
+  errorMessage: string;
+  httpStatus: string;
 };
 
 export type ApiResponseWithDataType<T> = ApiResponseType & {

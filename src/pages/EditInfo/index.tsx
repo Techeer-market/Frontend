@@ -9,12 +9,11 @@ import { getClient, restFetcher } from '@/queryClient';
 import { UserInfo } from '@/types/userInfo';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { clearLocalStorage } from '@/hooks/useTokenRefreshTimer';
-import { IoCamera } from 'react-icons/io5';
+import { ApiResponseType } from '@/types/apiResponseType';
 
 const EditInfo = () => {
   const navigate = useNavigate();
   const queryClient = getClient();
-  // const fileInput = useRef<HTMLInputElement>(null);
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [currentModalType, setCurrentModalType] = useState<string>('');
@@ -46,42 +45,6 @@ const EditInfo = () => {
     },
   );
 
-  // 파일 입력(input) 엘리먼트를 클릭
-  // const openFileInput = () => {
-  //   if (fileInput.current) {
-  //     fileInput.current.click();
-  //   }
-  // };
-
-  // 프로필 이미지 업로드
-  // const onChangeImg = (e: any) => {
-  //   const selectedFile = e.target.files[0];
-
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(selectedFile);
-  //     reader.onload = () => {
-  //       if (reader.readyState === 2) {
-  //         // base64 형식 url 반환
-  //         const base64Image = reader.result as string;
-  //         handleInfoChange('profileUrl', base64Image);
-  //       }
-  //     };
-  //   }
-  // };
-
-  // 프로필 이미지 삭제
-  // const onDeleteImg = () => {
-  //   if (!userInfo?.profileUrl) {
-  //     alert('프로필 이미지가 없습니다.');
-  //     return;
-  //   }
-  //   let result = confirm('프로필 이미지를 삭제하시겠습니까?');
-  //   if (result === true && userInfo?.profileUrl) {
-  //     handleInfoChange('profileUrl', null);
-  //   }
-  // };
-
   const mutateInfoChange = useMutation(
     (updateInfo: UserInfo) => {
       return restFetcher({
@@ -94,20 +57,21 @@ const EditInfo = () => {
       onSuccess: (response) => {
         queryClient.setQueryData(['userInfo'], response.data);
       },
+      onError: (error) => {
+        const err = error as AxiosError<ApiResponseType>;
+        let errorMessage =
+          err.response?.data.errorMessage || '정보 변경에 실패했습니다. 다시 시도해주세요.';
+        alert(errorMessage);
+      },
     },
   );
 
   const handleInfoChange = async (type: string, newValue: string | null) => {
-    try {
-      let updateInfo = {};
-      if (type === 'email') updateInfo = { email: newValue };
-      if (type === 'password') updateInfo = { password: newValue };
-      // if (type === 'profileUrl') updateInfo = { profileUrl: newValue };
+    let updateInfo = {};
+    if (type === 'email') updateInfo = { email: newValue };
+    if (type === 'password') updateInfo = { password: newValue };
 
-      await mutateInfoChange.mutateAsync(updateInfo as UserInfo);
-    } catch (error) {
-      alert('정보 변경에 실패했습니다. 다시 시도해주세요.');
-    }
+    await mutateInfoChange.mutateAsync(updateInfo as UserInfo);
   };
 
   const mutateLogout = useMutation(() => {
@@ -151,30 +115,10 @@ const EditInfo = () => {
       <S.InfoContainer>
         <S.Section style={{ paddingBottom: '4.4rem' }}>
           <S.ProfileContainer>
-            <S.ChangeImg
-              src={userInfo?.profileUrl ? userInfo.profileUrl : profile}
-              alt="Profile"
-              // onClick={openFileInput}
-            />
-
-            {/* <S.CameraIcom> */}
-              {/* <IoCamera size={10} /> */}
-            {/* </S.CameraIcom> */}
-
+            <S.ChangeImg src={userInfo?.profileUrl ? userInfo.profileUrl : profile} alt="Profile" />
             <S.Name>{userInfo?.name}</S.Name>
           </S.ProfileContainer>
-          {/* <S.ChangeBtn onClick={() => onDeleteImg()}>삭제</S.ChangeBtn> */}
         </S.Section>
-
-        {/* <S.ChangeProfile
-          id="Profile"
-          type="file"
-          accept="image/jpg,image/png,image/jpeg"
-          name="profile_img"
-          onChange={onChangeImg}
-          ref={fileInput}
-          style={{ display: 'none' }}
-        /> */}
 
         <S.Section>
           <div>
