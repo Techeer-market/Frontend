@@ -74,7 +74,7 @@ export const Content = styled.span`
   font-size: 1.6rem;
   margin-bottom: 20rem;
 `;
-export const DetailWrapper = styled.div`
+export const DetailWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -90,6 +90,7 @@ export const DetailValue = styled.span``;
 export const MapWrapper = styled.div`
   padding: 5rem 0 2rem;
   margin-top: 20rem;
+  margin-bottom: 8rem;
 `;
 export const MapTitle = styled.div`
   display: flex;
@@ -101,12 +102,12 @@ export const MapTitle = styled.div`
 `;
 
 export const Buttons = styled.div`
-  background-color: #fff;
+  background-color: #ffffff;
   z-index: 1;
   height: 8rem;
   display: flex;
   position: sticky;
-  bottom: 0;
+  bottom: 8rem;
   align-items: center;
   justify-content: space-between;
   padding: 2rem;

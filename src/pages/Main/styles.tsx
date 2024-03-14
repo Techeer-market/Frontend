@@ -11,11 +11,11 @@ export const MainDiv = styled.div`
 `;
 
 export const NavContainer = styled.div`
-  width: 48rem;
+  position: fixed;
+  width: 50rem;
   height: 8rem;
   background-color: white;
   z-index: 50;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,33 +28,53 @@ export const Nav = styled.div`
 
   img {
     width: 20%;
-    margin-left: 5%;
+    margin-left: 2%;
   }
 `;
 
 export const NavLink = styled.div`
+  padding-top: 2px;
   display: flex;
-  width: 7rem;
-  justify-content: space-between;
-  align-items: end;
+  align-items: center;
+
   #category {
-    width: 2.5rem;
-    height: 2.5rem;
+    margin-left: -160%;
+    width: 110%;
+    height: 100%;
+    &:hover {
+      cursor: pointer;
+      color: #828385;
+    }
   }
   #search {
-    width: 2.5rem;
-    height: 2.5rem;
+    margin-left: -90%;
+    width: 110%;
+    height: 100%;
+    &:hover {
+      cursor: pointer;
+      color: #828385;
+    }
+  }
+`;
+
+export const ClickArea = styled.div`
+  display: flex;
+  width: 25px;
+  height: 25px;
+  margin-right: 1rem;
+  &:hover {
+    cursor: pointer;
+    color: #0a57f2;
   }
 `;
 
 export const scroll = styled.div`
-  /*무제한 스크롤를 위해 동적으로 계산해야함*/
   overflow-y: scroll;
-  max-height: 800px;
 `;
 
 export const MainContainer = styled.div`
-  flex-grow: 1;
+  flex-grow: 3;
+  margin: 8rem 0rem;
 `;
 
 export const TextDiv = styled.div`
@@ -241,10 +261,11 @@ export const Style = styled(Link)`
 `;
 
 export const Button = styled.button`
+  flex-grow: 10;
   z-index: 1;
   display: flex;
-  width: 95px; // 원하는 너비로 조정
-  height: 105px; // 원하는 높이로 조정
+  width: 75px;
+  height: 75px;
   border: none;
   cursor: pointer;
   position: absolute;

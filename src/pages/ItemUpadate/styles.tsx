@@ -8,65 +8,40 @@ export const Writepost = styled.div`
   font-weight: 700;
   justify-content: space-around;
   margin: 0 auto;
-  width: 100%;
-  height: 100vh;
+  width: 50rem;
 
   .navContainer {
     display: flex;
   }
 `;
-export const NavContainer = styled.div`
-  position: fixed;
-  top: 0;
-  width: 50rem;
-  background: white;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+
 export const Nav = styled.div`
   padding-top: 2px;
   display: flex;
   align-items: center;
-
+  img {
+    width: 20%;
+    margin-left: 5%;
+  }
   #category {
     margin-left: -200%;
-    width: 130%;
-    height: 100%;
+    width: 100%; /* 이미지의 너비를 설정하세요 */
+    height: 100%; /* 이미지의 높이를 설정하세요 */
   }
   #search {
-    margin-left: -100%;
-    width: 130%;
-    height: 100%;
+    margin-left: -120%;
+    width: 100%; /* 이미지의 너비를 설정하세요 */
+    height: 100%; /* 이미지의 높이를 설정하세요 */
   }
 `;
-
-export const ClickArea = styled.div`
-  display: flex;
-  width: 25px;
-  height: 25px;
-  margin-right: 1rem;
-  &:hover {
-    cursor: pointer;
-    color: #0a57f2;
-  }
-`;
-
 export const Wrap = styled.div`
-  margin: 8rem 0rem;
-  width: 100%;
-  margin-left: 1rem;
   flex-grow: 2;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  overflow-y: scroll; /* 세로 스크롤을 가능하게 함 */
-  max-height: calc(100vh - 8rem); /* 화면 높이에서 NavContainer의 높이를 뺀 만큼 최대 높이로 설정 */
 `;
-export const scroll = styled.div`
-  /*무제한 스크롤를 위해 동적으로 계산해야함*/
+
+export const Scroll = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
 `;
@@ -98,7 +73,9 @@ export const Img = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-
+  padding-bottom: 2rem;
+  margin-left: 3rem;
+  width: 50rem;
   gap: 2rem;
 `;
 
@@ -212,21 +189,20 @@ export const TextArea = styled.textarea`
 
 export const UploadButton = styled.button`
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 45rem;
-  height: 5.2rem;
-  left: 29.3rem;
+  width: 48rem;
+  height: 4.2rem;
+  left: 29.27rem;
   top: 160rem;
   color: #ffffff;
   background: #fd8944;
   border-radius: 10px;
   margin-bottom: 1.25rem;
-  margin-left: 2.2rem;
   border: none;
   cursor: pointer;
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   line-height: 4.1rem;
   margin-top: 5rem;
 `;
