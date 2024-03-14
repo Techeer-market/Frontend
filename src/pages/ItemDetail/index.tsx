@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import profile from '../../assets/profile.svg';
 import * as S from './styles';
 import { useParams } from 'react-router-dom';
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/BottomNavBar';
 import TopNavBar from '@/components/TopNavBar';
 import KakaoMap from '@/components/KakaoMap';
 import Heart from '../../assets/grayHeartIcon.svg';
