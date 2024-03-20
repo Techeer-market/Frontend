@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as Stomp from '@stomp/stompjs';
-import * as S from './style';
+import * as S from './styles';
 import TopNavBar from '../TopNavBar';
 import NavBar from '../NavBar';
 import 'moment/locale/ko';
@@ -93,6 +93,7 @@ const Chat = ({ chatRoomId, data }: ChatProps) => {
   }, [connect]);
 
   return (
+    // 수정
     <>
       <TopNavBar page="홍다연" />
       <S.Container>
