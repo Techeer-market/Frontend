@@ -1,4 +1,4 @@
-import NavBar from '@/components/BottomNavBar';
+import NavBar from '@/components/NavBar';
 import React from 'react';
 import ProductForm from '@/components/ProductForm';
 import Loading from '@/components/Loading';
@@ -12,6 +12,10 @@ import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { Link } from 'react-router-dom';
 import useFetchProductList from '@/hooks/useFetchProductList';
 
+import { RxHamburgerMenu } from 'react-icons/rx';
+import { IoSearchOutline } from 'react-icons/io5';
+import AddButton from '@/components/AddButton';
+
 const index: React.FC = () => {
   const path = '/products/list',
     queryKey = 'main';
@@ -21,23 +25,23 @@ const index: React.FC = () => {
 
   return (
     <S.MainDiv>
-      <Link to="/write">
-        <S.Button>
-          <img src={plusImage} alt="" />
-        </S.Button>
-      </Link>
-
       <S.NavContainer className="Nav">
         <S.Nav>
           <img id="main_logo" alt="To Main" loading="lazy" src={logo} />
-
+          <AddButton />
           <S.NavLink>
-            <Link to="/category">
-              <img id="category" alt="To category" src={categoryBar} />
-            </Link>
-            <Link to="/search">
-              <img id="search" alt="To search" src={searchBtn}></img>
-            </Link>
+            <S.ClickArea>
+              <Link to="/category">
+                <RxHamburgerMenu style={{ width: '25px', height: '25px' }} />
+                {/* <img id="category" alt="To category" src={categoryBar}></img> */}
+              </Link>
+            </S.ClickArea>
+            <S.ClickArea>
+              <Link to="/search">
+                <IoSearchOutline style={{ width: '25px', height: '25px' }} />
+                {/* <img id="search" alt="To search" src={searchBtn}></img> */}
+              </Link>
+            </S.ClickArea>
           </S.NavLink>
         </S.Nav>
       </S.NavContainer>
@@ -55,6 +59,12 @@ const index: React.FC = () => {
           </S.ProductContainer>
         </S.scroll>
       </S.MainContainer>
+
+      <Link to="/write">
+        <S.Button>
+          <img src={plusImage} alt="" />
+        </S.Button>
+      </Link>
       <NavBar />
     </S.MainDiv>
   );

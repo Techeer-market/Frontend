@@ -100,7 +100,7 @@ const ItemDetail: React.FC = () => {
   };
 
   if (isLoading) return <Loading />;
-
+  console.log(productId);
   return (
     <S.Container>
       <TopNavBar page="" />

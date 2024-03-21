@@ -2,7 +2,7 @@ import Heart from '@/assets/grayHeartIcon.svg';
 import FilledHeart from '@/assets/likedHeart.svg';
 import Chat from '@/assets/chatIcon.svg';
 import Circle from '@/assets/circle.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { Product } from '@/types/product';
 import * as S from './styles';
@@ -17,6 +17,9 @@ interface ProductProps {
 
 const ProductForm = ({ items, state }: ProductProps) => {
   const navigate = useNavigate();
+
+  const { productId } = useParams();
+
   const location = useLocation();
   const queryClient = getClient();
   const [dropDown, setDropDown] = useState<number>(0);
@@ -46,6 +49,11 @@ const ProductForm = ({ items, state }: ProductProps) => {
   // 상품 상태 변경 핸들러 (판매 내역 페이지)
   const handleChangeState = async (product: Product) => {
     await mutateChangeProductState.mutateAsync(product);
+  };
+
+  //상품 게시글 수정
+  const handleUpgrade = (productId: string) => {
+    navigate(`/item/update/${productId}`);
   };
 
   const mutateDeleteProduct = useMutation(
@@ -116,10 +124,11 @@ const ProductForm = ({ items, state }: ProductProps) => {
                   >
                     {state !== 'SOLD' ? '거래 완료로 변경' : '판매 중으로 변경'}
                   </S.DropdownItem>
+
                   <S.DropdownItem
                     onClick={(event) => {
                       event.stopPropagation();
-                      navigate('/edit_post'); // 게시글 수정 페이지 (url 수정 필요)
+                      handleUpgrade(item.productId);
                     }}
                   >
                     게시글 수정
