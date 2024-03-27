@@ -6,6 +6,7 @@ import NavBar from '../NavBar';
 import 'moment/locale/ko';
 moment.locale('ko');
 import moment from 'moment';
+import ChatContainer from '../ChatContainer';
 
 interface ChatProps {
   chatRoomId: number;
@@ -42,7 +43,7 @@ const Chat = ({ chatRoomId, data }: ChatProps) => {
       const json_body = JSON.parse(body.body);
       setChatList((_chat_list: ChatContent[]) => [..._chat_list, json_body]);
     });
-  }, [chatRoomId]);
+  }, []);
 
   const connect = useCallback(() => {
     client.current = new Stomp.Client({
@@ -69,7 +70,7 @@ const Chat = ({ chatRoomId, data }: ChatProps) => {
       body: JSON.stringify({
         chatRoomId: data.chatRoomId,
         senderEmail: data.senderEmail,
-        message: data.message,
+        message: chat,
         createAt: data.createdAt,
       }),
     });
@@ -111,12 +112,14 @@ const Chat = ({ chatRoomId, data }: ChatProps) => {
       </S.Container>
       <S.Time>2022-02-22</S.Time>
       <S.ChatContent />
+      <ChatContainer chatList={chatList} setChatList={setChatList} />
       <S.ChatDiv>
         <S.Input
           type="text"
           placeholder="메시지 보내기"
           onKeyDown={onKeyDown}
           onChange={onTyping}
+          value={chatText}
         />
         <S.Button onClick={() => publish(chatText)} />
       </S.ChatDiv>

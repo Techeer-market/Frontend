@@ -8,11 +8,9 @@ import ChatMessage from '../ChatMessage';
 interface IChatContainer {
   chatList: ChatContent[];
   setChatList: React.Dispatch<React.SetStateAction<ChatContent[]>>;
-  chatRef: React.RefObject<HTMLDivElement>;
 }
 
-// 채팅목록
-const ChatContainer = ({ chatList, chatRef, setChatList }: IChatContainer) => {
+const ChatContainer = ({ chatList, setChatList }: IChatContainer) => {
   return (
     <S.Container>
       {chatList.length !== 0 && (

@@ -1,28 +1,31 @@
 import Chat from '@/components/Chat';
 import Loading from '@/components/Loading';
 import axios from 'axios';
+import { response } from 'msw';
 import { useQuery } from 'react-query';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
-interface RouterState {
+interface UserInfo {
   chatRoomId: number;
+  senderEmail: string;
+  createdAt: string;
 }
 
 const ChattingPage = () => {
-  // const params = useParams();
-  const location = useLocation();
-  // const chatRoomId = params.id;
-  const chatRoomId = (location.state as RouterState).chatRoomId;
-  const navigation = useNavigate();
+  // const params = useParams<{ id: string }>();
+  // const chatRoomId = params.id ? parseInt(params.id, 10) : 0;
   const userInfo = async () => {
-    const response = axios.get('/users');
-    return (await response).data;
+    try {
+      const response = await axios.get<UserInfo>('/users');
+      return response.data.chatRoomId;
+    } catch (error) {
+      console.log(error);
+    }
   };
-  console.log(chatRoomId);
 
-  const { data, isFetching, isLoading, error } = useQuery('userInfo', userInfo);
+  const { data, isFetching, isLoading } = useQuery('userInfo', userInfo);
   if (!isFetching && !data) {
-    return navigation('/login');
+    return <Navigate to="/login" />;
   }
   if (isLoading) return <Loading />;
   return (

@@ -34,7 +34,8 @@ interface ItemDetailProps {
 }
 
 const ItemDetail: React.FC = () => {
-  const { productId } = useParams();
+  const { productId } = useParams<{ productId?: string }>();
+  const parsedProductId = parseInt(productId ?? '', 10);
   const queryClient = getClient();
   const navigate = useNavigate();
   const { data, isLoading } = useQuery<ItemDetailProps, AxiosError>(
@@ -100,15 +101,22 @@ const ItemDetail: React.FC = () => {
   };
 
   const goToChat = async () => {
-    const chatPath = `/chat/create/${productId}`;
-    restFetcher({
+    const response = await restFetcher({
       method: 'POST',
-      path: chatPath,
+      path: `/chat/create/${parsedProductId}`,
     });
-    navigate(chatPath, {
-      state: { productId },
-    });
+    console.log(response.data);
   };
+  //   const chatPath = `/chat/create/${parsedProductId}`;
+  //   restFetcher({
+  //     method: 'POST',
+  //     path: chatPath,
+  //   });
+  //   navigate(chatPath, {
+  //     // state: { productId },
+  //   });
+  // };
+  // console.log(parsedProductId);
 
   if (isLoading) return <Loading />;
 

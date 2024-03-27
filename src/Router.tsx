@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
@@ -17,11 +16,7 @@ const CategoryList = lazy(() => import('@/components/CategoryList'));
 const SellerPage = lazy(() => import('@/pages/SellerPage'));
 const ChatList = lazy(() => import('@/pages/ChatList'));
 const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
-const ChattingPage = lazy(() =>
-  import('@/pages/ChattingPage').then((module) => ({
-    default: module.default as React.ComponentType<any>,
-  })),
-);
+const ChattingPage = lazy(() => import('@/pages/ChattingPage'));
 
 export const routes = [
   { path: '/', element: <Main /> },
