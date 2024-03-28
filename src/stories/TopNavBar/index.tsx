@@ -1,16 +1,15 @@
 import * as S from './styles';
-import { useNavigate } from 'react-router-dom';
 import { SlArrowLeft } from 'react-icons/sl';
 
 interface TopNavBarProps {
   page: string;
+  onNavBack?: () => void;
 }
 
-const TopNavBar: React.FC<TopNavBarProps> = ({ page }) => {
-  const navigate = useNavigate();
+const TopNavBar: React.FC<TopNavBarProps> = ({ page, onNavBack }: TopNavBarProps) => {
   return (
     <S.BarContainer>
-      <S.ClickArea onClick={() => navigate(-1)}>
+      <S.ClickArea onClick={onNavBack}>
         <SlArrowLeft style={{ width: '25px', height: '25px' }} />
       </S.ClickArea>
       <S.NavText>{page}</S.NavText>
