@@ -10,7 +10,6 @@ import axios from 'axios';
 if (import.meta.env.DEV) {
   worker.start();
 }
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>

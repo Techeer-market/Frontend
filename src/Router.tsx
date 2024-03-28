@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 const Main = lazy(() => import('./pages/Main'));
 const Login = lazy(() => import('./pages/LogIn'));
@@ -17,6 +16,7 @@ const CategoryList = lazy(() => import('@/components/CategoryList'));
 const SellerPage = lazy(() => import('@/pages/SellerPage'));
 const ChatList = lazy(() => import('@/pages/ChatList'));
 const ItemDetail = lazy(() => import('@/pages/ItemDetail'));
+const ChattingPage = lazy(() => import('@/pages/ChattingPage'));
 
 export const routes = [
   { path: '/', element: <Main /> },
@@ -31,6 +31,7 @@ export const routes = [
   { path: '/item/:productId', element: <ItemDetail /> },
   { path: '/edit_info', element: <EditInfo /> },
   { path: '/chat', element: <ChatList /> },
+  { path: '/chat/create/:id', element: <ChattingPage /> },
   { path: '/item/:id', element: <ItemDetail /> },
   { path: '/category', element: <CategoryList /> },
   { path: `/category/:categoryId`, element: <CategoryPage /> },
