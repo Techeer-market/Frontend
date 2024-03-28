@@ -67,7 +67,7 @@ export const ProductTitle = styled.span`
   font-size: 2.2rem;
   font-weight: bold;
 `;
-export const Description = styled.p`
+export const Description = styled.div`
   padding-top: 4rem;
 `;
 export const Content = styled.span`

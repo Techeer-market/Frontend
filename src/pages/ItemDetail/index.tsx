@@ -34,7 +34,8 @@ interface ItemDetailProps {
 }
 
 const ItemDetail: React.FC = () => {
-  const { productId } = useParams();
+  const { productId } = useParams<{ productId?: string }>();
+  const parsedProductId = parseInt(productId ?? '', 10);
   const queryClient = getClient();
   const navigate = useNavigate();
   const { data, isLoading } = useQuery<ItemDetailProps, AxiosError>(
@@ -99,6 +100,24 @@ const ItemDetail: React.FC = () => {
     }
   };
 
+  const goToChat = async () => {
+    const response = await restFetcher({
+      method: 'POST',
+      path: `/chat/create/${parsedProductId}`,
+    });
+    console.log(response.data);
+  };
+  //   const chatPath = `/chat/create/${parsedProductId}`;
+  //   restFetcher({
+  //     method: 'POST',
+  //     path: chatPath,
+  //   });
+  //   navigate(chatPath, {
+  //     // state: { productId },
+  //   });
+  // };
+  // console.log(parsedProductId);
+
   if (isLoading) return <Loading />;
   console.log(productId);
   return (
@@ -129,9 +148,8 @@ const ItemDetail: React.FC = () => {
 
             <S.DetailWrapper>
               <S.DetailName>좋아요</S.DetailName>
-              <S.DetailValue>{data?.likes}</S.DetailValue>•
-              {/* <S.DetailName>채팅</S.DetailName><S.DetailValue>{data?.chatroomCount}</S.DetailValue>• */}
-              <S.DetailName>조회</S.DetailName>
+              <S.DetailValue>{data?.likes}</S.DetailValue>•<S.DetailName>채팅</S.DetailName>
+              {/* <S.DetailValue>{data?.chatroomCount}</S.DetailValue>•<S.DetailName>조회</S.DetailName> */}
               <S.DetailValue>{data?.views}</S.DetailValue>
             </S.DetailWrapper>
 
@@ -156,7 +174,13 @@ const ItemDetail: React.FC = () => {
             />
             <S.Price> {`${data?.price?.toLocaleString()}원`} </S.Price>
           </S.ButtonsBox>
-          <S.ChatButton onClick={() => navigate('/chat')}>채팅하기</S.ChatButton>
+          <S.ChatButton
+            onClick={() => {
+              goToChat();
+            }}
+          >
+            채팅하기
+          </S.ChatButton>
         </S.Buttons>
       </S.Maincontainer>
 
